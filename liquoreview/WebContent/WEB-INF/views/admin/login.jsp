@@ -6,7 +6,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h4>liquoreview 메인 페이지 입니다.</h4><br/>
-<a href = "/admin/login">로그인</a>
+<h1>안녕하세요?? 관리자 로그인 페이지입니다.</h1>
 </body>
 </html>
