@@ -139,6 +139,16 @@
 			<artifactId>cglib</artifactId>
 			<version>3.2.5</version>
 		</dependency>
+		
+		<!-- SHA265 암호화 -->
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+		    <groupId>commons-codec</groupId>
+		    <artifactId>commons-codec</artifactId>
+		    <version>1.10</version>
+		</dependency>
+
+		
 
 
   </dependencies>

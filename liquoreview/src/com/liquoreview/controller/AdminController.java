@@ -16,14 +16,15 @@ public class AdminController {
 	
 	
 	/**
-	 * 관리자 페이지 로그인 페이지 이동
+	 * 관리자 메인 페이지 이동
+	 * auth_id 값에 따라서 관리자 메인페이지, 사용자 메인페이지 나눌 것.
 	 * @author 이양원
-	 * @date 2021. 01. 27 최초생성
+	 * @date 21. 01. 29  최초생성
 	 * @param
 	 * */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String adminLogin() {
+	@RequestMapping(value = "/index")
+	public String getIndex() {
 		
-		return "/admin/login";
+		return "/admin/index";
 	}
 }
