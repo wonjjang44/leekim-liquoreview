@@ -6,6 +6,7 @@
 	<typeAliases>
 		<typeAlias type="com.liquoreview.model.domain.Member" alias="Member"/>
 		<typeAlias type="com.liquoreview.model.domain.Alcohol" alias="Alcohol"/>
+		<typeAlias type="com.liquoreview.model.domain.Member_pw" alias="Member_pw"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/liquoreview/mybatis/mapper/MemberMapper.xml"/>

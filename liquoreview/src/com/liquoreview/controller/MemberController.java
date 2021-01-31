@@ -3,12 +3,15 @@ package com.liquoreview.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.liquoreview.common.UserSha256;
+import com.liquoreview.common.PassSecurity;
 import com.liquoreview.model.domain.Member;
 import com.liquoreview.model.service.MemberService;
 
@@ -18,6 +21,8 @@ public class MemberController {
 	@Resource(name = "MemberService")
 	private MemberService memberService;
 	
+	
+	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	/**
 	 * 로그인 페이지 이동
@@ -43,7 +48,7 @@ public class MemberController {
 		String msg  = "";
 		
 		// 비밀번호 암호화 (SHA256)
-		String encryPassword = UserSha256.encrypt(allRequestParams.getPass());
+		String encryPassword = PassSecurity.encrypt(allRequestParams.getPass());
 		allRequestParams.setPass(encryPassword);
 
 		Member member = new Member();
@@ -67,6 +72,19 @@ public class MemberController {
 	}
 	
 	/**
+	 * 아이디 중복체크
+	 * @author 이양원
+	 * @date 2021. 01. 30  최초생성
+	 * @param userid
+	 * */
+	@RequestMapping(value = "/idChk", method = RequestMethod.GET)
+	@ResponseBody
+	public String loginChk(@RequestParam String userid) {
+		
+		return memberService.idChk(userid);
+	}
+	
+	/**
 	 * 회원가입 페이지 이동
 	 * @author 이양원
 	 * @date 2021. 01. 29  최초생성
@@ -85,10 +103,10 @@ public class MemberController {
 	 * @param allRequestParams
 	 * */
 	@RequestMapping(value = "/regist", method = RequestMethod.POST)
-	public String regist(Member allRequestParams) {
+	@ResponseBody
+	public int regist(@RequestBody Member allRequestParams) {
 		
-		
-		return "";
+		return memberService.regist(allRequestParams);
 	}
 	
 	/**
@@ -104,17 +122,6 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
-	/**
-	 * 약관동의서 [출처 : 네이버]
-	 * @author 이양원
-	 * @date 21. 01. 29  최초생성
-	 * @param
-	 * */
-	@RequestMapping(value = "/provision", method = RequestMethod.GET)
-	public String provision() {
-		
-		return "/member/provision";
-	}
 }
 
 

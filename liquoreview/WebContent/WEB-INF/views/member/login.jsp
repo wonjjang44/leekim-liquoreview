@@ -40,7 +40,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                <label for="remember-me" class="label-agree-term"><span><span></span></span>비밀번호를 기억합니다.</label>
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>로그인 상태 유지</label>
                             </div>
                         </form>
                         <br/>
@@ -76,39 +76,61 @@ $(function(){
 		param.userid = userid;
 		param.pass = pass;
 		
-		$.ajax({
-			url : "/member/login",
-			type : "post",
-			data : param,
-			//contentType : "application/json;charset = UTF-8",
-			//dataType : "json",
-			success : function(data){
-				console.log(data);
-				
-				if(data == "idFail"){
-					$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-				}else if(data == "pwFail"){
-					$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-				}else if(data == "admin"){
-					location.href = "/admin/index";
-				}else if(data == "user"){
-					location.href = "/";	
+		validChk();
+		
+		if(flag == true){
+			$.ajax({
+				url : "/member/login",
+				type : "post",
+				data : param,
+				success : function(data){
+					if(data == "idFail"){
+						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
+					}else if(data == "pwFail"){
+						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
+					}else if(data == "admin"){
+						location.href = "/admin/index";
+					}else if(data == "user"){
+						location.href = "/";	
+					}
+				},
+				error : function(xhr){
+					console.log(xhr);
+					alert("어머나!! 예상치 못한 오류가 발생하였습니다.\n빠른 시일내에 해결하도록 하겠습니다.");
 				}
-			},
-			error : function(xhr){
-				console.log(xhr);
-				alert("어머나!! 예상치 못한 오류가 발생하였습니다.\n빠른 시일내에 해결하도록 하겠습니다.")
-			}
-		});
+			});
+		}
 
 		
 	});
 });
 
+var flag = true; 
 
+/*====== User Function ====== */
+/*로그인 유효성 체크 함수*/
+ function validChk(){
+	var userid = $("#userid").val();
+	var pass = $("#pass").val();
+	
+	if(userid == null || userid == ""){
+		alert("아이디를 입력해주세요.");
+		$("#userid").focus();
+		flag = false;
+	}else if(pass == null || pass == ""){
+		alert("비밀번호를 입력해주세요");
+		$("#pass").focus();
+		flag = false;
+	}else{
+		return flag = true;
+	}
+}
 
-
-
-
+/*로그인 상태 유지 함수*/
+function keepLoginSession(){
+	/**
+	 * 		
+	 */
+}
 </script>
 </html>

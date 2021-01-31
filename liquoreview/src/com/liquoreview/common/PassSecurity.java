@@ -2,7 +2,7 @@ package com.liquoreview.common;
 
 import java.security.MessageDigest;
 
-public class UserSha256 {
+public class PassSecurity {
 	/**
 	 * SHA256 암호화 함수
 	 * @author someone Coder

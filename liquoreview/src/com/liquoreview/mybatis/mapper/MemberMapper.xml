@@ -24,4 +24,77 @@
 		WHERE 1=1
 			AND userid = #{userid}
 	</select>
+	
+	<select id="idChk" parameterType="String" resultType="String">
+		/*회원가입시 아이디 중복체크, 이양원*/
+		SELECT
+			CASE
+				WHEN COUNT(1) = 1 THEN 'N'
+				ELSE 'Y'
+			END userid_yn
+		  FROM MEMBER
+		  WHERE 1=1
+			  AND userid = #{userid}
+	</select>
+	
+	<insert id="memberReg" parameterType="Member">
+		/*MEMBER 테이블 INSERT, 이양원*/
+			INSERT
+				INTO MEMBER(
+			  		  userid
+			  		, username
+			  		, birth
+			  		, email
+			  		, phonenum
+			  		, regdate
+			  		, last_modi_ymd
+			  		, hiber_yn
+			  		, del_yn
+			  		, auth_id
+				)
+				VALUES(
+					  #{userid}
+					, #{username}
+					, #{birth}
+					, #{email}
+					, #{phonenum}
+					, SYSDATE()
+					, SYSDATE()
+					, 0
+					, 0
+					, 2   
+				)
+	</insert>
+	
+	<insert id="memberPwReg" parameterType="Member">
+		/*MEMBER_PW 테이블 INSERT, 이양원*/	
+		<selectKey resultType="int" keyProperty="member_id" order="BEFORE">
+			<![CDATA[
+			SELECT
+				CASE
+					WHEN XX.member_id <> MAX(XX.member_pw_id) THEN XX.member_id
+				END AS MEMBER_ID
+				FROM (SELECT
+							  MAX(A.member_id) member_id
+							, MAX(B.member_id) member_pw_id 
+							FROM MEMBER A 
+								   , MEMBER_PW B) XX
+			]]>
+		</selectKey>
+		INSERT
+			INTO MEMBER_PW(
+				  member_id
+				, pass
+				, regdate
+				, last_modi_ymd
+				, find_pass_auth_cnt
+			)
+			VALUES(
+				  #{member_id}
+				, #{pass}
+				, SYSDATE()
+				, SYSDATE()
+				, 0
+			)
+	</insert>
 </mapper>

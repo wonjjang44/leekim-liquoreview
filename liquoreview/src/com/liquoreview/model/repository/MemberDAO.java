@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.liquoreview.model.domain.Member;
+import com.liquoreview.model.domain.Member_pw;
 
 @Repository("MemberDAO")
 public class MemberDAO {
@@ -23,13 +24,23 @@ public class MemberDAO {
 	}
 	
 	/**
+	 * 회원가입시 로그인 중복체크 여부
+	 * @author 이양원
+	 * @date 2021. 01. 31  최초생성
+	 * @param userid
+	 * */
+	public String idChk(String userid) {
+		return session.selectOne("idChk", userid);
+	}
+	
+	/**
 	 * 회원가입(MEMBER)
 	 * @author 이양원
 	 * @date 21. 01. 30  최초생성
 	 * @param allRequestParams
 	 * */
 	public int registMember(Member allRequestParams) {
-		return session.insert("regist_member", allRequestParams);
+		return session.insert("memberReg", allRequestParams);
 	}
 	
 	/**
@@ -39,6 +50,6 @@ public class MemberDAO {
 	 * @param allRequestParams
 	 * */
 	public int registMemberPw(Member allRequestParams) {
-		return session.insert("regist_member_pw", allRequestParams);
+		return session.insert("memberPwReg", allRequestParams);
 	}
 }
