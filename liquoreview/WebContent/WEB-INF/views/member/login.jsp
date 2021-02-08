@@ -30,17 +30,17 @@
                         <form class="register-form" id="login-form">
                             <div class="form-group">
                                 <label for="userid"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="userid" id="userid" placeholder="아이디"/>
+                                <input type="text" name="USERID" id="userid" placeholder="아이디"/>
                             </div>
                             <p id = "msg" style="color: red; font-size: 14px;"></p>
                             
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="비밀번호"/>
+                                <input type="password" name="PASS" id="pass" placeholder="비밀번호"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
-                                <label for="remember-me" class="label-agree-term"><span><span></span></span>로그인 상태 유지</label>
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember Me</label>
                             </div>
                         </form>
                         <br/>
@@ -50,15 +50,7 @@
                         </div>
                             
                             <p>회원이 아니시라구요? &nbsp;<a href="/member/regist" class="signup-image-link">회원가입</a></p>
-                        
-                        <div class="social-login">
-                            <span class="social-label">Or login with</span>
-                            <ul class="socials">
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
-                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
-                            </ul>
-                        </div>
+                            <p>비밀번호를 잊으셨다구요? &nbsp;<a href="javascript:void(0);" onClick = "fndPassPopView()" class="signup-image-link">비밀번호 찾기</a></p>
                     </div>
                 </div>
             </div>
@@ -82,15 +74,17 @@ $(function(){
 			$.ajax({
 				url : "/member/login",
 				type : "post",
-				data : param,
+				dataType : "json",
+				contentType : "application/json; charset = UTF-8",
+				data : JSON.stringify(param),
 				success : function(data){
-					if(data == "idFail"){
+					if(data.msg == "idFail"){
 						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-					}else if(data == "pwFail"){
+					}else if(data.msg == "pwFail"){
 						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-					}else if(data == "admin"){
+					}else if(data.msg == "admin"){
 						location.href = "/admin/index";
-					}else if(data == "user"){
+					}else if(data.msg == "user"){
 						location.href = "/";	
 					}
 				},
@@ -126,11 +120,20 @@ var flag = true;
 	}
 }
 
-/*로그인 상태 유지 함수*/
-function keepLoginSession(){
-	/**
-	 * 		
-	 */
+/*비밀번호 찾기 팝업창*/
+function fndPassPopView(){
+	var url = "/member/popup/fndPassPopView";
+	var name = "fndUserIdPop";
+    var _width = '950';
+    var _height = '520';
+    var _top = "90";
+    var _left = "160";
+ 
+    // 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+    //var _left = Math.ceil(( window.screen.width - _width )/2);
+    //var _top = Math.ceil(( window.screen.width - _height )/2); 
+    
+    window.open(url, name, 'width='+ _width +', height='+ _height +', left=' + _left + ', top='+ _top );
 }
 </script>
 </html>

@@ -9,60 +9,55 @@ public class Member_pw {
 	 * @date 2021. 01. 29
 	 * */
 	
-	private int member_id;
-	private int member_pw_id;
-	private String pass;
-	private Date regdate; 
-	private Date last_modi_ymd; 
-	private int find_pass_auth_cnt;
-	private Date find_pass_auth_ymd;
+	private int MEMBER_ID;
+	private int MEMBER_PW_ID;
+	private String PASS;
+	private Date REGDATE; 
+	private Date LAST_MODI_YMD; 
+	private int FIND_PASS_AUTH_CNT;
+	private Date FIND_PASS_AUTH_YMD;
 	
-	public int getMember_id() {
-		return member_id;
+	public int getMEMBER_ID() {
+		return MEMBER_ID;
 	}
-	public void setMember_id(int member_id) {
-		this.member_id = member_id;
+	public void setMEMBER_ID(int mEMBER_ID) {
+		MEMBER_ID = mEMBER_ID;
 	}
-	public int getMember_pw_id() {
-		return member_pw_id;
+	public int getMEMBER_PW_ID() {
+		return MEMBER_PW_ID;
 	}
-	public void setMember_pw_id(int member_pw_id) {
-		this.member_pw_id = member_pw_id;
+	public void setMEMBER_PW_ID(int mEMBER_PW_ID) {
+		MEMBER_PW_ID = mEMBER_PW_ID;
 	}
-	public String getPass() {
-		return pass;
+	public String getPASS() {
+		return PASS;
 	}
-	public void setPass(String pass) {
-		this.pass = pass;
+	public void setPASS(String pASS) {
+		PASS = pASS;
 	}
-	public Date getRegdate() {
-		return regdate;
+	public Date getREGDATE() {
+		return REGDATE;
 	}
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
+	public void setREGDATE(Date rEGDATE) {
+		REGDATE = rEGDATE;
 	}
-	public Date getLast_modi_ymd() {
-		return last_modi_ymd;
+	public Date getLAST_MODI_YMD() {
+		return LAST_MODI_YMD;
 	}
-	public void setLast_modi_ymd(Date last_modi_ymd) {
-		this.last_modi_ymd = last_modi_ymd;
+	public void setLAST_MODI_YMD(Date lAST_MODI_YMD) {
+		LAST_MODI_YMD = lAST_MODI_YMD;
 	}
-	public int getFind_pass_auth_cnt() {
-		return find_pass_auth_cnt;
+	public int getFIND_PASS_AUTH_CNT() {
+		return FIND_PASS_AUTH_CNT;
 	}
-	public void setFind_pass_auth_cnt(int find_pass_auth_cnt) {
-		this.find_pass_auth_cnt = find_pass_auth_cnt;
+	public void setFIND_PASS_AUTH_CNT(int fIND_PASS_AUTH_CNT) {
+		FIND_PASS_AUTH_CNT = fIND_PASS_AUTH_CNT;
 	}
-	public Date getFind_pass_auth_ymd() {
-		return find_pass_auth_ymd;
+	public Date getFIND_PASS_AUTH_YMD() {
+		return FIND_PASS_AUTH_YMD;
 	}
-	public void setFind_pass_auth_ymd(Date find_pass_auth_ymd) {
-		this.find_pass_auth_ymd = find_pass_auth_ymd;
+	public void setFIND_PASS_AUTH_YMD(Date fIND_PASS_AUTH_YMD) {
+		FIND_PASS_AUTH_YMD = fIND_PASS_AUTH_YMD;
 	}
-	
-
-	
-
-	
 	
 }

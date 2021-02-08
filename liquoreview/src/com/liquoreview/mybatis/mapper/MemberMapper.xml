@@ -6,24 +6,31 @@
 	<select id="login" parameterType="String" resultType="Member">
 		/*로그인, 이양원*/
 		SELECT
-			A.member_id
-		  , A.userid
-		  , (SELECT pass FROM MEMBER_PW WHERE 1=1 AND member_id = A.member_id) pass
-		  , A.username
-		  , A.birth
-   		  , A.email
-		  , A.phonenum
-		  , A.regdate
-		  , A.last_modi_ymd
-		  , A.hiber_yn
-		  , A.del_yn
-		  , A.last_login_ymd
-		  , A.auth_id
-		  , (SELECT des FROM AUTH WHERE 1=1 AND auth_id = A.auth_id) auth_nm
+				A.MEMBER_ID
+			  , A.USERID
+			  , (SELECT PASS FROM MEMBER_PW WHERE 1=1 AND MEMBER_ID = A.MEMBER_ID) PASS
+			  , A.USERNAME
+			  , A.BIRTH
+	   		  , A.EMAIL
+			  , A.PHONENUM
+			  , A.REGDATE
+			  , A.LAST_MODI_YMD
+			  , A.HIBER_YN
+			  , A.DEL_YN
+			  , A.LAST_LOGIN_YMD
+			  , A.AUTH_ID
+			  , (SELECT DES FROM AUTH WHERE 1=1 AND AUTH_ID = A.AUTH_ID) AUTH_NM
 		FROM MEMBER A
 		WHERE 1=1
-			AND userid = #{userid}
+			AND USERID = #{USERID}
 	</select>
+	
+	<update id="loginDateUpdate" parameterType="int">
+		/*로그인과 동시에 최종로그인일자 업데이트*/
+		UPDATE MEMBER SET LAST_LOGIN_YMD = SYSDATE()
+		WHERE 1=1
+			AND MEMBER_ID = #{MEMBER_ID}
+	</update>
 	
 	<select id="idChk" parameterType="String" resultType="String">
 		/*회원가입시 아이디 중복체크, 이양원*/
@@ -31,33 +38,33 @@
 			CASE
 				WHEN COUNT(1) = 1 THEN 'N'
 				ELSE 'Y'
-			END userid_yn
+			END USERID_YN
 		  FROM MEMBER
 		  WHERE 1=1
-			  AND userid = #{userid}
+			  AND USERID = #{userid}
 	</select>
 	
 	<insert id="memberReg" parameterType="Member">
 		/*MEMBER 테이블 INSERT, 이양원*/
 			INSERT
 				INTO MEMBER(
-			  		  userid
-			  		, username
-			  		, birth
-			  		, email
-			  		, phonenum
-			  		, regdate
-			  		, last_modi_ymd
-			  		, hiber_yn
-			  		, del_yn
-			  		, auth_id
+			  		  USERID
+			  		, USERNAME
+			  		, BIRTH
+			  		, EMAIL
+			  		, PHONENUM
+			  		, REGDATE
+			  		, LAST_MODI_YMD
+			  		, HIBER_YN
+			  		, DEL_YN
+			  		, AUTH_ID
 				)
 				VALUES(
-					  #{userid}
-					, #{username}
-					, #{birth}
-					, #{email}
-					, #{phonenum}
+					  #{USERID}
+					, #{USERNAME}
+					, #{BIRTH}
+					, #{EMAIL}
+					, #{PHONENUM}
 					, SYSDATE()
 					, SYSDATE()
 					, 0
@@ -68,30 +75,30 @@
 	
 	<insert id="memberPwReg" parameterType="Member">
 		/*MEMBER_PW 테이블 INSERT, 이양원*/	
-		<selectKey resultType="int" keyProperty="member_id" order="BEFORE">
+		<selectKey resultType="int" keyProperty="MEMBER_ID" order="BEFORE">
 			<![CDATA[
 			SELECT
 				CASE
-					WHEN XX.member_id <> MAX(XX.member_pw_id) THEN XX.member_id
+					WHEN MAX(XX.MEMBER_ID) <> MAX(XX.MEMBER_PW_ID) THEN XX.MEMBER_ID
 				END AS MEMBER_ID
-				FROM (SELECT
-							  MAX(A.member_id) member_id
-							, MAX(B.member_id) member_pw_id 
-							FROM MEMBER A 
+			  FROM (SELECT
+							  MAX(A.MEMBER_ID) MEMBER_ID
+							, MAX(B.MEMBER_ID) MEMBER_PW_ID
+							FROM MEMBER A
 								   , MEMBER_PW B) XX
 			]]>
 		</selectKey>
 		INSERT
 			INTO MEMBER_PW(
-				  member_id
-				, pass
-				, regdate
-				, last_modi_ymd
-				, find_pass_auth_cnt
+				  MEMBER_ID
+				, PASS
+				, REGDATE
+				, LAST_MODI_YMD
+				, FIND_PASS_AUTH_CNT
 			)
 			VALUES(
-				  #{member_id}
-				, #{pass}
+				  #{MEMBER_ID}
+				, #{PASS}
 				, SYSDATE()
 				, SYSDATE()
 				, 0

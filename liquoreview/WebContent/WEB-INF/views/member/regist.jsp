@@ -27,44 +27,44 @@
                         <form class="register-form" id="register-form">
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="userid" id="userid" placeholder="아이디"/>
+                                <input type="text" name="USERID" id="userid" placeholder="아이디"/>
                             </div>
                                 <p id = "msg"></p>
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="비밀번호"/>
+                                <input type="password" name="PASS" id="pass" placeholder="비밀번호"/>
                             </div>
                             <div class="form-group">
                                 <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
-                                <input type="password" name="re_pass" id="re_pass" placeholder="비밀번호 재확인"/>
+                                <input type="password" name="RE_PASS" id="re_pass" placeholder="비밀번호 재확인"/>
                             </div>
                             <div class="form-group">
                                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="username" id="username" placeholder="이름"/>
+                                <input type="text" name="USERNAME" id="username" placeholder="이름"/>
                             </div>
                             <div class="form-group">
                                 <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                <input type="email" name="email" id="email" placeholder="이메일"/>
+                                <input type="email" name="EMAIL" id="email" placeholder="이메일"/>
                             </div>
                             <div class="form-group">
                                 <label for="birth"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="birth" id="birth" placeholder="생년월일"/>
+                                <input type="text" name="BIRTH" id="birth" placeholder="생년월일"/>
                             </div>
                             <div class="form-group">
                                 <label for="phonenum"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="phonenum" id="phonenum" placeholder="휴대전화"/>
+                                <input type="text" name="PHONENUM" id="phonenum" placeholder="휴대전화"/>
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
                                 <label for="agree-term" class="label-agree-term"><span><span></span></span>개인정보 수집 및 이용에 동의합니다.</label><br/><br/>
                             </div>
                         </form>
-                       
-                        <a href="/member/login" class="signup-image-link">전 이미 회원이에요!!</a>
                         
                         <div class="form-group form-button">
                             <input type="button" name="signup" id="signup" class="form-submit" value="회원가입"/>
                         </div>
+                        
+                        <a href="/member/login" class="signup-image-link">전 이미 회원이에요!!</a>
                         
                     </div>
                     <div class="signup-image">

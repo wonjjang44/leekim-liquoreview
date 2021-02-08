@@ -9,97 +9,99 @@ public class Member extends Member_pw{
 	 * @date 2021. 01. 29 
 	 * */
 	
-	private String userid;
-	private String username;
-	private String birth;
-	private String email;
-	private String phonenum;
-	private int hiber_yn; 
-	private int del_yn;
-	private Date last_login_ymd; 
-	private int auth_id;
+	private String USERID;
+	private String USERNAME;
+	private String BIRTH;
+	private String EMAIL;
+	private String PHONENUM;
+	private int HIBER_YN; 
+	private int DEL_YN;
+	private Date LAST_LOGIN_YMD; 
+	private int AUTH_ID;
+	
+	
 
 	public Member() {}
 
 	public Member(Member_pw vo) {
-		super.setMember_id(vo.getMember_id());
-		super.setRegdate(vo.getRegdate());
-		super.setLast_modi_ymd(vo.getLast_modi_ymd());
+		System.out.println("부모가 가지고있었던 MEMBER_ID : "+vo.getMEMBER_ID());
 		
+		super.setMEMBER_ID(vo.getMEMBER_ID());
+		super.setREGDATE(vo.getREGDATE());
+		super.setLAST_MODI_YMD(vo.getLAST_MODI_YMD());
 	}
 
-	public String getUserid() {
-		return userid;
+
+	public String getUSERID() {
+		return USERID;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUSERID(String uSERID) {
+		USERID = uSERID;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUSERNAME() {
+		return USERNAME;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUSERNAME(String uSERNAME) {
+		USERNAME = uSERNAME;
 	}
 
-	public String getBirth() {
-		return birth;
+	public String getBIRTH() {
+		return BIRTH;
 	}
 
-	public void setBirth(String birth) {
-		this.birth = birth;
+	public void setBIRTH(String bIRTH) {
+		BIRTH = bIRTH;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getEMAIL() {
+		return EMAIL;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEMAIL(String eMAIL) {
+		EMAIL = eMAIL;
 	}
 
-	public String getPhonenum() {
-		return phonenum;
+	public String getPHONENUM() {
+		return PHONENUM;
 	}
 
-	public void setPhonenum(String phonenum) {
-		this.phonenum = phonenum;
+	public void setPHONENUM(String pHONENUM) {
+		PHONENUM = pHONENUM;
 	}
 
-	public int getHiber_yn() {
-		return hiber_yn;
+	public int getHIBER_YN() {
+		return HIBER_YN;
 	}
 
-	public void setHiber_yn(int hiber_yn) {
-		this.hiber_yn = hiber_yn;
+	public void setHIBER_YN(int hIBER_YN) {
+		HIBER_YN = hIBER_YN;
 	}
 
-	public int getDel_yn() {
-		return del_yn;
+	public int getDEL_YN() {
+		return DEL_YN;
 	}
 
-	public void setDel_yn(int del_yn) {
-		this.del_yn = del_yn;
+	public void setDEL_YN(int dEL_YN) {
+		DEL_YN = dEL_YN;
 	}
 
-	public Date getLast_login_ymd() {
-		return last_login_ymd;
+	public Date getLAST_LOGIN_YMD() {
+		return LAST_LOGIN_YMD;
 	}
 
-	public void setLast_login_ymd(Date last_login_ymd) {
-		this.last_login_ymd = last_login_ymd;
+	public void setLAST_LOGIN_YMD(Date lAST_LOGIN_YMD) {
+		LAST_LOGIN_YMD = lAST_LOGIN_YMD;
 	}
 
-	public int getAuth_id() {
-		return auth_id;
+	public int getAUTH_ID() {
+		return AUTH_ID;
 	}
 
-	public void setAuth_id(int auth_id) {
-		this.auth_id = auth_id;
+	public void setAUTH_ID(int aUTH_ID) {
+		AUTH_ID = aUTH_ID;
 	}
-	
-	
 	
 }

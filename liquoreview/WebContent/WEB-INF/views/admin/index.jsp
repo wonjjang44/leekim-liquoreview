@@ -9,7 +9,7 @@
 <body>
 <c:choose>
 	<c:when test="${loginSession != null }">
-		<h3>${loginSession.getUsername() }님&nbsp;관리자 페이지에 오신걸 환영합니다.</h3>
+		<h3>${loginSession.getUSERNAME() }님&nbsp;관리자 페이지에 오신걸 환영합니다.</h3>
 		<a href = "/member/logout">로그아웃</a>
 	</c:when>
 </c:choose>

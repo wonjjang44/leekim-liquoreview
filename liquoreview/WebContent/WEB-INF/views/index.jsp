@@ -13,7 +13,7 @@
 		<a href = "/member/login">로그인</a>	
 	</c:when>
 	<c:otherwise>
-		<h3>${loginSession.getUsername() }님 환영합니다.</h3>
+		<h3>${loginSession.getUSERNAME() }님 환영합니다.</h3>
 		<a href = "/member/logout">로그아웃</a>
 	</c:otherwise>
 </c:choose>

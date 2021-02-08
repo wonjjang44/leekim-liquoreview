@@ -1,37 +1,31 @@
 package com.liquoreview.model.repository;
 
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
 import com.liquoreview.model.domain.Member;
-import com.liquoreview.model.domain.Member_pw;
 
-@Repository("MemberDAO")
-public class MemberDAO {
-	@Autowired
-	private SqlSessionTemplate session;
-	
-	
+public interface MemberDAO {
 	/**
 	 * 로그인
 	 * @author 이양원
 	 * @date 2021. 01. 29  최초생성
 	 * @param param
 	 * */
-	public Member login(Member param) {
-		return session.selectOne("login", param);
-	}
+	public Member login(Member param);
 	
+	/**
+	 * 로그인 시 최종로그인일자 업데이트
+	 * @author 이양원
+	 * @date 2021. 02. 08
+	 * @param param
+	 * */
+	public int loginDateUpdate(int param);
+
 	/**
 	 * 회원가입시 로그인 중복체크 여부
 	 * @author 이양원
 	 * @date 2021. 01. 31  최초생성
 	 * @param userid
 	 * */
-	public String idChk(String userid) {
-		return session.selectOne("idChk", userid);
-	}
+	public String idChk(String userid);
 	
 	/**
 	 * 회원가입(MEMBER)
@@ -39,9 +33,7 @@ public class MemberDAO {
 	 * @date 21. 01. 30  최초생성
 	 * @param allRequestParams
 	 * */
-	public int registMember(Member allRequestParams) {
-		return session.insert("memberReg", allRequestParams);
-	}
+	public int registMember(Member allRequestParams);
 	
 	/**
 	 * 회원가입(MEMBER_PW)
@@ -49,7 +41,5 @@ public class MemberDAO {
 	 * @date 2021. 01. 30  최초생성
 	 * @param allRequestParams
 	 * */
-	public int registMemberPw(Member allRequestParams) {
-		return session.insert("memberPwReg", allRequestParams);
-	}
+	public int registMemberPw(Member allRequestParams);
 }
