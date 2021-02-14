@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberPw">
+	<resultMap type="MemberPw" id="memberPwMap">
+		<id column="MEMBER_PW_ID" property="member_pw_id"/>
+		<result column="PASS" property="pass"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="RESET_PASS_AUTH_CNT" property="reset_pass_auth_cnt"/>
+		<association column="MEMBER_ID" property="member" javaType="Member" select="Member.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+		select MEMBER_PW_ID
+		         ,MEMBER_ID
+		         ,PASS
+		         ,REGDATE
+		         ,RESET_PASS_AUTH_CNT
+		         ,LAST_MODI_YMD
+		   from member_pw
+	</sql>
+	
+	<select id="loginCheck" parameterType="MemberPw" resultMap="memberPwMap">
+		<include refid="sql_select"/>
+		where PASS = #{pass}
+	</select>
+	
+	<insert id="insertPw" parameterType="MemberPw">
+		insert into 
+		member_pw(
+			 MEMBER_ID
+			,PASS
+		)
+		values(
+			#{member.member_id}
+		   ,#{pass}
+		)
+	</insert>
+	
+	<update id="resetPass" parameterType="MemberPw">
+		update member_pw 
+		      set PASS=#{pass}
+		          ,RESET_PASS_AUTH_CNT=RESET_PASS_AUTH_CNT+1
+		          ,LAST_MODI_YMD=now()
+		 where MEMBER_ID=#{member.member_id}
+	</update>
+</mapper>

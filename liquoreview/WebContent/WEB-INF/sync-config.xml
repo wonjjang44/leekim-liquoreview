@@ -25,6 +25,7 @@
 			</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>
+	
 	<!-- static resources 탐색 정상화 -->
 	<mvc:default-servlet-handler/>
 

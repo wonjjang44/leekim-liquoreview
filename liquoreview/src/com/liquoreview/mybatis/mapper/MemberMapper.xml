@@ -3,5 +3,90 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="Member">
+	<resultMap type="Member" id="memberMap">
+		<id column="MEMBER_ID" property="member_id"/>
+		<result column="USERID" property="userid"/>
+		<result column="USERNAME" property="username"/>
+		<result column="BIRTH" property="birth"/>
+		<result column="EMAIL" property="email"/>
+		<result column="PHONENUM" property="phonenum"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST-MODI_YMD" property="last_modi_ymd"/>
+		<result column="HIBER_YN" property="hiber_yn"/>
+		<result column="DEL_YN" property="del_yn"/>
+		<result column="LAST_LOGIN_YMD" property="last_login_ymd"/>
+		<association column="AUTH_ID" property="auth" javaType="Auth" select="Auth.select"/>
+	</resultMap>
 	
+	<sql id="sql_select">
+		select MEMBER_ID
+		         ,AUTH_ID
+		         ,USERID
+		         ,USERNAME
+		         ,BIRTH
+		         ,EMAIL
+		         ,PHONENUM
+		         ,REGDATE
+		         ,LAST_MODI_YMD
+		         ,HIBER_YN
+		         ,DEL_YN
+		         ,LAST_LOGIN_YMD
+		   from member
+	</sql>
+	
+	<select id="select" resultType="Member">
+		<include refid="sql_select"/> where MEMBER_ID=#{member_id}
+	</select>
+	
+	<select id="idOverlapCheck" parameterType="String" resultType="String">
+		select USERID
+		  from member
+		where USERID = #{userid}
+	</select>
+	
+	<select id="loginCheck" parameterType="Member" resultMap="memberMap">
+		<include refid="sql_select"/>
+		where USERID = #{userid}
+	</select>
+	
+	<select id="findId" parameterType="Member" resultType="String">
+		select USERID
+		  from member
+		where USERNAME=#{username}
+		    and PHONENUM=#{phonenum}
+	</select>
+	
+	<select id="infoCheck" parameterType="Member" resultMap="memberMap">
+		<include refid="sql_select"/>
+		 where USERID=#{userid}
+		     and EMAIL=#{email}
+	</select>
+	
+	<insert id="insert" parameterType="Member">
+		insert into member(AUTH_ID
+									, USERID
+									, USERNAME
+									, BIRTH
+									, EMAIL
+									, PHONENUM
+									, LAST_MODI_YMD
+									)
+			values(
+								 #{auth.auth_id}
+								,#{userid}
+								,#{username}
+								,#{birth}
+								,#{email}
+								,#{phonenum}
+								,now()
+			);
+		<selectKey order="AFTER" resultType="int" keyProperty="auth_id">
+			select max(AUTH_ID) from member
+		</selectKey>
+	</insert>
+	
+	<update id="lastLogUpdate" parameterType="int">
+		update member
+		                   set LAST_LOGIN_YMD = now()
+	</update>
 </mapper>

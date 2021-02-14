@@ -4,11 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.liquoreview.model.domain.Member" alias="Member"/>
-		
+		<typeAlias type="com.liquoreview.model.domain.admin.Auth" alias="Auth"/>
+		<typeAlias type="com.liquoreview.model.domain.member.Member" alias="Member"/>
+		<typeAlias type="com.liquoreview.model.domain.member.MemberPw" alias="MemberPw"/>
 	</typeAliases>
 	<mappers>
+		<mapper resource="com/liquoreview/mybatis/mapper/AuthMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/MemberMapper.xml"/>
-		
+		<mapper resource="com/liquoreview/mybatis/mapper/MemberPwMapper.xml"/>
 	</mappers>
 </configuration>

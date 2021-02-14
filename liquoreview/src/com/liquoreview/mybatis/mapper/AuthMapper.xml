@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Auth">
+	<sql id="sql_select">
+		select AUTH_ID
+				,DES
+				,ADM_ASSIGN
+				,MEM_ADM
+				,CATE_ADM
+				,ALC_ADM
+				,REV_ADM
+				,REV_COMM_ADM
+				,BOARD_ADM
+				,BOARD_COMM_ADM
+				,REGDATE
+				,LAST_MODI_YMD
+		  from auth
+	</sql>
+	
+	<select id="selectAll" resultType="Auth">
+		<include refid="sql_select"/> order by AUTH_ID asc
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Auth">
+		<include refid="sql_select"/>
+		where auth_id=#{auth_id}
+	</select>
+	
+	<insert id="insert" parameterType="Auth">
+		insert into auth(DES, ADM_ASSIGN, MEM_ADM, CATE_ADM, ALC_ADM, REV_ADM, REV_COMM_ADM, BOARD_ADM, BOARD_COMM_ADM, LAST_MODI_YMD)
+		VALUES(#{des},#{adm_assign},#{mem_adm},#{cate_adm},#{alc_adm},#{rev_adm},#{rev_comm_adm},#{board_adm},#{board_comm_adm},now())
+	</insert>
+	
+	<update id="update" parameterType="Auth">
+		update auth
+		set 
+				DES=#{des}, ADM_ASSIGN=#{adm_assign}, MEM_ADM=#{mem_adm},
+				CATE_ADM=#{cate_adm}, ALC_ADM=#{alc_adm}, REV_ADM=#{rev_adm},
+				REV_COMM_ADM=#{rev_comm_adm}, BOARD_ADM=#{board_adm},LAST_MODI_YMD=now()
+		where AUTH_ID=#{auth_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from auth
+		where AUTH_ID=#{auth_id}
+	</delete>
+</mapper>
