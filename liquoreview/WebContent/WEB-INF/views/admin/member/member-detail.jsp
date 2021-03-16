@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/admin/inc/head.jsp"%>
+<%@ include file="/WEB-INF/views/admin/inc/head.jsp"%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -185,10 +185,10 @@ function setBirth(){
 </head>
 <body class="">
 	<div class="wrapper">
-		<%@ include file="/admin/inc/sidebar.jsp"%>
+		<%@ include file="/WEB-INF/views/admin/inc/sidebar.jsp"%>
 		<div class="main-panel">
 			<!-- Navbar -->
-			<%@ include file="/admin/inc/navi.jsp"%>
+			<%@ include file="/WEB-INF/views/admin/inc/navi.jsp"%>
 			<!-- End Navbar -->
 			
 			<div class="content">
@@ -327,6 +327,6 @@ function setBirth(){
 		</div>
 	</div>
 	<!--   Core JS Files   -->
-	<%@ include file="/admin/inc/tail.jsp"%>
+	<%@ include file="/WEB-INF/views/admin/inc/tail.jsp"%>
 </body>
 </html>

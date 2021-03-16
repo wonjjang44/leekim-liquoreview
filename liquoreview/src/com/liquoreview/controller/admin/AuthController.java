@@ -28,18 +28,17 @@ public class AuthController {
 	//페이지 이동
 	@RequestMapping(value="/admin/auth",method=RequestMethod.GET)
 	public ModelAndView adminGetAuthList(HttpServletRequest request) {
-		logger.info("권한관리 페이지 이동");
-		//ModelAndView mav = new ModelAndView("admin/auth/auth-manage");
-		ModelAndView mav = new ModelAndView();
-		List<Auth> authList = authService.selectAll();
-		int totalRecord = authList.size();
-		int pageSize = 10;
-		int blockSize = 10;
-		pager.init(request, totalRecord, pageSize, blockSize);
-		
-		mav.addObject("authList", authList);
-		mav.addObject("pager",pager);
-		mav.setViewName("admin/auth/auth-manage");
+		logger.info("권한관리 페이지 이동=========================");
+		ModelAndView mav = new ModelAndView("admin/auth/auth-manage");
+		/*
+		 * ModelAndView mav = new ModelAndView(); List<Auth> authList =
+		 * authService.selectAll(); int totalRecord = authList.size(); int pageSize =
+		 * 10; int blockSize = 10; pager.init(request, totalRecord, pageSize,
+		 * blockSize);
+		 * 
+		 * mav.addObject("authList", authList); mav.addObject("pager",pager);
+		 * mav.setViewName("admin/auth/auth-manage");
+		 */
 		return mav;
 	}
 }

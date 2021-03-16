@@ -38,14 +38,14 @@ public class MemberController {
 	@RequestMapping(value = "/member/goRegist", method = RequestMethod.GET)
 	public String goRegist() {
 		logger.info("회원가입페이지로 이동============================");
-		return "member/member-regist";
+		return "client/member/member-regist";
 	}
 
 	// 로그인 페이지로 이동
 	@RequestMapping(value = "/member/goLogin", method = RequestMethod.GET)
 	public ModelAndView goLogin(HttpServletRequest request) {
 		logger.info("client login페이지로 이동============================");
-		ModelAndView mav = new ModelAndView("member/member-login");
+		ModelAndView mav = new ModelAndView("client/member/member-login");
 		return mav;
 	}
 

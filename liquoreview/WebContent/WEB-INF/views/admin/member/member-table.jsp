@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/admin/inc/head.jsp"%>
+<%@ include file="/WEB-INF/views/admin/inc/head.jsp"%>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
@@ -34,11 +34,11 @@
 <body class="">
 	<div class="wrapper">
 		<!-- sidebar -->
-		<%@  include file="/admin/inc/sidebar.jsp"%>
+		<%@  include file="/WEB-INF/views/admin/inc/sidebar.jsp"%>
 
 		<div class="main-panel">
 			<!-- Navbar -->
-			<%@  include file="/admin/inc/navi.jsp"%>
+			<%@  include file="/WEB-INF/views/admin/inc/navi.jsp"%>
 
 			<div class="content">
 				<div class="row">
@@ -153,6 +153,6 @@
 	</div>
 	<!-- wrapper end -->
 	<!-- cord js files -->
-	<%@ include file="/admin/inc/tail.jsp'%>
+	<%@ include file="/WEB-INF/views/admin/inc/tail.jsp'%>
 </body>
 </html>

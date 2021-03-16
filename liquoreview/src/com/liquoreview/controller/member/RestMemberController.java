@@ -78,7 +78,7 @@ public class RestMemberController {
 	@RequestMapping(value = "/member/findId", method = RequestMethod.GET, produces = "application/text;charset=UTF-8")
 	public void findIdModal(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("restMemberController에서 id찾기 요청접수========================");
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/member/findId.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/client/member/findId.jsp");
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			response.setCharacterEncoding("UTF-8");
@@ -103,7 +103,7 @@ public class RestMemberController {
 	@RequestMapping(value = "/member/resetPw", method = RequestMethod.GET, produces = "application/text;charset=UTF-8")
 	public void resetPwModal(HttpServletRequest request, HttpServletResponse response) {
 		logger.info("restMemberController에서 pw재설정 요청접수========================");
-		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/member/resetPw.jsp");
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/client/member/resetPw.jsp");
 		try {
 			response.setContentType("text/html;charset=UTF-8");
 			response.setCharacterEncoding("UTF-8");

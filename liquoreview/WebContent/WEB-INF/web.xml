@@ -44,7 +44,7 @@
     	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     	<init-param>
     		<param-name>contextConfigLocation</param-name>
-    		<param-value>WEB-INF/rest-config.xml</param-value>
+    		<param-value>/WEB-INF/rest-config.xml</param-value>
     	</init-param>
     </servlet>
     <servlet-mapping>
@@ -55,10 +55,10 @@
 
 	<servlet>
 		<servlet-name>syncDispatcher</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class><!-- spring-webmvc 이하 -->
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
-			<param-value>WEB-INF/sync-config.xml</param-value>
+			<param-value>/WEB-INF/sync-config.xml</param-value>
 		</init-param>
 	</servlet>
 	

@@ -7,7 +7,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<%@ include file="/inc/head.jsp"%>
+<%@ include file="/WEB-INF/views/client/inc/head.jsp"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <script>
 <%-- $(function(){
@@ -23,7 +23,7 @@
 	<div class="fh5co-loader"></div>
 
 	<div id="page" style="background-color: #00000C;">
-		<%@ include file="/inc/menubar.jsp"%>
+		<%@ include file="/WEB-INF/views/client/inc/menubar.jsp"%>
 		<div class="container-wrap">
 			<aside id="fh5co-hero">
 				<div class="flexslider">
@@ -31,13 +31,13 @@
 					<ul class="slides">
 						<!-- main 화면 url교체로 이미지 교체 가능 -->
 						<%for(int i=1; i<5; i++){ %>
-						<li style="background-image: url(/images/img_bg_<%=i%>.jpg);">
+						<li style="background-image: url(/resources/images/bg/img_bg_<%=i%>.jpg);">
 							<div class="overlay-gradient"></div>
 							<div class="container-fluid">
 								<div class="row">
 									<div class="col-md-6 col-md-offset-3 col-md-pull-3 slider-text">
 										<div class="slider-text-inner">	
-											<h1 style="color: white; font-size:60px; font-weight:bolder; background-color: black; background-color: rgba( 255, 255, 255, 0.5 ); ">DrunkenBros' Review Site</h1>
+											<h1 style="color: white; font-size:60px; font-weight:bolder; background-color: black; background-color: rgba( 255, 255, 255, 0.5 ); ">LeeKim's Review Site</h1>
 										</div>
 									</div>
 								</div>
@@ -58,7 +58,7 @@
 				<div class="row">
 					<div class="col-md-4 text-center animate-box">
 						<a href="work-single.html" class="work"
-							style="background-image: url(images/portfolio-1.jpg);">
+							style="background-image: url(<c:url value="/resources/images/portfolio/portfolio-1.jpg"/>);">
 							<div class="desc">
 								<h2>Absolute Vodca</h2>
 								<span>평점 : 4.3</span>
@@ -68,7 +68,7 @@
 					</div>
 					<div class="col-md-4 text-center animate-box">
 						<a href="work-single.html" class="work"
-							style="background-image: url(images/portfolio-2.jpg);">
+							style="background-image: url(<c:url value="/resources/images/portfolio/portfolio-2.jpg"/>);">
 							<div class="desc">
 								<h2>AGWA</h2>
 								<span>평점 : 3.7</span>
@@ -78,7 +78,7 @@
 					</div>
 					<div class="col-md-4 text-center animate-box">
 						<a href="work-single.html" class="work"
-							style="background-image: url(images/portfolio-3.jpg);">
+							style="background-image: url(<c:url value="/resources/images/portfolio/portfolio-3.jpg"/>);">
 							<div class="desc">
 								<h2>WoodWalk</h2>
 								<span>평점 : 2.9</span>
@@ -94,7 +94,7 @@
 			<!-- 최근 게시글 뜨도록 한 부분으로 추정 -->
 			<div id="fh5co-blog" class="blog-flex">
 				<div class="featured-blog"
-					style="background-image: url(images/blog-1.jpg);">
+					style="background-image: url(<c:url value="/resources/images/blog/blog-1.jpg"/>);">
 					<div class="desc-t">
 						<div class="desc-tc">
 							<span class="featured-head" style="font-weight:bold;">Popular Alcohol's</span>
@@ -135,7 +135,7 @@
 		<!-- END container-wrap -->
 
 		
-			<%@ include file="/inc/footer.jsp"%>
+			<%@ include file="/WEB-INF/views/client/inc/footer.jsp"%>
 		
 		<!-- END container-wrap -->
 	</div>
@@ -143,7 +143,7 @@
 	<div class="gototop js-top">
 		<a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
 	</div>
-	<%@ include file="/inc/tail.jsp"%>
+	<%@ include file="/WEB-INF/views/client/inc/tail.jsp"%>
 	
 
 </body>

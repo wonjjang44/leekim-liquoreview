@@ -38,7 +38,8 @@
 		set 
 				DES=#{des}, ADM_ASSIGN=#{adm_assign}, MEM_ADM=#{mem_adm},
 				CATE_ADM=#{cate_adm}, ALC_ADM=#{alc_adm}, REV_ADM=#{rev_adm},
-				REV_COMM_ADM=#{rev_comm_adm}, BOARD_ADM=#{board_adm},LAST_MODI_YMD=now()
+				REV_COMM_ADM=#{rev_comm_adm}, BOARD_ADM=#{board_adm},BOARD_COMM_ADM=#{board_comm_adm},
+				LAST_MODI_YMD=now()
 		where AUTH_ID=#{auth_id}
 	</update>
 	

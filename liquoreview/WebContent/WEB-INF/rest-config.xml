@@ -3,50 +3,35 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 
-	<!-- MVC 태그 관련 DefaultServlet 이용설정 유니코드 인코딩(한글깨짐 방지) -->
-	<mvc:annotation-driven>
-		<mvc:message-converters>
-			<bean
-				class="org.springframework.http.converter.StringHttpMessageConverter">
-				<property name="supportedMediaTypes">
-					<list>
-						<value>text/html;charset=utf-8</value>
-					</list>
-				</property>
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
-	<bean
-		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
-		<property name="webBindingInitializer">
-			<bean class="com.wizexpert.framework.web.BindingInitializer" />
-		</property>
-		<!-- @ResponseBody application/json 으로 변경 -->
+	
+	<!-- web service url for transferring data between different devices, for only restful request -->
+	<context:component-scan base-package="com.liquoreview">
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController" />
+	</context:component-scan>
+	
+	<!-- static resource scanning -->
+	<mvc:default-servlet-handler />
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters">
+			<util:list list-class="java.util.ArrayList">
+				<ref bean="mappingJackson2HttpMessageConverter"/>
+			</util:list>
+		</property>
+	</bean>
+	<bean id="mappingJackson2HttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
 			<list>
-				<bean
-					class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+				<value>text/html;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
 			</list>
 		</property>
 	</bean>
-
-
-	<!-- static resource scanning -->
-	<mvc:default-servlet-handler />
-
-	<!-- web service url for transferring data between different devices, for 
-		only restful request -->
-	<context:component-scan
-		base-package="com.liquoreview">
-		<context:include-filter type="annotation"
-			expression="org.springframework.web.bind.annotation.RestController" />
-		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Controller" />
-	</context:component-scan>
-
-
+	
 </beans>

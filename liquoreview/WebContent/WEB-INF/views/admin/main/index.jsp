@@ -3,17 +3,17 @@
 <html lang="en">
 
 <head>
-<%@ include file="/admin/inc/head.jsp"%>
+<%@ include file="/WEB-INF/views/admin/inc/head.jsp"%>
 </head>
 
 <body class="">
 	<div class="wrapper ">
 		<!-- sidebar -->
-		<%@ include file="/admin/inc/sidebar.jsp"%>
-
+		<%@ include file="/WEB-INF/views/admin/inc/sidebar.jsp"%>
+		<!-- main-panel -->
 		<div class="main-panel">
 			<!-- Navbar -->
-			<%@ include file="/admin/inc/navi.jsp"%>
+			<%@ include file="/WEB-INF/views/admin/inc/navi.jsp"%>
 			<!-- End Navbar -->
 			<div class="content">
 				<div class="row">
@@ -209,7 +209,7 @@
 		</div>
 	</div>
 	<!--   Core JS Files   -->
-	<%@ include file="/admin/inc/tail.jsp"%>
+	<%@ include file="/WEB-INF/views/admin/inc/tail.jsp"%>
 </body>
 
 </html>

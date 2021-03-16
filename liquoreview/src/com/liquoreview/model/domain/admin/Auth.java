@@ -2,6 +2,8 @@ package com.liquoreview.model.domain.admin;
 
 import java.sql.Timestamp;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Auth {
 
 	private int auth_id;
@@ -14,7 +16,9 @@ public class Auth {
 	private boolean rev_comm_adm;	
 	private boolean board_adm;	
 	private boolean board_comm_adm;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy MM dd HH:mm:ss z")
 	private Timestamp regdate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy MM dd HH:mm:ss z")
 	private Timestamp last_modi_ymd;
 
 	//getters and setters
