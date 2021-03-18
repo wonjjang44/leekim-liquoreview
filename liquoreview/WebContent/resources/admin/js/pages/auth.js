@@ -199,6 +199,12 @@ function checkboxHandle(auth_id) {
 	console.log("체크박스 눌러 hidden에 보관된 auth_id 확인 : "+$("#hidden_auth_id").val());
 }
 
+//모달 내 입력 초기화
+function reset() {
+	console.log("권한추가모달 내 초기화 버튼 클릭");
+	$("#auth_add_form")[0].reset();
+}
+
 function authAdd() {
 	//validate form in modal
 	var validResult = validateAuthModal();
@@ -220,27 +226,38 @@ function authAdd() {
 			type:"POST",
 			data: {
 				des:$("#new_des").val(),
-				adm_assign:$("#adm_assign_chk").val(),
-				mem_adm:$("#mem_adm_chk").val(),
-				cate_adm:$("#cate_adm_chk").val(),
-				alc_adm:$("#alc_adm_chk").val(),
-				rev_adm:$("#rev_adm_chk").val(),
-				rev_comm_adm:$("#rev_comm_adm_chk").val(),
-				board_adm:$("#board_adm_chk").val(),
-				board_comm_adm:$("#board_comm_adm_chk").val()
+				adm_assign:$("#adm_assign_chk").is(":checked"),
+				mem_adm:$("#mem_adm_chk").is(":checked"),
+				cate_adm:$("#cate_adm_chk").is(":checked"),
+				alc_adm:$("#alc_adm_chk").is(":checked"),
+				rev_adm:$("#rev_adm_chk").is(":checked"),
+				rev_comm_adm:$("#rev_comm_adm_chk").is(":checked"),
+				board_adm:$("#board_adm_chk").is(":checked"),
+				board_comm_adm:$("#board_comm_adm_chk").is(":checked")
 			},
-			success:function(data) {
-				if (data == "1") {
-					console.log("권한추가 성공");
-					console.log(data);
-					$("#authModal").modal('toggle');
-				}
+			success:function(result) {
+				let authInsertResult = JSON.parse(result);
+				handleInsertResult(authInsertResult);
 			},
 			error:function(data) {
 				console.log("권한추가 실패");
 				console.log(data);
 			}
 		});
+	}
+}
+
+//권한 등록 결과처리
+function handleInsertResult(data) {
+	console.log(data);
+	console.log("result data타입확인 : "+typeof(data));
+	if (data.resultCode==="1") {
+		alert(data.msg);
+		//리스트 갱신, 모달 close
+		getAuthList();
+	} else {
+		alert(data.msg);
+		return;
 	}
 }
 

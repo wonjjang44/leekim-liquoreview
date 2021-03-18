@@ -34,7 +34,7 @@
 					<input id="rev_comm_adm_chk" type="checkbox" name="rev_comm_adm" value=""/>
 					<label for="rev_comm_adm_chk">리뷰댓글관리</label>
 					<input id="board_adm_chk" type="checkbox" name="board_adm" value=""/>
-					<label for=board_adm_chk"">게시판관리</label>
+					<label for="board_adm_chk">게시판관리</label>
 					<input id="board_comm_adm_chk" type="checkbox" name="board_comm_adm" value=""/>
 					<label for="board_comm_adm_chk">댓글관리</label>
 				</p>

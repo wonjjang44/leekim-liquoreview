@@ -63,16 +63,22 @@
 			});
 		}
 		
+		//권한수정 모달 reset
+		function resetModiModal() {
+			console.log("권한수정 모달 내 resetModiModal 버튼 클릭");
+			$("#auth_modi_form")[0].reset();
+		}
+		
 		//수정 요청 결과처리
 		function handleModiResult(data){
 			console.log(data);
 			console.log("result data의 타입확인 : "+typeof(data));
 			//수정 성공 메시지 띄우기
-			if(data.resultCode === "1") {
+			if (data.resultCode === "1") {
 				alert(data.msg);
 				//리스트 갱신, 모달 close
 				getAuthList();
-			}else {
+			} else {
 				alert(data.msg);
 				return;
 			}
@@ -176,7 +182,7 @@
 		</div>
 		<div class="modal-footer">
 			<div class="confirmBtn">
-				<button class="btn btn-primary btn-round" onClick="reset()">초기화</button>
+				<button class="btn btn-primary btn-round" onClick="resetModiModal()">초기화</button>
 				<button class="btn btn-close-modal btn-primary btn-round" data-dismiss="modal">닫기</button>
 			</div>
 		</div>

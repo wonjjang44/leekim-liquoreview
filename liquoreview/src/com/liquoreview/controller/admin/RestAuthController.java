@@ -82,25 +82,26 @@ public class RestAuthController {
 	
 	@RequestMapping(value="/admin/auth",method=RequestMethod.POST,produces = "application/text;charset=UTF-8")
 	//public String insertAuth(Auth auth, HttpServletRequest request) {
-	public ModelAndView insertAuth(Auth auth, HttpServletRequest request) {
-		/*
+	public String insertAuth(Auth auth, HttpServletRequest request) {
+		
 		logger.info("adm_assign requestParam 확인 : "+request.getParameter("adm_assign"));
 		logger.info("권한추가 요청 접수");
 		logger.info("des확인 : "+auth.getDes());
-		logger.debug("isAdm_assign 확인 "+auth.isAdm_assign());
-		logger.debug("isMem_adm 확인 "+auth.isMem_adm());
-		logger.debug("isCate_adm 확인 "+auth.isCate_adm());
-		logger.debug("isAlc_adm 확인 "+auth.isAlc_adm());
-		logger.debug("isRev_adm 확인 "+auth.isRev_adm());
-		logger.debug("isRev_comm_adm 확인 "+auth.isRev_comm_adm());
-		logger.debug("isBoard_adm 확인 "+auth.isBoard_adm());
-		logger.debug("isBoard_comm_adm 확인 "+auth.isBoard_comm_adm());
-		*/
+		logger.info("isAdm_assign 확인 "+auth.isAdm_assign());
+		logger.info("isMem_adm 확인 "+auth.isMem_adm());
+		logger.info("isCate_adm 확인 "+auth.isCate_adm());
+		logger.info("isAlc_adm 확인 "+auth.isAlc_adm());
+		logger.info("isRev_adm 확인 "+auth.isRev_adm());
+		logger.info("isRev_comm_adm 확인 "+auth.isRev_comm_adm());
+		logger.info("isBoard_adm 확인 "+auth.isBoard_adm());
+		logger.info("isBoard_comm_adm 확인 "+auth.isBoard_comm_adm());
+		
 		//String insertAuthResult = Integer.toString(authService.insert(auth));
-		int insertAuthResult = authService.insert(auth);
-		ModelAndView mav = new ModelAndView("/admin/auth");
-		mav.addObject(insertAuthResult);
-		return mav;
+		//int insertAuthResult = authService.insert(auth);
+		//ModelAndView mav = new ModelAndView("/admin/auth");
+		//mav.addObject(insertAuthResult);
+		JSONObject authInsertResult = authService.insert(auth);
+		return authInsertResult.toString();
 	}
 	
 	//권한 수정

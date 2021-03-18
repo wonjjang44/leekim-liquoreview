@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
 		return authDAO.select(auth_id);
 	}
 
-	public int insert(Auth auth) {
+	public JSONObject insert(Auth auth) throws RegistFailException{
 		logger.info("auth 확인 : "+auth);
 		logger.info(auth.isAdm_assign());
 		logger.info(auth.isMem_adm());
@@ -78,8 +78,19 @@ public class AuthServiceImpl implements AuthService {
 			}
 		}
 		*/
-		int result=authDAO.insert(auth);
-		return result;
+		//int result=authDAO.insert(auth);
+		int result = authDAO.insert(auth);
+		JSONObject resultObj = new JSONObject();
+		if(result==0) {
+			resultObj.put("resultCode", "0");
+			resultObj.put("msg", "권한등록 실패");
+			throw new RegistFailException("권한 등록 실패");
+		} else {
+			resultObj.put("resultCode", "1");
+			resultObj.put("msg", "권한등록 성공");
+		}
+		
+		return resultObj;
 	}
 
 	public JSONObject update(Auth auth) throws EditFailException{

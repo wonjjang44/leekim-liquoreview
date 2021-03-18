@@ -29,8 +29,28 @@
 	</select>
 	
 	<insert id="insert" parameterType="Auth">
-		insert into auth(DES, ADM_ASSIGN, MEM_ADM, CATE_ADM, ALC_ADM, REV_ADM, REV_COMM_ADM, BOARD_ADM, BOARD_COMM_ADM, LAST_MODI_YMD)
-		VALUES(#{des},#{adm_assign},#{mem_adm},#{cate_adm},#{alc_adm},#{rev_adm},#{rev_comm_adm},#{board_adm},#{board_comm_adm},now())
+		insert into auth(DES
+							  , ADM_ASSIGN
+							  , MEM_ADM
+							  , CATE_ADM
+							  , ALC_ADM
+							  , REV_ADM
+							  , REV_COMM_ADM
+							  , BOARD_ADM
+							  , BOARD_COMM_ADM, LAST_MODI_YMD
+								)
+		VALUES(
+							#{des}
+							,#{adm_assign}
+							,#{mem_adm}
+							,#{cate_adm}
+							,#{alc_adm}
+							,#{rev_adm}
+							,#{rev_comm_adm}
+							,#{board_adm},
+							#{board_comm_adm}
+							,now()
+		);
 	</insert>
 	
 	<update id="update" parameterType="Auth">
