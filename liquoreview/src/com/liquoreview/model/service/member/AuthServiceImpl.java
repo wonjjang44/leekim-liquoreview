@@ -37,6 +37,11 @@ public class AuthServiceImpl implements AuthService {
 	public Auth select(int auth_id) {
 		return authDAO.select(auth_id);
 	}
+	
+	@Override
+	public Auth selectDefaultAuth() {
+		return authDAO.selectDefaultAuth();
+	}
 
 	public JSONObject insert(Auth auth) throws RegistFailException{
 		logger.info("auth 확인 : "+auth);
@@ -144,4 +149,6 @@ public class AuthServiceImpl implements AuthService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 }

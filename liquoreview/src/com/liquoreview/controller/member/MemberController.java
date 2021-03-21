@@ -48,6 +48,14 @@ public class MemberController {
 		ModelAndView mav = new ModelAndView("client/member/member-login");
 		return mav;
 	}
+	
+	//회원가입 welcome 페이지 이동
+	@RequestMapping(value="/member/welcome", method = RequestMethod.GET)
+	public ModelAndView goWelcome(HttpServletRequest request) {
+		logger.info("회원가입 성공 후 welcome페이지로 이동 ==========");
+		ModelAndView mav = new ModelAndView("client/member/member-welcome");
+		return mav;
+	}
 
 	// logout
 	@RequestMapping(value = "/member/logout", method = RequestMethod.GET)

@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -41,4 +42,21 @@ public class AuthController {
 		 */
 		return mav;
 	}
+	
+	//기본권한(default) 조회
+	@RequestMapping(value="/admin/auth/defaultAuth",method=RequestMethod.GET)
+	public Auth getDefaultAuth(HttpServletRequest request) {
+		logger.info("기본권한 조회 요청접수");
+		Auth defaultAuth = authService.selectDefaultAuth();
+		logger.info("기본권한 auth_id확인 : "+defaultAuth.getAuth_id());
+		return defaultAuth;
+	}
+	
+	//auth_id로 1건 조회
+		@RequestMapping(value="/admin/auth/{auth_id}",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
+		public Auth getAuth(HttpServletRequest request, @PathVariable("auth_id") int auth_id) {
+			logger.info("전달받은 auth_id 확인 : "+auth_id);
+			Auth auth = authService.select(auth_id);
+			return auth;
+		}
 }

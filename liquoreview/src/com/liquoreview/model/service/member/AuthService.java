@@ -9,6 +9,7 @@ import com.liquoreview.model.domain.admin.Auth;
 public interface AuthService {
 	public List<Auth> selectAll();
 	public Auth select(int auth_id);
+	public Auth selectDefaultAuth();
 	public JSONObject insert(Auth auth);
 	public JSONObject update(Auth auth);
 	public void update(List<Auth> updateList);

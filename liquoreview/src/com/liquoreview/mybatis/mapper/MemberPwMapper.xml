@@ -31,10 +31,12 @@
 		member_pw(
 			 MEMBER_ID
 			,PASS
+			,LAST_MODI_YMD
 		)
 		values(
 			#{member.member_id}
 		   ,#{pass}
+		   ,now()
 		)
 	</insert>
 	

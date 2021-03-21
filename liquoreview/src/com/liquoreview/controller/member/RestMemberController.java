@@ -24,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.liquoreview.common.JoinCode;
+import com.liquoreview.model.domain.admin.Auth;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
+import com.liquoreview.model.service.member.AuthService;
 import com.liquoreview.model.service.member.MemberService;
 
 @RestController
@@ -34,6 +36,10 @@ public class RestMemberController {
 
 	@Autowired
 	MemberService memberService;
+	
+	@Autowired
+	AuthService authService;
+	
 	@Autowired
 	JoinCode joinCode;
 
@@ -53,6 +59,10 @@ public class RestMemberController {
 	@RequestMapping(value = "/member/regist", method = RequestMethod.POST, produces = "application/json;charset=utf8")
 	public String registMember(Member member, MemberPw memberPw, HttpServletRequest request) {
 		logger.info("RestMemberController :: 회원가입 요청");
+		//요청 출발 전 기본권한 주입
+		Auth defaultAuth = authService.selectDefaultAuth();
+		member.setAuth(defaultAuth);
+		logger.info("요청 출발 전 기본권한id 확인 : "+member.getAuth().getAuth_id());
 		String memberResultStr = memberService.memberInsert(member, memberPw);
 		return memberResultStr.toString();
 	}

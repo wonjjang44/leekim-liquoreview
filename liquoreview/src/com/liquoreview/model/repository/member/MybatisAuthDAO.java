@@ -24,6 +24,10 @@ public class MybatisAuthDAO implements AuthDAO{
 		return sessionTemplate.selectOne("Auth.select", auth_id);
 	}
 
+	public Auth selectDefaultAuth() {
+		return sessionTemplate.selectOne("Auth.selectDefaultAuth");
+	}
+
 	public int insert(Auth auth) {
 		return sessionTemplate.insert("Auth.insert", auth);
 	}
@@ -35,5 +39,6 @@ public class MybatisAuthDAO implements AuthDAO{
 	public int delete(int auth_id) {
 		return sessionTemplate.delete("Auth.delete", auth_id);
 	}
+
 
 }

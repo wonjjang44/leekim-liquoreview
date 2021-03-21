@@ -47,7 +47,7 @@
 			//alert();
 			var phonenumVal=$("input[name='phonenum']").val();
 			//alert(phonenum);
-			$("input[name='phonenum']").val(autoHypenPhone(phonenumVal));
+			//$("input[name='phonenum']").val(autoHypenPhone(phonenumVal));
 		});
 	});
 
@@ -89,6 +89,7 @@
 	// 회원가입 버튼 눌렀을 때 회원 DB에 등록 등록
 	//=================================================================
 	function regist() {
+		console.log("회원가입 요청 시작");
 		//아이디체크
 		if(!idOverlabCheckFlag){
 			$("#modal-title").text("아이디 중복 여부를 체크해주세요.");
@@ -143,32 +144,44 @@
 		}
 		console.log($("input[name='userid']").val());
 		console.log(typeof($("input[name='pass']").val()));
-		console.log($("input[name='name']").val());
+		console.log($("input[name='username']").val());
 		console.log($("input[name='birth']").val());
 		console.log($("input[name='phonenum']").val());
 		console.log($("input[name='email']").val());
-		
+		console.log("비동기요청시작");
 		$.ajax({
 			url:"/rest/member/regist",
 			type:"post",
 			data:{
 				userid:$("input[name='userid']").val(),
 				pass:$("input[name='pass']").val(),
-				username:$("input[name='name']").val(),
+				username:$("input[name='username']").val(),
 				birth:$("input[name='birth']").val(),
 				phonenum:$("input[name='phonenum']").val(),
 				email:$("input[name='email']").val()
 			},
 			success:function(data){
-				if(data.resultCode==1){
-					$(location).attr("href","/member/welcome");
+				console.log("요청갔다온 data 확인 : "+data);
+				console.log("data의 타입 확인 : "+typeof(data));
+				if(data.resultCode==="1"){
+					console.log(data);
+					handleRegistResult(data);
+					
 				}else{
-					alert(data.msg);
-					$("#modal-title").text("회원가입에 실패했습니다..");
+					//alert(data.msg);
+					console.log(data);
+					//$("#modal-title").text("회원가입에 실패했습니다..");
+					$("#modal-title").text(data.msg);
 					$("#myModal").modal('toggle');
+					$("#form")[0].reset();
 				}
 			}
 		});
+	}
+	
+	function handleRegistResult(data){
+		alert(data.msg);
+		$(location).attr("href","/member/welcome");
 	}
 
 	//=================================================================
@@ -196,7 +209,7 @@
 	}
 	
 	function checkNameExist(){
-		var insertName=$("input[name='name']").val();
+		var insertName=$("input[name='username']").val();
 		if(insertName.length<1){
 			return false;
 		}else{
@@ -489,11 +502,12 @@
 										<div class="col-md-8">
 											<div class="form-group" style="text-align:center;">
 												<input
+													id="agreeChecker"
 													class="form-check-input"
 													type="checkbox"
 													name="agreeChecker"
 												>
-												<label class="form-check-label">
+												<label for="agreeChecker" class="form-check-label">
 												 	서비스 약관 및 개인정보 수집, 이용에 동의해 주세요.
 												 </label>
 											</div>

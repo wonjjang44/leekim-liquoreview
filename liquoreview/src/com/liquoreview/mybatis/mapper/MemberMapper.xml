@@ -80,8 +80,8 @@
 								,#{phonenum}
 								,now()
 			);
-		<selectKey order="AFTER" resultType="int" keyProperty="auth_id">
-			select max(AUTH_ID) from member
+		<selectKey order="AFTER" resultType="int" keyProperty="member_id">
+			select last_insert_id()
 		</selectKey>
 	</insert>
 	

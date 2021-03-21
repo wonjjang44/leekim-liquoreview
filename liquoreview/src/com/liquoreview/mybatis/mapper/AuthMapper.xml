@@ -28,6 +28,18 @@
 		where auth_id=#{auth_id}
 	</select>
 	
+	<select id="selectDefaultAuth" parameterType="int" resultType="Auth">
+		<include refid="sql_select"/>
+		where ADM_ASSIGN=0
+		    and MEM_ADM = 0
+		    and CATE_ADM = 0
+		    and ALC_ADM = 0
+		    and REV_ADM = 0
+		    and REV_COMM_ADM = 0
+		    and BOARD_ADM = 0
+		    and BOARD_COMM_ADM = 0
+	</select>
+	
 	<insert id="insert" parameterType="Auth">
 		insert into auth(DES
 							  , ADM_ASSIGN

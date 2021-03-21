@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.JoinCode;
 import com.liquoreview.common.MailUtil;
 import com.liquoreview.common.PassSecurity;
 import com.liquoreview.exception.LoginFailException;
 import com.liquoreview.exception.RegistFailException;
+import com.liquoreview.model.domain.admin.Auth;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 import com.liquoreview.model.repository.member.MemberDAO;
@@ -33,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	@Qualifier("mybatisMemberPwDAO")
 	private MemberPwDAO memberPwDAO;
-
+	
 	@Autowired
 	PassSecurity security;
 	@Autowired
@@ -112,15 +114,18 @@ public class MemberServiceImpl implements MemberService {
 		return null;
 	}
 
-	@Override
+	@Transactional
 	public String memberInsert(Member member, MemberPw memberPw) throws RegistFailException {
-		//memberDAO insert 전에 권한을 비교해서 맵핑(주입)해줘야 함
-		//
-		
+		logger.info("member의 권한id확인 : "+member.getAuth().getAuth_id());
 		int memberResult = memberDAO.memberInsert(member);
 		int memberPwResult = 0;
 		StringBuffer sb = new StringBuffer();
 		if (memberResult == 0) {
+			logger.info("member 정보 insert 실패");
+			sb.append("{");
+			sb.append("\"resultCode\":\"0\",");
+			sb.append("\"msg\":\"회원 가입실패. 입력정보를 확인해주세요.\"");
+			sb.append("}");
 			throw new RegistFailException("회원가입 실패. 정보를 확인해주세요");
 		} else {
 			logger.info("member 정보 insert까지는 성공");
@@ -130,6 +135,7 @@ public class MemberServiceImpl implements MemberService {
 				memberPw.setMember(member);
 				logger.info("memberPw에 setting한 member_id : " + memberPw.getMember().getMember_id());
 				Integer memberIdInteger = new Integer(memberPw.getMember().getMember_id());
+				logger.info("memberIdInteger.intValue()  : " + memberIdInteger.intValue());
 				if (memberIdInteger != null) {
 					//pw암호화
 					memberPw = security.setHashPass(memberPw);
@@ -141,6 +147,10 @@ public class MemberServiceImpl implements MemberService {
 				e.printStackTrace();
 			}
 			if (memberPwResult == 0) {
+				sb.append("{");
+				sb.append("\"resultCode\":\"0\",");
+				sb.append("\"msg\":\"회원 가입실패. 입력정보를 확인해주세요.\"");
+				sb.append("}");
 				throw new RegistFailException("회원가입 실패. 정보를 확인해주세요");
 			} else {
 				sb.append("{");
