@@ -2,12 +2,12 @@ package com.liquoreview.model.domain;
 
 import java.util.Date;
 
+/**
+ * MemberVO
+ * @author 이양원
+ * @date 2021. 01. 29 
+ * */
 public class Member extends Member_pw{
-	/**
-	 * MemberVO
-	 * @author 이양원
-	 * @date 2021. 01. 29 
-	 * */
 	
 	private String USERID;
 	private String USERNAME;
@@ -19,19 +19,6 @@ public class Member extends Member_pw{
 	private Date LAST_LOGIN_YMD; 
 	private int AUTH_ID;
 	
-	
-
-	public Member() {}
-
-	public Member(Member_pw vo) {
-		System.out.println("부모가 가지고있었던 MEMBER_ID : "+vo.getMEMBER_ID());
-		
-		super.setMEMBER_ID(vo.getMEMBER_ID());
-		super.setREGDATE(vo.getREGDATE());
-		super.setLAST_MODI_YMD(vo.getLAST_MODI_YMD());
-	}
-
-
 	public String getUSERID() {
 		return USERID;
 	}

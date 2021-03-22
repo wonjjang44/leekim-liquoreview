@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AlcoholMapper">
+	<select id="alcoholLst" resultType="Alcohol">
+		/*알콜 및 상위, 하위 카테고리 전체 조회, 이양원*/
+		SELECT  /*alcoholLst*/
+			  A.ALCOHOL_ID
+			, (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
+			, (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
+			, B.SUBCATEGORY_ID
+			, B.NAME AS SUB_NM
+			, A.NAME AS ALCOHOL_NM
+			, A.DEGREE
+			, A.DETAIL
+			, A.REGDATE
+			, A.LAST_MODI_YMD
+		  FROM ALCOHOL A
+				 , SUBCATEGORY B
+		  WHERE 1=1
+			  AND A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
+		  ORDER BY ALCOHOL_ID
+	</select>
+	
+	<select id="topLst" resultType="Alcohol">
+		/*주류 상위 카테고리 조회, 이양원*/
+		SELECT  /*topLst*/
+			  TOPCATEGORY_ID
+			, NAME AS TOP_NM
+		  FROM TOPCATEGORY
+		  ORDER BY TOPCATEGORY_ID
+	</select>
+	
+	<select id="subLst" parameterType="map" resultType="Alcohol">
+		/*주류 하위 카테고리 조회, 이양원*/
+		SELECT
+			  SUBCATEGORY_ID
+		    , TOPCATEGORY_ID
+			, NAME AS SUB_NM
+		  FROM SUBCATEGORY
+		  WHERE 1=1
+			  AND TOPCATEGORY_ID = #{TOPCATEGORY_ID}
+	</select>
+</mapper>

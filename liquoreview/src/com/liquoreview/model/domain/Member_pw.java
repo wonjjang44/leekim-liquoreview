@@ -2,12 +2,12 @@ package com.liquoreview.model.domain;
 
 import java.util.Date;
 
+/**
+ * Member_pwVO
+ * @author 이양원
+ * @date 2021. 01. 29
+ * */
 public class Member_pw {
-	/**
-	 * Member_pwVO
-	 * @author 이양원
-	 * @date 2021. 01. 29
-	 * */
 	
 	private int MEMBER_ID;
 	private int MEMBER_PW_ID;
