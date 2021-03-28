@@ -12,6 +12,7 @@ import com.liquoreview.model.domain.member.MemberPw;
 
 public interface MemberService {
 	public List<Member> selectAll();
+	public JSONObject adminSelectAll();
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
 	public Member selectByUserid(String userid);

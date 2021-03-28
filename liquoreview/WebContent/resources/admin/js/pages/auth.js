@@ -278,6 +278,7 @@ function authDel() {
 				dataType:'json',
 				success:function(result) {
 					console.log(result);
+					getAuthList();
 				},
 				error:function(result) {
 					console.log(result);

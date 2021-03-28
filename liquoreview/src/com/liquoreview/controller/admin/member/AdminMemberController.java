@@ -25,9 +25,16 @@ public class AdminMemberController {
 	
 	// 회원정보관리 페이지 이동
 	@RequestMapping(value="/admin/member", method = RequestMethod.GET)
-	public ModelAndView adminGetMemberList(HttpServletRequest request) {
+	public ModelAndView goAdminMember(HttpServletRequest request) {
 		logger.info("회원정보관리 페이지 이동=========================");
-		ModelAndView mav = new ModelAndView("admin/member/member-table");
+		ModelAndView mav = new ModelAndView("admin/member/member-manage");
+		return mav;
+	}
+	
+	// 회원 상세페이지 이동
+	@RequestMapping(value="/admin/member/{member_id}", method = RequestMethod.GET)
+	public ModelAndView goAdminMemberDetail(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("admin/member/member-detail");
 		return mav;
 	}
 }

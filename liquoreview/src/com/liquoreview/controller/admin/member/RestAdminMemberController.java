@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +26,13 @@ public class RestAdminMemberController {
 	
 	// 회원정보관리용 회원목록 조회
 	@RequestMapping(value="/admin/member", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+//	public String getMemberList(HttpServletRequest request) {
 	public List<Member> getMemberList(HttpServletRequest request) {
 		logger.info("rest admin member controller 호출 :: member list 조회");
 		List<Member> memList = memberService.selectAll();
+		logger.info("member list 확인 : "+memList);
+		//JSONObject memList = memberService.adminSelectAll();
+		//return memList.toString();
 		return memList;
 	}
 	

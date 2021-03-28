@@ -47,8 +47,21 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<Member> selectAll() {
+		logger.info("관리자 회원목록 조회");
 		List<Member> memList = memberDAO.selectAll();
 		return memList;
+	}
+
+	//관리자 회원목록 전체조회
+	@Override
+	public JSONObject adminSelectAll() {
+		//logger.info("관리자 회원목록 조회");
+		JSONObject jsonMemObj = new JSONObject();
+		List<Member> memList = memberDAO.selectAll();
+		if(memList!=null && memList.size()>0) {
+			
+		}
+		return null;
 	}
 
 	@Override
@@ -276,5 +289,6 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return idOverlapResult.toString();
 	}
+
 
 }

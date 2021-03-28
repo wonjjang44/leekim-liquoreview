@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Member">
+<mapper namespace="DelAccount">
 	<resultMap type="Member" id="memberMap">
 		<id column="MEMBER_ID" property="member_id"/>
 		<result column="USERID" property="userid"/>
@@ -92,18 +92,5 @@
 	<update id="lastLogUpdate" parameterType="int">
 		update member
 		                   set LAST_LOGIN_YMD = now()
-		 where MEMBER_ID = #{member_id}
-	</update>
-	
-	<update id="turnHiberAcc" parameterType="Member">
-		update member
-							set HIBER_YN = 1
-		 where MEMBER_ID = #{member_id}				
-	</update>
-	
-	<update id="turnDelAcc" parameterType="Member">
-		update member
-							set DEL_YN = 1
-		 where MEMBER_ID = #{member_id}				
 	</update>
 </mapper>

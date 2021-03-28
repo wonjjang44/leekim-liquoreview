@@ -45,7 +45,11 @@ function handleMemberList(data) {
 			con.append("<td>"+obj.phonenum+"</td>");
 			con.append("<td>"+obj.regdate+"</td>");
 			con.append("<td>"+obj.auth.des+"</td>");
-			con.append("<td>N</td>");
+			if(obj.hiber_yn === false) {
+				con.append("<td>N</td>");
+			}else{
+				con.append("<td>Y</td>");
+			}
 			con.append("<td>N</td>");
 			con.append("<td><input type='button' value='상세' onClick='getDetail("+obj.member_id+")'/></td>");
 			con.append("</tr>");
@@ -57,6 +61,7 @@ function handleMemberList(data) {
 }
 
 //회원 1명 상세조회
+
 function getDetail(member_id) {
 	console.log("회원 상세보기 클라이언트 사이드 요청시작");
 
@@ -72,7 +77,7 @@ function getDetail(member_id) {
 		}
 	});
 }
-
+/*
 function search() {
 	var searchMode = $("select[name='searchMode']").val();
 	var searchAuth = $("select[name='searchAuth']").val();
@@ -88,3 +93,4 @@ function search() {
 	});
 	$("form").submit();
 }
+*/
