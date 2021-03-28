@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.liquoreview.model.domain.Alcohol;
+import com.liquoreview.model.domain.Topcategory;
 import com.liquoreview.model.service.AlcoholService;
 
 @RestController
@@ -32,7 +34,7 @@ public class RestAlcoholController {
 	 * @param 
 	 * */
 	@RequestMapping(value = "alcoholLst", method = RequestMethod.GET)
-	public ModelAndView alcoholLst() {
+	public ModelAndView alcoholLstIqr() {
 		ModelAndView mav = new ModelAndView();
 		List<Alcohol> alcoholVal = new ArrayList<Alcohol>();
 		alcoholVal = alcoholService.alcoholLst();
@@ -50,7 +52,7 @@ public class RestAlcoholController {
 	 * @param 
 	 * */
 	@RequestMapping(value = "topLst", method = RequestMethod.GET)
-	public List<Alcohol> topLst() {
+	public List<Alcohol> topLstIqr() {
 		List<Alcohol> topLst = new ArrayList<Alcohol>();
 		topLst = alcoholService.topLst();
 				
@@ -64,11 +66,32 @@ public class RestAlcoholController {
 	 * @param param 
 	 * */
 	@RequestMapping(value = "subLst", method = RequestMethod.POST)
-	public List<Alcohol> subLst(@RequestBody Map<String, Object> param){
+	public List<Alcohol> subLstIqr(@RequestBody Map<String, Object> param){
 		List<Alcohol> subLst = new ArrayList<Alcohol>();
 		subLst = alcoholService.subLst(param);
 		
 		return subLst;
 	}
 	
+	/**
+	 * 주류 정보 등록
+	 * vo 로 받을 시 뷰단에서 값을 못받아오므로 map로 변경
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param param
+	 * */
+	@RequestMapping(value = "alcoholReg", method = RequestMethod.POST)
+	public int alcoholReg(@RequestBody Map<String, Object> param) {
+		
+		return alcoholService.alcoholReg(param);
+	}
+
+	
 }
+
+
+
+
+
+
+

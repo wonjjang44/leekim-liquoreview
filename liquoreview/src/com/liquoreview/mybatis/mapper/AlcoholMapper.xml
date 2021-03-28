@@ -12,8 +12,8 @@
 			, B.SUBCATEGORY_ID
 			, B.NAME AS SUB_NM
 			, A.NAME AS ALCOHOL_NM
-			, A.DEGREE
-			, A.DETAIL
+			, A.DEGREE AS ALC_DEGREE
+			, A.DETAIL AS ALC_DETAIL
 			, A.REGDATE
 			, A.LAST_MODI_YMD
 		  FROM ALCOHOL A
@@ -34,7 +34,7 @@
 	
 	<select id="subLst" parameterType="map" resultType="Alcohol">
 		/*주류 하위 카테고리 조회, 이양원*/
-		SELECT
+		SELECT  /*subLst*/
 			  SUBCATEGORY_ID
 		    , TOPCATEGORY_ID
 			, NAME AS SUB_NM
@@ -42,4 +42,57 @@
 		  WHERE 1=1
 			  AND TOPCATEGORY_ID = #{TOPCATEGORY_ID}
 	</select>
+	
+	<insert id="topCateReg" parameterType="Alcohol">
+		/*상위 카테고리 등록, 이양원*/
+		INSERT  /*topCateReg*/
+		    INTO TOPCATEGORY(
+				  NAME
+				, REGDATE
+				, LAST_MODI_YMD
+			)
+			VALUES(
+				  #{TOPCATEGORY_ID}
+				, SYSDATE()
+				, SYSDATE()
+			)
+	</insert>
+	
+	<insert id="subCateReg" parameterType="Alcohol">
+		/*하위 카테고리 등록, 이양원*/
+		INSERT
+			INTO SUBCATEGORY(
+				  TOPCATEGORY_ID
+				, NAME
+				, REGDATE
+				, LAST_MODI_YMD
+			)
+			VALUES(
+				  #{TOPCATEGORY_ID}
+				, #{SUB_NM}
+				, SYSDATE()
+				, SYSDATE()
+			)
+	</insert>
+	
+	<insert id="alcoholReg" parameterType="map">
+		/*주류 정보 등록, 이양원*/
+		INSERT
+			INTO ALCOHOL(
+				  SUBCATEGORY_ID
+				, NAME
+				, DEGREE
+				, DETAIL
+				, REGDATE
+				, LAST_MODI_YMD
+			)
+			VALUES(
+				  #{SUBCATEGORY_ID}
+				, #{ALCOHOL_NM}
+				, #{ALC_DEGREE}
+				, #{ALC_DETAIL}
+				, SYSDATE()
+				, SYSDATE()
+			)	
+	</insert>
 </mapper>

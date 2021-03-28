@@ -64,7 +64,6 @@ $(function(){
 	$("#regist_btn").click(function(){
 		var top_val = $("#top_option_val option:selected").val();//top 카테고리 값
 		var sub_val = $("#sub_option_val option:selected").val();//sub 카테고리 값
-		
 		var alc_name = $("#alc_name").val();// 주류 명칭
 		var alc_degree = $("#alc_degree").val();//주류 도수 
 		
@@ -72,13 +71,37 @@ $(function(){
 		var alc_detail = CKEDITOR.instances.alc_detail.getData().replace("<p>", "").trim("</p>").replace("</p>", "");
 		
 		var param = new Object();
-		param.top_val = top_val;
-		param.sub_val = sub_val;
-		param.alc_name = alc_name;
-		param.alc_degree = alc_degree;
-		param.alc_detail = alc_detail;
+		param.TOPCATEGORY_ID = top_val;
+		param.SUBCATEGORY_ID = sub_val;
+		param.ALCOHOL_NM = alc_name;
+		param.ALC_DEGREE = alc_degree;
+		param.ALC_DETAIL = alc_detail;
 		
-		console.log(param);
+		if(!confirm("주류 정보를 등록합니다.")){
+			return false;
+		}else{
+			if(regVaildChk() == true){
+				$.ajax({
+					url : "/admin/alcohol/alcoholReg",
+					type :"post",
+					dataType : "json",
+					contentType : "application/json;charset = UTF-8",
+					data : JSON.stringify(param),
+					success : function(data){
+						if(data > 0){
+							location.href = "/admin/alcohol/alcoholLst";
+						}
+					},
+					error : function(xhr){
+						console.log(xhr);
+					}
+				});	
+				
+			}
+			
+		}
+		
+		
 	});
 	
 	
@@ -99,11 +122,42 @@ $(function(){
 
 
 //=========== UserFunction ===========
+var flag = true;//validChk용 전역 플래그 값
+
+
 //주류 등록 validChk
 function regVaildChk(){
-	var top_val = $("#top_option_val option:selected").val();//top 카테고리 값
-	var sub_val = $("#sub_option_val option:selected").val();//sub 카테고리 값
+	var top_val = $("#top_option_val").val();//top 카테고리 값
+	var sub_val = $("#sub_option_val").val();//sub 카테고리 값
+	var alc_name = $("#alc_name").val();// 주류 명칭
+	var alc_degree = $("#alc_degree").val();//주류 도수 
 	
+	//CKEDITOR 값을 가져올 시 자동으로 생성되는 <p>태그 제거  (trim() => 개행 방지)
+	var alc_detail = CKEDITOR.instances.alc_detail.getData().replace("<p>", "").trim("</p>").replace("</p>", "");
+	
+	if(top_val == null || top_val == "" || top_val == "default"){
+		alert("상위 카테고리는 필수 선택 사항입니다.");
+		$("#top_option_val").focus();
+		return flag = false;
+	}else if(sub_val == null || sub_val == "" || sub_val == "default"){
+		alert("하위 카테고리는 필수 선택 사항입니다.");
+		$("#sub_option_val").focus();
+		return flag = false;
+	}else if(alc_name == null || alc_name == ""){
+		alert("주류명칭은 필수 입력 사항입니다.");
+		$("#alc_name").focus();
+		return flag = false;
+	}else if(alc_degree == null || alc_degree == ""){
+		alert("도수는 필수 입력 사항입니다.");
+		$("#alc_degree").focus();
+		return flag = false;
+	}else if(alc_detail == null || alc_detail == ""){
+		alert("세부정보는 필수 입력 사항입니다.");
+		$("#alc_detail").focus();
+		return flag = false;
+	}else{
+		return flag = true;
+	}
 	
 }
 	

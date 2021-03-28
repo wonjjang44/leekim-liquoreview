@@ -29,4 +29,28 @@ public interface AlcoholDAO {
 	 * @param param 
 	 * */
 	public List<Alcohol> subLst(Map<String, Object> param);
+	
+	/**
+	 * 상위 카테고리 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param vo
+	 * */
+	public int topCateReg(Alcohol vo);
+	
+	/**
+	 * 하위 카테고리 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param vo
+	 * */
+	public int subCateReg(Alcohol vo);
+	
+	/**
+	 * 주류 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param vo
+	 * */
+	public int alcoholReg(Map<String, Object> param);
 }

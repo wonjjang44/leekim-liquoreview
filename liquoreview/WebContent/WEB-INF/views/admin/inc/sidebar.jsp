@@ -56,7 +56,7 @@
 				<%if (request.getRequestURI().equals("/WEB-INF/admin/category/category-top-table.jsp")) {%>
 				class="active " <%}%>
 			>
-				<a href="/admin/alcohol/topcategoryLst">
+				<a href="/admin/category/topCateLstIqr">
 					<i	class="nc-icon nc-bell-55"></i>
 					<span>탑 카테고리 관리</span>
 				</a>
@@ -66,7 +66,7 @@
 					class="active " 
 				<%}%>
 			>
-				<a href="/admin/alcohol/subcategoryLst">
+				<a href="/admin/category/subCateLstIqr">
 					<i	class="nc-icon nc-satisfied"></i>
 					<span>서브 카테고리 관리</span>
 				</a>

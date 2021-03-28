@@ -51,6 +51,42 @@ public class AlcoholServiceImpl implements AlcoholService{
 
 		return alcoholDAO.subLst(param);
 	}
+
+	/**
+	 * 상위 카테고리 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param
+	 * */
+	@Override
+	public int topCateReg(Alcohol vo) {
+
+		return topCateReg(vo);
+	}
+
+	/**
+	 * 하위 카테고리 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param
+	 * */
+	@Override
+	public int subCateReg(Alcohol vo) {
+		
+		return subCateReg(vo);
+	}
+
+	/**
+	 * 주류 등록
+	 * @author 이양원
+	 * @date 2021. 03. 22  최초생성
+	 * @param param
+	 * */
+	@Override
+	public int alcoholReg(Map<String, Object> param) {
+
+		return alcoholDAO.alcoholReg(param);
+	}
 	
 	
 

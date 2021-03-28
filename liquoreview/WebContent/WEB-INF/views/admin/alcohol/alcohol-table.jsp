@@ -130,7 +130,7 @@ function del(){
 														<td>${alcoholVal.getTOP_NM() }</td>
 														<td>${alcoholVal.getSUB_NM() }</td>
 														<td><a href = "#">${alcoholVal.getALCOHOL_NM()}</a></td>
-														<td>${alcoholVal.getDEGREE() }</td>
+														<td>${alcoholVal.getALC_DEGREE() }</td>
 														<td>
 															<button type = "button" id = "al_del" class = "btn btn-primary btn-round" 
 																		  data-toggle="modal"  data-target="#delModal" data-backdrop = "static">삭제
