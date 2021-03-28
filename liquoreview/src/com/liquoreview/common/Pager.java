@@ -2,13 +2,6 @@ package com.liquoreview.common;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * 기존 drunkenbros의 Pager 객체 사용
- * @author drunkenbros
- * @date 19. 05. 13  최초생성
- * 개정이력  
- *            21. 03. 24 
- * */
 public class Pager {
 	   private int currentPage = 1; // 현재 유저가 보고 있는 페이지
 	   private int totalRecord; // DB에 담긴 총 레코드 갯수

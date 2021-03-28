@@ -7,15 +7,16 @@ import java.util.Date;
  * @author 이양원
  * @date 2021. 03. 10  최초생성
  * */
-public class Alcohol extends Subcategory{
+public class Alcohol {
 	private int ALCOHOL_ID;
 	private int TOPCATEGORY_ID;
 	private String TOP_NM;
 	private int SUBCATEGORY_ID;
 	private String SUB_NM;
+	private String NAME;
 	private String ALCOHOL_NM;
-	private float ALC_DEGREE;
-	private String ALC_DETAIL;
+	private float DEGREE;
+	private String DETAIL;
 	private Date REGDATE;
 	private Date LAST_MODI_YMD;
 	
@@ -49,23 +50,29 @@ public class Alcohol extends Subcategory{
 	public void setSUB_NM(String sUB_NM) {
 		SUB_NM = sUB_NM;
 	}
+	public String getNAME() {
+		return NAME;
+	}
+	public void setNAME(String nAME) {
+		NAME = nAME;
+	}
 	public String getALCOHOL_NM() {
 		return ALCOHOL_NM;
 	}
 	public void setALCOHOL_NM(String aLCOHOL_NM) {
 		ALCOHOL_NM = aLCOHOL_NM;
 	}
-	public float getALC_DEGREE() {
-		return ALC_DEGREE;
+	public float getDEGREE() {
+		return DEGREE;
 	}
-	public void setALC_DEGREE(float aLC_DEGREE) {
-		ALC_DEGREE = aLC_DEGREE;
+	public void setDEGREE(float dEGREE) {
+		DEGREE = dEGREE;
 	}
-	public String getALC_DETAIL() {
-		return ALC_DETAIL;
+	public String getDETAIL() {
+		return DETAIL;
 	}
-	public void setALC_DETAIL(String aLC_DETAIL) {
-		ALC_DETAIL = aLC_DETAIL;
+	public void setDETAIL(String dETAIL) {
+		DETAIL = dETAIL;
 	}
 	public Date getREGDATE() {
 		return REGDATE;
@@ -79,5 +86,8 @@ public class Alcohol extends Subcategory{
 	public void setLAST_MODI_YMD(Date lAST_MODI_YMD) {
 		LAST_MODI_YMD = lAST_MODI_YMD;
 	}
+	
+	
+	
 	
 }

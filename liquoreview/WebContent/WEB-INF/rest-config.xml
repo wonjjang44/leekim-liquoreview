@@ -16,5 +16,4 @@
 	
 	<!-- static resource scanning -->
 	<mvc:default-servlet-handler />
-	
 </beans>
