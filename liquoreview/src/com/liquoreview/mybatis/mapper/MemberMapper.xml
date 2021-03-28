@@ -34,6 +34,10 @@
 		   from member
 	</sql>
 	
+	<select id="selectAll" resultMap = "memberMap">
+		<include refid="sql_select"/> order by AUTH_ID asc
+	</select>
+	
 	<select id="select" resultType="Member">
 		<include refid="sql_select"/> where MEMBER_ID=#{member_id}
 	</select>

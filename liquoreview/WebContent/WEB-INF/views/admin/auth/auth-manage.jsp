@@ -10,6 +10,7 @@
 </head>
 <body class="">
 	<div class="wrapper">
+		<!-- sidebar -->
 		<%@ include file="/WEB-INF/views/admin/inc/sidebar.jsp"%>
 		<div class="main-panel">
 			<!-- Navbar -->
@@ -22,13 +23,6 @@
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title">회원 권한 관리</h4>
-								<!-- <button 
-									class="btn btn-primary btn-round"
-									type="button"
-									onClick="location.href='/member/member-regist'"
-								>
-									신규 회원 정보 추가
-								</button> -->
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">

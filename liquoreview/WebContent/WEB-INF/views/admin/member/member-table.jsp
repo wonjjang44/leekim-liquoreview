@@ -1,44 +1,20 @@
-<%@ contentType ="text/html; charset=UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/WEB-INF/views/admin/inc/head.jsp"%>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-	function getDetail(member_id) {
-		$("form").attr({
-			action : "/admin/member" + member_id,
-			method : "GET"
-		});
-		$("form").submit();
-	}
-
-	function search() {
-		var searchMode = $("select[name='searchMode']").val();
-		var searchAuth = $("select[name='searchAuth']").val();
-		var searchWord = $("select[name='searchWord']").val();
-
-		$("input[name='search_Mode']").val(searchMode);
-		$("input[name='search_Auth']").val(searchAuth);
-		$("input[name='search_Word']").val(searchWord);
-		//if(searchWord==""){alert("검색어를 입력해주세요.");return;}
-		$("form").attr({
-			action : "/admin/member/search",
-			method : "post"
-		});
-		$("form").submit();
-	}
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/admin/js/pages/member.js" />"></script>
 </head>
 <body class="">
 	<div class="wrapper">
 		<!-- sidebar -->
 		<%@  include file="/WEB-INF/views/admin/inc/sidebar.jsp"%>
-
 		<div class="main-panel">
 			<!-- Navbar -->
-			<%@  include file="/WEB-INF/views/admin/inc/navi.jsp"%>
+			<%@ include file="/WEB-INF/views/admin/inc/navi.jsp"%>
 
 			<div class="content">
 				<div class="row">
@@ -46,9 +22,22 @@
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title">일반회원정보</h4>
-								<button class="btn btn-primary btn-round" type="button"
-									onClick="location.href='/member/member-regist'">
-									신규 회원 정보 추가</button>
+								
+								
+								<button 
+									class="btn btn-primary btn-round" 
+									type="button"
+									onClick="location.href='/member/member-regist'"
+								>
+									신규 회원 정보 추가
+								</button>
+								<button 
+									class="btn btn-primary btn-round" 
+									type="button"
+									onClick="location.href='/member/member-regist'"
+								>
+									excel다운로드
+								</button>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
@@ -68,31 +57,33 @@
 												<th>상세관리</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-												<td></td>
-											</tr>
-											<tr>
-												<td colspan="3">
-													<%-- <%for (int i = pager.getFirstPage(); i <= pager.getLastPage(); i++) {%> 
-														<%if (i > pager.getTotalPage())break;%> 
-														<a href="/admin/member?currentPage=<%=i%>">[<%=i%>]</a> 
-													<%}%> --%>
-												</td>
-
-											</tr>
+										<tbody id="tbl_data_container">
 										</tbody>
 									</table>
 								</div>
+								
+							</div>
+							<div class="card-footer">
+								<!-- start pager area -->
+								<nav class="blog-pagination justify-content-center d-flex">
+									<ul class="pagination">
+										<!-- prev page arrow -->
+										<li><a href="#none"> <strong>&laquo;</strong>
+										</a></li>
+										<li><a href="javascript:alert('첫 페이지입니다')"> <strong>&laquo;</strong>
+										</a></li>
+										<!-- page num links -->
+										<%-- <li <%if(request.getParameter("currentPage") !=null && Integer.parseInt(request.getParameter("currentPage"))==i){%>class="active"<%}%>><a href="/admin/member?currentPage=<%=i%>">[<%=i %>]</a></li> --%>
+
+										<!-- next page arrow -->
+										<li><a href="#none"> <strong>&raquo;</strong>
+										</a></li>
+										<li><a href="javascript:alert('마지막 페이지입니다')"> <strong>&raquo;</strong>
+										</a></li>
+									</ul>
+								</nav>
+								<!-- pager end -->
+								<!-- 검색영역 -->
 								<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
@@ -123,27 +114,8 @@
 										</div>
 									</div>
 								</div>
-								<!-- start pager area -->
-								<nav class="blog-pagination justify-content-center d-flex">
-									<ul class="pagination">
-										<!-- prev page arrow -->
-										<li><a href="#none"> <strong>&laquo;</strong>
-										</a></li>
-										<li><a href="javascript:alert('첫 페이지입니다')"> <strong>&laquo;</strong>
-										</a></li>
-										<!-- page num links -->
-										<%-- <li <%if(request.getParameter("currentPage") !=null && Integer.parseInt(request.getParameter("currentPage"))==i){%>class="active"<%}%>><a href="/admin/member?currentPage=<%=i%>">[<%=i %>]</a></li> --%>
-
-										<!-- next page arrow -->
-										<li><a href="#none"> <strong>&raquo;</strong>
-										</a></li>
-										<li><a href="javascript:alert('마지막 페이지입니다')"> <strong>&raquo;</strong>
-										</a></li>
-									</ul>
-								</nav>
-								<!-- pager end -->
-							</div>
-							<div class="card-footer"></div>
+								<!-- 검색영역 종료-->
+															</div>
 						</div>
 					</div>
 				</div>
@@ -153,6 +125,6 @@
 	</div>
 	<!-- wrapper end -->
 	<!-- cord js files -->
-	<%@ include file="/WEB-INF/views/admin/inc/tail.jsp'%>
+	<%@ include file="/WEB-INF/views/admin/inc/tail.jsp"%>
 </body>
 </html>

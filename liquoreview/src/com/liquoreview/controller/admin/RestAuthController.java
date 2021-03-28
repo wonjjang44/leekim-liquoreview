@@ -32,7 +32,7 @@ public class RestAuthController {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	//auth list 전체조회
-	@RequestMapping(value="/admin/auth",method=RequestMethod.GET,produces = "application/json;charset=UTF-8")
+	@RequestMapping(value="/admin/auth",method=RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public List<Auth> getAuthList(HttpServletRequest request) {
 		logger.debug("rest auth controller 호출 :: auth select all");
 		List<Auth> authList = authService.selectAll();
