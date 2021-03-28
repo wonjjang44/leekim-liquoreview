@@ -2,6 +2,106 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Member">
+<mapper namespace="MemberMapper">
+	<select id="login" parameterType="String" resultType="Member">
+		/*로그인, 이양원*/
+		SELECT
+				A.MEMBER_ID
+			  , A.USERID
+			  , (SELECT PASS FROM MEMBER_PW WHERE 1=1 AND MEMBER_ID = A.MEMBER_ID) PASS
+			  , A.USERNAME
+			  , A.BIRTH
+	   		  , A.EMAIL
+			  , A.PHONENUM
+			  , A.REGDATE
+			  , A.LAST_MODI_YMD
+			  , A.HIBER_YN
+			  , A.DEL_YN
+			  , A.LAST_LOGIN_YMD
+			  , A.AUTH_ID
+			  , (SELECT DES FROM AUTH WHERE 1=1 AND AUTH_ID = A.AUTH_ID) AUTH_NM
+		FROM MEMBER A
+		WHERE 1=1
+			AND USERID = #{USERID}
+	</select>
 	
+	<update id="loginDateUpdate" parameterType="int">
+		/*로그인과 동시에 최종로그인일자 업데이트*/
+		UPDATE MEMBER SET LAST_LOGIN_YMD = SYSDATE()
+		WHERE 1=1
+			AND MEMBER_ID = #{MEMBER_ID}
+	</update>
+	
+	<select id="idChk" parameterType="String" resultType="String">
+		/*회원가입시 아이디 중복체크, 이양원*/
+		SELECT
+			CASE
+				WHEN COUNT(1) = 1 THEN 'N'
+				ELSE 'Y'
+			END USERID_YN
+		  FROM MEMBER
+		  WHERE 1=1
+			  AND USERID = #{userid}
+	</select>
+	
+	<insert id="memberReg" parameterType="Member">
+		/*MEMBER 테이블 INSERT, 이양원*/
+			INSERT
+				INTO MEMBER(
+			  		  USERID
+			  		, USERNAME
+			  		, BIRTH
+			  		, EMAIL
+			  		, PHONENUM
+			  		, REGDATE
+			  		, LAST_MODI_YMD
+			  		, HIBER_YN
+			  		, DEL_YN
+			  		, AUTH_ID
+				)
+				VALUES(
+					  #{USERID}
+					, #{USERNAME}
+					, #{BIRTH}
+					, #{EMAIL}
+					, #{PHONENUM}
+					, SYSDATE()
+					, SYSDATE()
+					, 0
+					, 0
+					, 2   
+				)
+	</insert>
+	
+	<insert id="memberPwReg" parameterType="Member">
+		/*MEMBER_PW 테이블 INSERT, 이양원*/	
+		<selectKey resultType="int" keyProperty="MEMBER_ID" order="BEFORE">
+			<![CDATA[
+			SELECT
+				CASE
+					WHEN MAX(XX.MEMBER_ID) <> MAX(XX.MEMBER_PW_ID) THEN XX.MEMBER_ID
+				END AS MEMBER_ID
+			  FROM (SELECT
+							  MAX(A.MEMBER_ID) MEMBER_ID
+							, MAX(B.MEMBER_ID) MEMBER_PW_ID
+							FROM MEMBER A
+								   , MEMBER_PW B) XX
+			]]>
+		</selectKey>
+		INSERT
+			INTO MEMBER_PW(
+				  MEMBER_ID
+				, PASS
+				, REGDATE
+				, LAST_MODI_YMD
+				, FIND_PASS_AUTH_CNT
+			)
+			VALUES(
+				  #{MEMBER_ID}
+				, #{PASS}
+				, SYSDATE()
+				, SYSDATE()
+				, 0
+			)
+	</insert>
 </mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BoardMapper">
+	<select id="lstAllIqr" parameterType="Board" resultType="Board">
+		/*게시판 전체 조회 + 검색조건 추가 예정, 이양원*/
+		SELECT 
+			  A.BOARD_ID
+			, A.TAG_ID
+			, (SELECT TAG_NAME FROM TAG WHERE 1=1 AND TAG_ID = A.TAG_ID) TAG_NAME
+			, A.MEMBER_ID
+			, (SELECT USERNAME FROM MEMBER WHERE 1=1 AND MEMBER_ID = A.MEMBER_ID) USER_NAME
+			, A.TITLE
+			, A.CONTENT
+			, A.ORI_ARTICLE_NO                /*원글번호*/
+			, A.ARTICLE_LAYER                  /*글계층*/
+			, A.ARTICLE_ORDER_TO_ORI	  /*원글에 대한 순서*/	
+			, A.REGDATE
+			, A.LAST_MODI_YMD
+			, A.HIT	
+		FROM BOARD A
+	</select>
+</mapper>

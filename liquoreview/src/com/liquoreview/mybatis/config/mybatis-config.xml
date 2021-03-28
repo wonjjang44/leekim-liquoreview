@@ -5,10 +5,18 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="com.liquoreview.model.domain.Member" alias="Member"/>
-		
+		<typeAlias type="com.liquoreview.model.domain.Alcohol" alias="Alcohol"/>
+		<typeAlias type="com.liquoreview.model.domain.Member_pw" alias="Member_pw"/>
+		<typeAlias type="com.liquoreview.model.domain.Board" alias="Board"/>
+		<typeAlias type="com.liquoreview.model.domain.Topcategory" alias="Topcategory"/>
+		<typeAlias type="com.liquoreview.model.domain.Subcategory" alias="Subcategory"/>
+		<typeAlias type="com.liquoreview.common.NewPager" alias="Pager"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/liquoreview/mybatis/mapper/MemberMapper.xml"/>
-		
+		<mapper resource="com/liquoreview/mybatis/mapper/AdminMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/BoardMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/AlcoholMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/CategoryMapper.xml"/>
 	</mappers>
 </configuration>
