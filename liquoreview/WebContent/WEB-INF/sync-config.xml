@@ -82,5 +82,14 @@
 	        스프링 컨테이너에 <bean>객체로 등록해준다.
 	 -->
 	<context:component-scan base-package="com.liquoreview"/> 
+	
+	<bean id = "AdminInterceptor" class = "com.liquoreview.common.AdminInterceptor"></bean>
 
+	<mvc:interceptors>
+	    <mvc:interceptor>
+	        <mvc:mapping path="/admin/**"/>         
+	        <ref bean="AdminInterceptor"/>
+	    </mvc:interceptor>
+	</mvc:interceptors>
+	
 </beans>
