@@ -34,7 +34,7 @@
 								<button 
 									class="btn btn-primary btn-round" 
 									type="button"
-									onClick="location.href='/member/member-regist'"
+									onClick="saveAsExcel()"
 								>
 									excel다운로드
 								</button>
@@ -54,7 +54,7 @@
 												<th>AUTH</th>
 												<th>휴면회원여부</th>
 												<th>삭제회원여부</th>
-												<th>상세관리</th>
+												<th>회원상세</th>
 											</tr>
 										</thead>
 										<tbody id="tbl_data_container">

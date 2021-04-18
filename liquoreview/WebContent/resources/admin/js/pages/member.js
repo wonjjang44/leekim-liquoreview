@@ -64,18 +64,7 @@ function handleMemberList(data) {
 
 function getDetail(member_id) {
 	console.log("회원 상세보기 클라이언트 사이드 요청시작");
-
-	$.ajax({
-		url:"/rest/admin/member/"+member_id,
-		type:"GET",
-		success:function(data) {
-			console.log("회원상세 조회 성공");
-			console.log(data);
-		},
-		error:function(data) {
-			console.log(data);
-		}
-	});
+	location.href="/admin/member/" + member_id;
 }
 /*
 function search() {
@@ -94,3 +83,11 @@ function search() {
 	$("form").submit();
 }
 */
+
+//전체목록 excel 받기
+function saveAsExcel() {
+	console.log("excel 다운로드 버튼 눌러 호출됐다.");
+	if(confirm("엑셀다운로드를 진행하시겠습니까?")) {
+		location.href="/admin/excelDownload?target=member";
+	}
+}

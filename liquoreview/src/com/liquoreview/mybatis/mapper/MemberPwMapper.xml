@@ -21,6 +21,11 @@
 		   from member_pw
 	</sql>
 	
+	<select id="selectByMemberId" parameterType="int" resultMap="memberPwMap">
+		<include refid="sql_select"/>
+		where MEMBER_ID = #{member_id}
+	</select>
+	
 	<select id="loginCheck" parameterType="MemberPw" resultMap="memberPwMap">
 		<include refid="sql_select"/>
 		where PASS = #{pass}

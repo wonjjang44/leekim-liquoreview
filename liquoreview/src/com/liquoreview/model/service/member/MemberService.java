@@ -16,6 +16,7 @@ public interface MemberService {
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
 	public Member selectByUserid(String userid);
+	public MemberPw selectByMemId(int member_id);
 	public Member loginCheck(Member member, MemberPw memberPw);
 	public Member idCheck(String userid);
 	public Member emailCheck(String email);
@@ -28,7 +29,7 @@ public interface MemberService {
 	public String resetPass(MemberPw memberPw);
 	public JSONObject infoCheck(Member member);
 	public boolean send(JoinCode joinCode);
-	public void updateAuth(Member member);
+	public JSONObject updateAuth(Member member);
 	public List<Member> search(String searchWord);
 	
 }

@@ -72,7 +72,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member select(int member_id) {
-		return memberDAO.select(member_id);
+		Member member = memberDAO.select(member_id);
+		logger.info("서비스impl에서 dao조회해온 멤버 auth 확인 : "+member.getAuth().getAuth_id());
+		return member;
 	}
 
 	@Override
@@ -262,9 +264,17 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void updateAuth(Member member) {
-		// TODO Auto-generated method stub
-
+	public JSONObject updateAuth(Member member) {
+		JSONObject authEditResultObj = new JSONObject();
+		int updateAuthResult = memberDAO.updateAuth(member);
+		if (updateAuthResult == 0) {
+			authEditResultObj.put("resultCode","0");
+			authEditResultObj.put("msg", "권한수정에 실패했습니다.");
+		} else {
+			authEditResultObj.put("resultCode", "1");
+			authEditResultObj.put("msg", "권한수정에 성공했습니다.");
+		}
+		return authEditResultObj;
 	}
 
 	@Override
@@ -288,6 +298,12 @@ public class MemberServiceImpl implements MemberService {
 			idOverlapResult.put("msg", "사용 가능한 아이디 입니다.");
 		}
 		return idOverlapResult.toString();
+	}
+
+	@Override
+	public MemberPw selectByMemId(int member_id) {
+		MemberPw memberPw = memberPwDAO.selectByMemberId(member_id);
+		return memberPw;
 	}
 
 

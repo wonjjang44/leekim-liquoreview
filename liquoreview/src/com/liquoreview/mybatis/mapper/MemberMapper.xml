@@ -11,7 +11,7 @@
 		<result column="EMAIL" property="email"/>
 		<result column="PHONENUM" property="phonenum"/>
 		<result column="REGDATE" property="regdate"/>
-		<result column="LAST-MODI_YMD" property="last_modi_ymd"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
 		<result column="HIBER_YN" property="hiber_yn"/>
 		<result column="DEL_YN" property="del_yn"/>
 		<result column="LAST_LOGIN_YMD" property="last_login_ymd"/>
@@ -38,8 +38,12 @@
 		<include refid="sql_select"/> order by AUTH_ID asc
 	</select>
 	
-	<select id="select" resultType="Member">
+	<select id="select" parameterType="int" resultMap="memberMap">
 		<include refid="sql_select"/> where MEMBER_ID=#{member_id}
+	</select>
+	
+	<select id="selectExcel" resultMap="memberMap">
+		<include refid="sql_select" />
 	</select>
 	
 	<select id="idOverlapCheck" parameterType="String" resultType="String">
@@ -89,21 +93,35 @@
 		</selectKey>
 	</insert>
 	
+	<update id="updateAuth" parameterType="Member">
+		update member
+							set 
+								 AUTH_ID = #{auth.auth_id}
+								,LAST_MODI_YMD = now()
+		 where MEMBER_ID = #{member_id}
+	</update>
+	
 	<update id="lastLogUpdate" parameterType="int">
 		update member
-		                   set LAST_LOGIN_YMD = now()
+		                   set 
+		                   		 LAST_LOGIN_YMD = now()
+	 	                   	    ,LAST_MODI_YMD = now()
 		 where MEMBER_ID = #{member_id}
 	</update>
 	
 	<update id="turnHiberAcc" parameterType="Member">
 		update member
-							set HIBER_YN = 1
+							set
+								 HIBER_YN = 1
+								,LAST_MODI_YMD = now()
 		 where MEMBER_ID = #{member_id}				
 	</update>
 	
 	<update id="turnDelAcc" parameterType="Member">
 		update member
-							set DEL_YN = 1
+							set 
+								 DEL_YN = 1
+							    ,LAST_MODI_YMD = now()
 		 where MEMBER_ID = #{member_id}				
 	</update>
 </mapper>

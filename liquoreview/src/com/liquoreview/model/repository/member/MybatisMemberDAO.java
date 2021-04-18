@@ -96,6 +96,7 @@ public class MybatisMemberDAO implements MemberDAO {
 
 	// 권한변경
 	public int updateAuth(Member member) {
+		logger.info("mybatis member dao 에서 확인하는 auth_id : "+member.getAuth().getAuth_id());
 		return sessionTemplate.update("Member.updateAuth",member);
 	}
 

@@ -154,8 +154,6 @@ function authModalPop() {
 	});
 }
 
-//권한 수정 Modal pop - add
-
 function validateAuthModal() {
 	if (!($("#new_des").val())) {
 		alert("권한명을 입력해주세요.");

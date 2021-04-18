@@ -46,4 +46,9 @@ public class MybatisMemberPwDAO implements MemberPwDAO{
 		return 0;
 	}
 
+	@Override
+	public MemberPw selectByMemberId(int member_id) {
+		return sessionTemplate.selectOne("MemberPw.selectByMemberId", member_id);
+	}
+
 }
