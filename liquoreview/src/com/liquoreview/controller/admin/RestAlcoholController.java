@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.liquoreview.common.NewPager;
 import com.liquoreview.model.domain.Alcohol;
 import com.liquoreview.model.domain.Topcategory;
 import com.liquoreview.model.service.AlcoholService;
@@ -31,14 +33,25 @@ public class RestAlcoholController {
 	 * 주류 정보 전체조회
 	 * @author 이양원
 	 * @date 2021. 03. 10  최초생성
-	 * @param 
+	 * 			   개정이력  2021. 04. 18  페이징 추가
+	 * @param pager
+	 * @param nowPage
+	 * @param cntPerPage
 	 * */
 	@RequestMapping(value = "alcoholLst", method = RequestMethod.GET)
-	public ModelAndView alcoholLstIqr() {
+	public ModelAndView alcoholLstIqr(NewPager pager, 
+			@RequestParam(value = "nowPage", required=false, defaultValue = "1") String nowPage, 
+			@RequestParam(value = "cntPerPage", required = false, defaultValue = "5") String cntPerPage) {
 		ModelAndView mav = new ModelAndView();
-		List<Alcohol> alcoholVal = new ArrayList<Alcohol>();
-		alcoholVal = alcoholService.alcoholLst();
 		
+		int total = alcoholService.countTopCate();
+		
+		pager = new NewPager(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		
+		List<Alcohol> alcoholVal = new ArrayList<Alcohol>();
+		alcoholVal = alcoholService.alcoholLst(pager);
+		
+		mav.addObject("pager", pager);
 		mav.addObject("alcoholVal", alcoholVal);
 		mav.setViewName("/admin/alcohol/alcohol-table");
 		

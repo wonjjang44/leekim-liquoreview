@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.liquoreview.common.NewPager;
 import com.liquoreview.model.domain.Alcohol;
 import com.liquoreview.model.repository.AlcoholDAO;
 
@@ -17,15 +18,16 @@ public class AlcoholServiceImpl implements AlcoholService{
 
 	
 	/**
-	 * 술 정보 전체조회
+	 * 술 정보 전체조회 + 페이징
 	 * @author 이양원
 	 * @date 2021. 03. 11  최초생성
+	 * 			  개정이력  2021. 04. 18  
 	 * @param 
 	 * */
 	@Override
-	public List<Alcohol> alcoholLst() {
+	public List<Alcohol> alcoholLst(NewPager pager) {
 
-		return alcoholDAO.alcoholLst();
+		return alcoholDAO.alcoholLst(pager);
 	}
 
 	/**
@@ -86,6 +88,16 @@ public class AlcoholServiceImpl implements AlcoholService{
 	public int alcoholReg(Map<String, Object> param) {
 
 		return alcoholDAO.alcoholReg(param);
+	}
+
+	/**
+	 * 게시물 총 갯수
+	 * @date 2021. 04. 18
+	 * */
+	@Override
+	public int countTopCate() {
+		
+		return alcoholDAO.countTopCate();
 	}
 	
 	

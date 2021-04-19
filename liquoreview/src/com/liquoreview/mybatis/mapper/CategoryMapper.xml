@@ -77,9 +77,35 @@
 						, AA.REGDATE
 						, AA.LAST_MODI_YMD
 	                  FROM TOPCATEGORY AA
-					, (SELECT @ROWNUM := 0) TMP
+							 , (SELECT @ROWNUM := 0) TMP
 					  ORDER BY TOPCATEGORY_ID) XX
 		  WHERE 1=1
 		      AND NUM BETWEEN #{start} AND #{end}
+	</select>
+	
+	<select id="countSubCate" resultType="int">
+		/*총 게시물 수 조회*/
+		SELECT
+			COUNT(1)
+		   FROM SUBCATEGORY
+	</select>
+	
+	<select id="subCateLstIqrPager"  resultType="Subcategory" >
+		/*하위 카테고리 목록 전체조회, 이양원*/
+		SELECT   /*subCateLstIqr*/
+					XX.*
+			FROM(SELECT   
+						  @ROWNUM:=@ROWNUM+1 AS NUM
+						, A.SUBCATEGORY_ID
+						, A.TOPCATEGORY_ID
+						, (SELECT NAME FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = A.TOPCATEGORY_ID) AS TOP_NM
+						, A.NAME AS SUB_NM
+						, A.REGDATE
+						, A.LAST_MODI_YMD
+					  FROM SUBCATEGORY A 
+					        , (SELECT @ROWNUM := 0) TMP
+					  ORDER BY SUBCATEGORY_ID, TOPCATEGORY_ID) XX
+			WHERE 1=1
+		        AND NUM BETWEEN #{start} AND #{end}
 	</select>
 </mapper>

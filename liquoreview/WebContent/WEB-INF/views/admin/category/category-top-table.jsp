@@ -1,12 +1,6 @@
 <%@page import="com.liquoreview.common.Pager"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%
-	//Pager pager = (Pager)request.getAttribute("pager");
-	//List<Topcategory> topList = (List)request.getAttribute("topList");
-	
-	
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -82,23 +76,26 @@
 											<input type="text" class="form-control" id = "topcategory_input" name="name" placeholder="신규 상위 카테고리 이름을 입력해주세요."/>
 											<input type="button" class="btn btn-primary btn-round" id="add_btn" value="Top 카테고리 항목 추가"/>
 										</form>
-										
-										<div id="outter">
-											<div style="float: right;">
-												<select id="cntPerPage" name="sel" onchange="selChange()">
-													<option value="5"
-														<c:if test="${pager.cntPerPage == 5}">selected</c:if>>5줄 보기</option>
-													<option value="10"
-														<c:if test="${pager.cntPerPage == 10}">selected</c:if>>10줄 보기</option>
-													<option value="15"
-														<c:if test="${pager.cntPerPage == 15}">selected</c:if>>15줄 보기</option>
-													<option value="20"
-														<c:if test="${pager.cntPerPage == 20}">selected</c:if>>20줄 보기</option>
-												</select>
-										</div> <!-- 옵션선택 끝 -->
-									</div>
 								</div>
 							</div>
+							
+							<!-- 옵션선택 Start -->
+							<div id="outter">
+								<div style="float: right;" align="right">
+									<select id="cntPerPage" name="sel" onchange="selChange()" class = "form-control">
+										<option value="5"
+											<c:if test="${pager.cntPerPage == 5}">selected</c:if>>5줄 보기</option>
+										<option value="10"
+											<c:if test="${pager.cntPerPage == 10}">selected</c:if>>10줄 보기</option>
+										<option value="15"
+											<c:if test="${pager.cntPerPage == 15}">selected</c:if>>15줄 보기</option>
+										<option value="20"
+											<c:if test="${pager.cntPerPage == 20}">selected</c:if>>20줄 보기</option>
+									</select>
+								</div> 
+							</div>
+							<!-- 옵션선택 End -->
+							
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table">
@@ -218,7 +215,6 @@ $(function(){
 });
 
 function selChange() {
-	//var sel = document.getElementById('cntPerPage').value;
 	var sel  = $("#cntPerPage").val();
 	location.href="/admin/category/topCateLstIqr?nowPage=${pager.nowPage}&cntPerPage="+sel;
 }

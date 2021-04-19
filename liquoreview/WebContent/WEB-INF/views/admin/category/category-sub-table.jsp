@@ -50,10 +50,6 @@ $(function(){
 	
 	
 	
-	
-	
-	
-	
 	searchTopcategory();
 
 	$("#regist_btn").click(function(){
@@ -115,6 +111,11 @@ function changeModalValue(subcategory_id){
 	$("input[name='subcategory_id']").val(subcategory_id);
 }
 
+//페이징 함수
+function selChange() {
+	var sel  = $("#cntPerPage").val();
+	location.href="/admin/category/subCateLstIqr?nowPage=${pager.nowPage}&cntPerPage="+sel;
+}
 </script>
 </head>
 
@@ -197,6 +198,24 @@ function changeModalValue(subcategory_id){
 										</div>
 								</div>
 							</div>
+							
+							<!-- 옵션선택 Start -->
+							<div id="outter">
+								<div style="float: right;" align="right">
+									<select id="cntPerPage" name="sel" onchange="selChange()" class = "form-control">
+										<option value="5"
+											<c:if test="${pager.cntPerPage == 5}">selected</c:if>>5줄 보기</option>
+										<option value="10"
+											<c:if test="${pager.cntPerPage == 10}">selected</c:if>>10줄 보기</option>
+										<option value="15"
+											<c:if test="${pager.cntPerPage == 15}">selected</c:if>>15줄 보기</option>
+										<option value="20"
+											<c:if test="${pager.cntPerPage == 20}">selected</c:if>>20줄 보기</option>
+									</select>
+								</div> 
+							</div>
+							<!-- 옵션선택 End -->
+										
 							<div class="card-body">
 								<div class="table-responsive">
 									<table class="table">
@@ -236,6 +255,49 @@ function changeModalValue(subcategory_id){
 									 	</c:choose>
 										</tbody>
 									</table>
+									
+									<!-- 페이징 Start -->
+									<div style="display: block; text-align: center;">		
+										<ul class = "pagination" style = "justify-content: center;">
+											<c:choose>
+												<c:when test="${pager.startPage != 1 }">
+													<li class = "page-item">
+														<a class = "page-link" href="/admin/category/subCateLstIqr?nowPage=${pager.startPage - 1 }&cntPerPage=${pager.cntPerPage}">&lt;</a>
+													</li>	
+												</c:when>
+												<c:otherwise>
+													<a class = "page-link" href="javascript:alert('첫 페이지입니다');">&lt;</a>
+												</c:otherwise>
+											</c:choose>
+											<c:forEach begin="${pager.startPage }" end="${pager.endPage }" var="p">
+												<c:choose>
+													<c:when test="${p == pager.nowPage }">
+														<li class = "page-item active"><a class = "page-link" href="/admin/category/subCateLstIqr?nowPage=${p }&cntPerPage=${pager.cntPerPage}">${p }</a></li>
+														<%-- <b>${p }</b> --%>
+													</c:when>
+													<c:when test="${p != pager.nowPage }">
+														<li class = "page-item">
+															<a class = "page-link" href="/admin/category/subCateLstIqr?nowPage=${p }&cntPerPage=${pager.cntPerPage}">${p }</a>
+														</li>
+													</c:when>
+												</c:choose>
+											</c:forEach>
+											<c:choose>
+												<c:when test="${pager.endPage != pager.lastPage}">
+													<li class = "page-item">
+														<a class = "page-link" href="/admin/category/subCateLstIqr?nowPage=${pager.endPage+1 }&cntPerPage=${pager.cntPerPage}">&gt;</a>
+													</li>
+												</c:when>
+												<c:otherwise>
+													<li>
+														<a class = "page-link" href="javascript:alert('마지막 페이지입니다');">&gt;</a>
+													</li>
+												</c:otherwise>
+											</c:choose>
+										</ul>
+									</div>
+									<!-- 페이징 End -->
+										
 								</div>
 							</div>
 						</div>

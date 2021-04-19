@@ -32,6 +32,8 @@ public class RestCategoryController {
 	 * @author 이양원
 	 * @date 2021. 03. 23  최초생성
 	 * @param pager
+	 * @param nowPage
+	 * @param cntPerPage
 	 * */
 	@RequestMapping(value = "topCateLstIqr", method = RequestMethod.GET)
 	public ModelAndView topCateLstIqr(NewPager pager, 
@@ -57,14 +59,25 @@ public class RestCategoryController {
 	 * 하위 카테고리 목록 전체조회 + 추후 검색 기능 추가 예정
 	 * @author 이양원
 	 * @date 2021. 03. 24  최초생성
-	 * @param 
+	 *            2021. 04. 19  개정이력, 페이징
+	 * @param pager
+	 * @param nowPage
+	 * @param cntPerPage
 	 * */
 	@RequestMapping(value = "subCateLstIqr", method = RequestMethod.GET)
-	public ModelAndView subCateLstIqr() {
+	public ModelAndView subCateLstIqr(NewPager pager, 
+			@RequestParam(value = "nowPage", required=false, defaultValue = "1") String nowPage, 
+			@RequestParam(value = "cntPerPage", required = false, defaultValue = "5") String cntPerPage) {
 		ModelAndView mav = new ModelAndView();
-		List<Subcategory> categoryVal = new ArrayList<Subcategory>();
-		categoryVal = categoryService.subCateLstIqr();
 		
+		int total = categoryService.countSubCate();
+
+		pager = new NewPager(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		
+		List<Subcategory> categoryVal = new ArrayList<Subcategory>();
+		categoryVal = categoryService.subCateLstIqr(pager);
+		
+		mav.addObject("pager", pager);
 		mav.addObject("subCategoryVal", categoryVal);
 		mav.setViewName("/admin/category/category-sub-table");
 		

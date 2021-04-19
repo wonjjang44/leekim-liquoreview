@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.liquoreview.common.NewPager;
 import com.liquoreview.model.domain.Alcohol;
 
 @Repository("AlcoholDAO")
@@ -15,15 +16,16 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	private SqlSessionTemplate session;
 
 	/**
-	 * 술 정보 전체조회
+	 * 술 정보 전체조회 + 페이징
 	 * @author 이양원
 	 * @date 2021. 03. 11  최초생성
+	 * 			  개정이력  2021. 04. 18  
 	 * @param 
 	 * */
 	@Override
-	public List<Alcohol> alcoholLst() {
+	public List<Alcohol> alcoholLst(NewPager pager) {
 
-		return session.selectList("alcoholLst");
+		return session.selectList("alcoholLstIqrPager", pager);
 	}
 	
 	/**
@@ -84,6 +86,16 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	public int alcoholReg(Map<String, Object> param) {
 
 		return session.insert("alcoholReg", param);
+	}
+
+	/**
+	 * 게시물 총 갯수
+	 * @date 2021. 04. 18
+	 * */
+	@Override
+	public int countTopCate() {
+		
+		return session.selectOne("alcCountTopCate");
 	}
 
 

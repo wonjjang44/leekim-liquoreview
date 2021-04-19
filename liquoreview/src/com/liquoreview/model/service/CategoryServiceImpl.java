@@ -36,14 +36,30 @@ public class CategoryServiceImpl implements CategoryService{
 	 * @param 
 	 * */
 	@Override
-	public List<Subcategory> subCateLstIqr() {
+	public List<Subcategory> subCateLstIqr(NewPager pager) {
 
-		return categoryDAO.subCateLstIqr();
+		return categoryDAO.subCateLstIqr(pager);
 	}
 
+	/**
+	 * 상위 카테고리 전체 레코드 Count
+	 * @author 이양원
+	 * @date 2021. 03. 23  최초생성
+	 * */
 	@Override
 	public int countTopCate() {
 
 		return categoryDAO.countTopCate();
+	}
+
+	/**
+	 * 하위 카테고리 전체 레코드 Count
+	 * @author 이양원
+	 * @date 2021. 04. 19  최초생성
+	 * */
+	@Override
+	public int countSubCate() {
+		
+		return categoryDAO.countSubCate();
 	}
 }

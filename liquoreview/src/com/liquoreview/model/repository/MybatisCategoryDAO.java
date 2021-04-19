@@ -37,14 +37,30 @@ public class MybatisCategoryDAO implements CategoryDAO{
 	 * @param 
 	 * */
 	@Override
-	public List<Subcategory> subCateLstIqr() {
+	public List<Subcategory> subCateLstIqr(NewPager pager) {
 
-		return session.selectList("subCateLstIqr");
+		return session.selectList("subCateLstIqrPager", pager);
 	}
 	
+	/**
+	 * 상위 카테고리 전체 레코드 Count
+	 * @author 이양원
+	 * @date 2021. 03. 23  최초생성
+	 * */
 	@Override
 	public int countTopCate() {
 
 		return session.selectOne("countTopCate");
+	}
+	
+	/**
+	 * 하위 카테고리 전체 레코드 Count
+	 * @author 이양원
+	 * @date 2021. 04. 19  최초생성
+	 * */
+	@Override
+	public int countSubCate() {
+		
+		return session.selectOne("countSubCate");
 	}
 }

@@ -3,16 +3,18 @@ package com.liquoreview.model.repository;
 import java.util.List;
 import java.util.Map;
 
+import com.liquoreview.common.NewPager;
 import com.liquoreview.model.domain.Alcohol;
 
 public interface AlcoholDAO {
 	/**
-	 * 술 정보 전체조회
+	 * 술 정보 전체조회 + 페이징
 	 * @author 이양원
 	 * @date 2021. 03. 11  최초생성
+	 * 			  개정이력  2021. 04. 18  
 	 * @param 
 	 * */
-	public List<Alcohol> alcoholLst();
+	public List<Alcohol> alcoholLst(NewPager pager);
 	
 	/**
 	 * 상위 카테고리 전체조회
@@ -53,4 +55,10 @@ public interface AlcoholDAO {
 	 * @param vo
 	 * */
 	public int alcoholReg(Map<String, Object> param);
+	
+	/**
+	 * 게시물 총 갯수
+	 * @date 2021. 04. 18
+	 * */
+	public int countTopCate();
 }

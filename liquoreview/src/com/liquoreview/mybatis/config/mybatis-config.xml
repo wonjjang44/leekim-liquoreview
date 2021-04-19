@@ -11,6 +11,7 @@
 		<typeAlias type="com.liquoreview.model.domain.Topcategory" alias="Topcategory"/>
 		<typeAlias type="com.liquoreview.model.domain.Subcategory" alias="Subcategory"/>
 		<typeAlias type="com.liquoreview.common.NewPager" alias="Pager"/>
+		<!-- <typeAlias type="com.liquoreview.common.Liquor" alias="Liquor"/> -->
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/liquoreview/mybatis/mapper/MemberMapper.xml"/>
@@ -18,5 +19,6 @@
 		<mapper resource="com/liquoreview/mybatis/mapper/BoardMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/AlcoholMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/CategoryMapper.xml"/>
+		<!-- <mapper resource="com/liquoreview/mybatis/mapper/LiquorMapper.xml"/> -->
 	</mappers>
 </configuration>
