@@ -34,8 +34,39 @@
 		   from member
 	</sql>
 	
-	<select id="selectAll" resultMap = "memberMap">
+	<select id="totalMemberCnt" resultType="int">
+		select count(MEMBER_ID)
+		  from member
+		where MEMBER_ID > 0
+		   and DEL_YN = '0'
+	</select>
+	
+	<!-- <select id="selectAll" resultMap = "memberMap">
 		<include refid="sql_select"/> order by AUTH_ID asc
+	</select> -->
+	<select id="selectMemberList"
+				parameterType="int" 
+	 			resultMap="memberMap">
+		select q.MEMBER_ID
+		         ,AUTH_ID
+		         ,USERID
+		         ,USERNAME
+		         ,BIRTH
+		         ,EMAIL
+		         ,PHONENUM
+		         ,REGDATE
+		         ,LAST_MODI_YMD
+		         ,HIBER_YN
+		         ,DEL_YN
+		         ,LAST_LOGIN_YMD
+		  from (
+		  		select MEMBER_ID
+		  		  from member
+		  		 LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER} 
+		  ) q
+		  JOIN member p
+		  ON p.MEMBER_ID = q.MEMBER_ID
+		  order by MEMBER_ID desc
 	</select>
 	
 	<select id="select" parameterType="int" resultMap="memberMap">

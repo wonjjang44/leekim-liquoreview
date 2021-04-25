@@ -6,13 +6,15 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.common.JoinCode;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
 public interface MemberService {
-	public List<Member> selectAll();
-	public JSONObject adminSelectAll();
+	public int getTotalMemberCnt();
+	public List<Member> selectMemberList(Criteria criteria);
+	public JSONObject adminSelectMemberList(Criteria criteria);
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
 	public Member selectByUserid(String userid);

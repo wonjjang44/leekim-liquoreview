@@ -2,53 +2,52 @@ package com.liquoreview.common;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Pager {
-	private int currentPage = 1;
+	
+	Logger logger = Logger.getLogger(this.getClass().getName());
 	private int totalRecord;
-	private int pageSize;
 	private int totalPage;
 	private int blockSize;
 	private int firstPage;
 	private int lastPage;
-	private int curPos;
 	private int num;
 	
-	public void init(HttpServletRequest request, int totalRecord, int pageSize, int blockSize) {
-		if(request.getParameter("currentPage") != null) {
-			currentPage = Integer.parseInt(request.getParameter("currentPage"));
-		}
+	private Criteria criteria;
+	
+	public void setCriteria(Criteria criteria) {
+		this.criteria = criteria;
+		logger.info("criteria set되는 시점에 criteria.currentPage확인 : "+this.criteria.getCurrentPage());
+		logger.info("criteria set되는 시점에 criteria.pageSize확인 : "+this.criteria.getPageSize());
+		logger.info("criteria set되는 시점에 criteria.curPos확인 : "+this.criteria.getCurPos());
+	}
+	
+	public void init(int totalRecord) {
+		logger.info("pager.init 호출");
+		logger.info("전달받은 totalRecord 확인 : "+totalRecord);
 		this.totalRecord = totalRecord;
-		this.pageSize = pageSize;
-		this.blockSize = blockSize;
+		this.blockSize = 10;
 
-		totalPage = (int)(Math.ceil((double)totalRecord/pageSize));
-		firstPage = currentPage - (currentPage - 1) % blockSize;
-		lastPage = firstPage + (blockSize -1);
+		this.totalPage = (int)(Math.ceil((double)totalRecord/this.criteria.getPageSize()));
+		this.firstPage = this.criteria.getCurrentPage() - (this.criteria.getCurrentPage()- 1) % blockSize;
+		this.lastPage = this.firstPage + (this.blockSize -1);
 		
-		curPos = (currentPage -1) * pageSize;
-		num = totalRecord - curPos;
+		logger.info("pager.num 계산 전 curPos확인 : "+this.criteria.getCurPos());
+		this.num = totalRecord - this.criteria.getCurPos();
+		logger.info("계산된 pager.num 확인 : "+this.num);
 	}
-	public int getCurrentPage() {
-		return currentPage;
-	}
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
-	}
+	
 	public int getTotalRecord() {
 		return totalRecord;
 	}
+	
 	public void setTotalRecord(int totalRecord) {
 		this.totalRecord = totalRecord;
 	}
-	public int getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+	
 	public int getTotalPage() {
 		return totalPage;
 	}
@@ -73,16 +72,15 @@ public class Pager {
 	public void setLastPage(int lastPage) {
 		this.lastPage = lastPage;
 	}
-	public int getCurPos() {
-		return curPos;
-	}
-	public void setCurPos(int curPos) {
-		this.curPos = curPos;
-	}
 	public int getNum() {
 		return num;
 	}
 	public void setNum(int num) {
 		this.num = num;
 	}
+
+	public Criteria getCriteria() {
+		return criteria;
+	}
+	
 }

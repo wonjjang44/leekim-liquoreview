@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.common.JoinCode;
 import com.liquoreview.common.MailUtil;
 import com.liquoreview.common.PassSecurity;
@@ -46,18 +47,23 @@ public class MemberServiceImpl implements MemberService {
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
 	@Override
-	public List<Member> selectAll() {
+	public int getTotalMemberCnt() {
+		return memberDAO.getTotalMemberCnt();
+	}
+
+	@Override
+	public List<Member> selectMemberList(Criteria criteria) {
 		logger.info("관리자 회원목록 조회");
-		List<Member> memList = memberDAO.selectAll();
+		List<Member> memList = memberDAO.selectMemberList(criteria);
 		return memList;
 	}
 
 	//관리자 회원목록 전체조회
 	@Override
-	public JSONObject adminSelectAll() {
+	public JSONObject adminSelectMemberList(Criteria criteria) {
 		//logger.info("관리자 회원목록 조회");
 		JSONObject jsonMemObj = new JSONObject();
-		List<Member> memList = memberDAO.selectAll();
+		List<Member> memList = memberDAO.selectMemberList(criteria);
 		if(memList!=null && memList.size()>0) {
 			
 		}
@@ -305,6 +311,7 @@ public class MemberServiceImpl implements MemberService {
 		MemberPw memberPw = memberPwDAO.selectByMemberId(member_id);
 		return memberPw;
 	}
+
 
 
 }

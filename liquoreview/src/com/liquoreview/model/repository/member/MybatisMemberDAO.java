@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
@@ -20,9 +21,17 @@ public class MybatisMemberDAO implements MemberDAO {
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 
+	// 페이징 위한 카운트
+	@Override
+	public int getTotalMemberCnt() {
+		return sessionTemplate.selectOne("Member.totalMemberCnt");
+	}
 	// 전체멤버조회
-	public List<Member> selectAll() {
-		return sessionTemplate.selectList("Member.selectAll");
+	public List<Member> selectMemberList(Criteria criteria) {
+		logger.info("mybatis memberDAO=======================");
+		logger.info("criteria currentPage확인 : "+criteria.getCurrentPage());
+		logger.info("criteria pageSize확인 : "+criteria.getPageSize());
+		return sessionTemplate.selectList("Member.selectMemberList", criteria);
 	}
 
 	// 권한별 멤버조회
@@ -109,6 +118,7 @@ public class MybatisMemberDAO implements MemberDAO {
 	public String idOverlapCheck(String userid) {
 		return sessionTemplate.selectOne("Member.idOverlapCheck",userid);
 	}
+
 
 
 }

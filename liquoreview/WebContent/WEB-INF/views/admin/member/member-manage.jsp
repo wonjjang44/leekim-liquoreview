@@ -66,21 +66,36 @@
 							<div class="card-footer">
 								<!-- start pager area -->
 								<nav class="blog-pagination justify-content-center d-flex">
-									<ul class="pagination">
+									<div class="prevPage">
 										<!-- prev page arrow -->
-										<li><a href="#none"> <strong>&laquo;</strong>
-										</a></li>
-										<li><a href="javascript:alert('첫 페이지입니다')"> <strong>&laquo;</strong>
-										</a></li>
-										<!-- page num links -->
-										<%-- <li <%if(request.getParameter("currentPage") !=null && Integer.parseInt(request.getParameter("currentPage"))==i){%>class="active"<%}%>><a href="/admin/member?currentPage=<%=i%>">[<%=i %>]</a></li> --%>
-
-										<!-- next page arrow -->
-										<li><a href="#none"> <strong>&raquo;</strong>
-										</a></li>
-										<li><a href="javascript:alert('마지막 페이지입니다')"> <strong>&raquo;</strong>
-										</a></li>
+										<!--
+										<a href="javascript:prevPage()"> 
+											<strong>&laquo;</strong>
+										</a>
+										-->
+									</div>
+									<!-- page num links -->
+									<ul class="pagination">
+										<%-- 
+											<li <%if(request.getParameter("currentPage") !=null && Integer.parseInt(request.getParameter("currentPage"))==i){%>class="active"<%}%>>
+												<a href="/admin/member?currentPage=<%=i%>">
+													[<%=i %>]
+												</a>
+											</li> 
+										--%>
 									</ul>
+									<div class="nextPage">
+										<!-- next page arrow -->
+										<!--
+										<a href="javascript:nextPage()"> 
+											<strong>&raquo;</strong>
+										</a>
+										 -->
+									</div>
+									<form id="hiddenListPageForm">
+										<input type="hidden" name="currentPage" value="" />
+										<input type="hidden" name="pageSize" value="" />
+									</form>
 								</nav>
 								<!-- pager end -->
 								<!-- 검색영역 -->
@@ -115,7 +130,7 @@
 									</div>
 								</div>
 								<!-- 검색영역 종료-->
-															</div>
+							</div>
 						</div>
 					</div>
 				</div>

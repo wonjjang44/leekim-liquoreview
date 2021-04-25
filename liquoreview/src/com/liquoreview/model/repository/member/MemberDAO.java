@@ -3,11 +3,13 @@ package com.liquoreview.model.repository.member;
 import java.util.List;
 import java.util.Map;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
 public interface MemberDAO {
-	public List<Member> selectAll();
+	public int getTotalMemberCnt();
+	public List<Member> selectMemberList(Criteria criteria);
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
 	public Member selectByUserid(String userid);
