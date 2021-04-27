@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ExcelMapper">		
+	<insert id="excelUpload" parameterType="Alcohol">
+		/*주류 엑셀 업로드, 이양원*/
+		 INSERT 
+		 	INTO ALCOHOL (
+	                SUBCATEGORY_ID
+	              , NAME   
+	              , DEGREE
+	              , DETAIL 
+	              , REGDATE
+	              , LAST_MODI_YMD
+                ) 
+                VALUES 
+            <foreach collection="excelContent" item="item" separator=",">    
+                (
+	                 #{item.B}
+	               , #{item.C}
+	               , #{item.D}
+	               , #{item.E}
+            </foreach>
+                   , SYSDATE()
+                   , SYSDATE()
+                )
+	</insert>
+</mapper>

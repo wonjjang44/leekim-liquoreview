@@ -61,6 +61,60 @@ function selChange() {
 	location.href="/admin/alcohol/alcoholLst?nowPage=${pager.nowPage}&cntPerPage="+sel;
 }
 
+
+/*************excel upload*************/
+function checkFileType(filePath) {
+	var fileFormat = filePath.split(".");
+
+	//엑셀 파일인지 체크
+	if (fileFormat.indexOf("xls") > -1 || fileFormat.indexOf("xlsx") > -1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function check() {
+	var file = $("#excelFile").val();
+
+	if (file == "" || file == null) {
+		alert("파일을 선택해주세요.");
+
+		return false;
+	} else if (!checkFileType(file)) {
+		alert("엑셀 파일만 업로드 가능합니다.");
+
+		return false;
+	}
+
+	var param = {
+		excelFile : $("#excelFile").val()
+	};
+	
+	if (confirm("업로드 하시겠습니까?")) {
+		var data = new FormData(document.getElementById('excelUploadForm'));//$로 하니까 안먹힘. $("#excelUploadForm")
+		
+        $.ajax({
+            url: "/excelUpload",
+            data: data,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function(data){
+				console.log(data);
+				console.log(data.excelResult);
+                if(data> 0){
+	                alert("업로드 완료");
+                }
+            },
+            error : function(xhr){
+            	console.log(xhr);
+            }
+        })
+
+	}
+}
+
 </script>
 </head>
 
@@ -80,7 +134,6 @@ function selChange() {
 							<p>정말 삭제 하시겠습니까?</p>
 						</form>
 					</div>
-					
 					
 					<div class="modal-footer">
 						<input type="button" class="btn btn-primary btn-round" id="al_del_btn" value="Delete">
@@ -109,6 +162,22 @@ function selChange() {
 								<h4 class="card-title">주류 정보 관리</h4>
 								<button type="button" id = "al_add_btn" class="btn btn-primary btn-round" >주류 항목 추가</button>
 								
+									<!-- 파일 업로드 Start -->
+									<form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data">
+					                	<div class="form-group row" align="right">
+								            <label for="inputFile" class="col-sm-2 col-form-label" style = "left:820px;"><strong>첨부 파일</strong></label>
+								            <div class="col-sm-10"  align="right">
+								                <div class="custom-file" id="inputFile" style = "width : 270px;">
+								                    <input name="excelFile" type="file" class="custom-file-input" id="excelFile" style = "width : 270px;">
+								                    <label class="custom-file-label" for="excelFile" style="position: absolute; left : 20px;">파일선택</label>
+								                </div>
+								                
+									          <button type="button" id="addExcelImpoartBtn" class="btn" onclick="check()" style = "position: relative; top : -15px;"><span>추가</span></button>
+								            </div>
+							        	</div>
+									</form>
+								<!-- 파일 업로드 End -->
+								
 								<!-- 옵션선택 Start -->
 								<div id="outter">
 									<div style="float: right;">
@@ -132,11 +201,11 @@ function selChange() {
 									<table class="table">
 										<thead class=" text-primary">
 											<tr>
-												<th>Alcohol_id</th>
-												<th>Topcategory</th>
-												<th>Subcategory</th>
-												<th>Name</th>
-												<th>Degree</th>
+												<th>번호</th>
+												<th>분류</th>
+												<th>주류종류</th>
+												<th>주류명</th>
+												<th>도수</th>
 												<th>삭제</th>
 											</tr>
 										</thead>

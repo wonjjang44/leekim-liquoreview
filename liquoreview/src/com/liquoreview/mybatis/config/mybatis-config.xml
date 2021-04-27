@@ -19,6 +19,6 @@
 		<mapper resource="com/liquoreview/mybatis/mapper/BoardMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/AlcoholMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/CategoryMapper.xml"/>
-		<!-- <mapper resource="com/liquoreview/mybatis/mapper/LiquorMapper.xml"/> -->
+		<mapper resource="com/liquoreview/mybatis/mapper/ExcelMapper.xml"/>
 	</mappers>
 </configuration>

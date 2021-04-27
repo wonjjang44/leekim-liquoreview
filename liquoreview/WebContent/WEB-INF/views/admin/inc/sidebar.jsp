@@ -49,7 +49,7 @@
 			>
 				<a href="/admin/alcohol/alcoholLst">
 					<i class="nc-icon nc-spaceship"></i>
-					<span>술 정보 관리</span>
+					<span>주류 정보 관리</span>
 				</a>
 			</li>
 			<li
