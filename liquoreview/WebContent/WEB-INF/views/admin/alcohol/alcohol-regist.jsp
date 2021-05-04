@@ -89,6 +89,7 @@ $(function(){
 					data : JSON.stringify(param),
 					success : function(data){
 						if(data > 0){
+							alert("등록 완료");
 							location.href = "/admin/alcohol/alcoholLst";
 						}
 					},

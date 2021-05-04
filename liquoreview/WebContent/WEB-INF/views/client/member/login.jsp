@@ -96,42 +96,16 @@ $(function(){
 	$("#modalBox").hide();
 	
 	$("#signin").click(function(){
-		var userid = $("#userid").val();
-		var pass = $("#pass").val();
-		
-		var param = new Object();
-		param.userid = userid;
-		param.pass = pass;
-		
-		validChk();
-		
-		if(flag == true){
-			$.ajax({
-				url : "/member/login",
-				type : "post",
-				dataType : "json",
-				contentType : "application/json; charset = UTF-8",
-				data : JSON.stringify(param),
-				success : function(data){
-					if(data.msg == "idFail"){
-						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-					}else if(data.msg == "pwFail"){
-						$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
-					}else if(data.msg == "admin"){
-						location.href = "/admin/index";
-					}else if(data.msg == "user"){
-						location.href = "/";	
-					}
-				},
-				error : function(xhr){
-					console.log(xhr);
-					alert("어머나!! 예상치 못한 오류가 발생하였습니다.\n빠른 시일내에 해결하도록 하겠습니다.");
-				}
-			});
-		}
-
-		
+		login();
 	});
+	
+	//로그인 enter키로 시도하기
+	$("input").keyup(function(){
+		if (window.event.keyCode == 13) {
+			login();
+		}
+	});
+	
 });
 
 var flag = true; 
@@ -174,6 +148,44 @@ function fndPassPopView(){
 /*아이디 찾기 팝업창(모달)*/
 function fndIdModalPop(){
 	$('#modalBox').modal('show');
+}
+
+
+/*로그인 비동기 함수*/
+function login(){
+	var userid = $("#userid").val();
+	var pass = $("#pass").val();
+	
+	var param = new Object();
+	param.userid = userid;
+	param.pass = pass;
+	
+	validChk();
+	
+	if(flag == true){
+		$.ajax({
+			url : "/member/login",
+			type : "post",
+			dataType : "json",
+			contentType : "application/json; charset = UTF-8",
+			data : JSON.stringify(param),
+			success : function(data){
+				if(data.msg == "idFail"){
+					$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
+				}else if(data.msg == "pwFail"){
+					$("#msg").text("회원정보가 틀렸거나 존재하지 않는 회원입니다.");
+				}else if(data.msg == "admin"){
+					location.href = "/admin/index";
+				}else if(data.msg == "user"){
+					location.href = "/";	
+				}
+			},
+			error : function(xhr){
+				console.log(xhr);
+				alert("어머나!! 예상치 못한 오류가 발생하였습니다.\n빠른 시일내에 해결하도록 하겠습니다.");
+			}
+		});
+	}
 }
 </script>
 </html>

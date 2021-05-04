@@ -19,6 +19,15 @@ public class Alcohol extends Subcategory{
 	private Date REGDATE;
 	private Date LAST_MODI_YMD;
 	
+	private int NUM;//정렬을 위한 번호
+	
+	
+	public int getNUM() {
+		return NUM;
+	}
+	public void setNUM(int nUM) {
+		NUM = nUM;
+	}
 	public int getALCOHOL_ID() {
 		return ALCOHOL_ID;
 	}

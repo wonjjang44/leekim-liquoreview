@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ExcelMapper">		
-	<insert id="excelUpload" parameterType="Alcohol">
+	<insert id="excelUpload" parameterType="java.util.Map">
 		/*주류 엑셀 업로드, 이양원*/
 		 INSERT 
 		 	INTO ALCOHOL (
@@ -16,14 +16,14 @@
                 ) 
                 VALUES 
             <foreach collection="excelContent" item="item" separator=",">    
-                (
-	                 #{item.B}
-	               , #{item.C}
-	               , #{item.D}
-	               , #{item.E}
+            	(
+            		#{item.B}
+            	  , #{item.C}
+            	  , #{item.D}
+            	  , #{item.E}
+            	  , SYSDATE()
+            	  , SYSDATE()
+            	)
             </foreach>
-                   , SYSDATE()
-                   , SYSDATE()
-                )
 	</insert>
 </mapper>

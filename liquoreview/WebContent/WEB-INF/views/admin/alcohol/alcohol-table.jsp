@@ -108,6 +108,7 @@ function check() {
                 }
             },
             error : function(xhr){
+            	alert("이런.. 파일업로드에 문제가 생겼습니다..");
             	console.log(xhr);
             }
         })
