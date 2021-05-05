@@ -19,6 +19,7 @@ import com.liquoreview.common.Criteria;
 import com.liquoreview.common.JoinCode;
 import com.liquoreview.common.MailUtil;
 import com.liquoreview.common.PassSecurity;
+import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.exception.LoginFailException;
 import com.liquoreview.exception.RegistFailException;
 import com.liquoreview.model.domain.admin.Auth;
@@ -50,11 +51,23 @@ public class MemberServiceImpl implements MemberService {
 	public int getTotalMemberCnt() {
 		return memberDAO.getTotalMemberCnt();
 	}
+	
+	@Override
+	public int getSearchedMemberCnt(SearchCriteria searchCriteria) {
+		return memberDAO.getSearchedMemberCnt(searchCriteria);
+	}
 
 	@Override
 	public List<Member> selectMemberList(Criteria criteria) {
 		logger.info("관리자 회원목록 조회");
 		List<Member> memList = memberDAO.selectMemberList(criteria);
+		return memList;
+	}
+	
+	@Override
+	public List<Member> selectSearchedMemberList(SearchCriteria searchCriteria) {
+		logger.info("검색조건, 검색어로 회원목록 검색");
+		List<Member> memList = memberDAO.selectSearchedMemberList(searchCriteria);
 		return memList;
 	}
 
@@ -284,8 +297,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Member> search(String searchWord) {
-		// TODO Auto-generated method stub
+	public List<Member> search(Criteria criteria, String searchWord) {
+		Map<String, Object> searchMap = new HashMap<String, Object>();
+		searchMap.put("criteria", criteria);
+		searchMap.put("searchWord", searchWord);
+		logger.info("searchMap에 criteria 어떻게 담겼나 확인 : "+searchMap.get("criteria"));
+		logger.info("searchMap에 searchWord 어떻게 담겼나 확인 : "+searchMap.get("searchWord"));
+		List<Member> memList = memberDAO.search(searchMap);
 		return null;
 	}
 
@@ -312,6 +330,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberPw;
 	}
 
+	
 
 
 }

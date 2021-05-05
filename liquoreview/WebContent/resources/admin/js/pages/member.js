@@ -153,23 +153,39 @@ function getDetail(member_id) {
 	console.log("회원 상세보기 클라이언트 사이드 요청시작");
 	location.href="/admin/member/" + member_id;
 }
-/*
-function search() {
-	var searchMode = $("select[name='searchMode']").val();
-	var searchAuth = $("select[name='searchAuth']").val();
-	var searchWord = $("select[name='searchWord']").val();
 
-	$("input[name='search_Mode']").val(searchMode);
-	$("input[name='search_Auth']").val(searchAuth);
-	$("input[name='search_Word']").val(searchWord);
-	//if(searchWord==""){alert("검색어를 입력해주세요.");return;}
-	$("form").attr({
-		action : "/admin/member/search",
-		method : "post"
-	});
-	$("form").submit();
+//회원 검색
+function search() {
+	let searchType = $("#searchType :selected").val();
+	let searchWord = $("input[name='searchWord']").val();
+	console.log("searchType확인 : "+searchType);
+	console.log("searchWord 확인 : "+searchWord);
+	if (searchWord == "") {
+		console.log("searchWord가 공란인채로 검색 눌러서 회원정보 전체조회요청 보내기 직전");
+		//location.href="/rest/admin/member";
+		getMemberList();
+	} else {
+		console.log("searchWord로 검색요청 보내기 직전");
+		$.ajax({
+			type:"get",
+			url:"/rest/admin/member/search?searchType="+searchType+"&searchWord="+searchWord,
+			success:function(data) {
+				console.log("검색 결과를 얻어왔다.");
+				//검색된 회원목록 조립
+				handleMemberList(data);
+				//페이징 refresh
+				handlePaging(data.pager);
+			}
+		});
+	}
 }
-*/
+
+// 회원검색 엔터 키 적용
+function memberSerarchByEnter() {
+	if(event.keyCode == 13) {
+		search();
+	}
+}
 
 //전체목록 excel 받기
 function saveAsExcel() {

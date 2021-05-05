@@ -66,4 +66,13 @@ public class Criteria {
 	public void setCurPos(int curPos) {
 		this.curPos = curPos;
 	}
+
+	@Override
+	public String toString() {
+		return "Criteria [currentPage=" + currentPage 
+				+ ", pageSize=" + pageSize 
+				+ ", curPos=" + curPos 
+				+ "]";
+	}
+	
 }

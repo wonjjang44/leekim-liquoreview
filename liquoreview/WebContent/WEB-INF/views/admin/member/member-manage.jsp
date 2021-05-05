@@ -22,8 +22,6 @@
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title">일반회원정보</h4>
-								
-								
 								<button 
 									class="btn btn-primary btn-round" 
 									type="button"
@@ -92,22 +90,25 @@
 										</a>
 										 -->
 									</div>
-									<form id="hiddenListPageForm">
+									<!-- <form id="hiddenListPageForm">
 										<input type="hidden" name="currentPage" value="" />
 										<input type="hidden" name="pageSize" value="" />
-									</form>
+									</form> -->
 								</nav>
 								<!-- pager end -->
 								<!-- 검색영역 -->
 								<div class="row">
 									<div class="col-md-2">
 										<div class="form-group">
-											<select class="form-control" name="searchMode">
-												<option value="userid">ID</option>
-												<option value="username">NAME</option>
+											<select id="searchType" class="form-control" name="searchType">
+												<option value="e" <c:out value="${searchCriteria.searchType == null ? 'selected' : ' '}"/>>선택</option>
+												<option value="i" <c:out value="${searchCriteria.searchType eq 'i' ? 'selected' : ' '}"/>>ID</option>
+												<option value="n" <c:out value="${searchCriteria.searchType eq 'n' ? 'selected' : ' '}"/>>NAME</option>
+												<option value="p" <c:out value="${searchCriteria.searchType eq 'p' ? 'selected' : ' '}"/>>PHONENUM</option>
 											</select>
 										</div>
 									</div>
+									<!-- 
 									<div class="col-md-2">
 										<div class="form-group">
 											<select class="form-control" name="searchAuth">
@@ -117,9 +118,17 @@
 											</select>
 										</div>
 									</div>
+									-->
 									<div class="col-md-4">
 										<div class="form-group">
-											<input class=form-control " type="text" name="searchWord" />
+											<c:choose>
+												<c:when test="${empty param.searchWord}">
+													<input class=form-control " type="text" name="searchWord" onkeydown="memberSerarchByEnter()"/>
+												</c:when>
+												<c:otherwise>
+													<input class=form-control " type="text" name="searchWord" onkeydown="memberSerarchByEnter()" value="<c:out value="${param.searchWord }"/>"/>
+												</c:otherwise>
+											</c:choose>
 										</div>
 									</div>
 									<div class="col-md-2">

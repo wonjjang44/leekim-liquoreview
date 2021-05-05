@@ -1,8 +1,10 @@
 package com.liquoreview.controller.admin.member;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.liquoreview.common.Criteria;
 import com.liquoreview.common.Pager;
+import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.model.domain.admin.Auth;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.service.member.MemberService;
@@ -33,21 +36,53 @@ public class RestAdminMemberController {
 	
 	// 회원정보관리용 회원목록 조회
 	@RequestMapping(value="/admin/member", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	//public List<Member> getMemberList(Criteria criteria) {
 	public JSONObject getMemberList(HttpServletRequest request) {
 		logger.info("rest admin member controller 호출 :: member list 조회");
 		logger.info("member list 조회 전 페이징 세팅 시작");
-		logger.info("request param currentPage 확인 : "+request.getParameter("currentPage"));
-		Criteria criteria = new Criteria(request, 5);
+				
+		List<Member> memberList = null;
+		int pageSize = 5;
+		JSONObject memberResultObj = new JSONObject();
+		
+		Criteria criteria = new Criteria(request, pageSize);
 		pager.setCriteria(criteria);
 		pager.init(memberService.getTotalMemberCnt());
-		JSONObject memberResultObj = new JSONObject();
-		memberResultObj.put("memList", memberService.selectMemberList(criteria));
+		memberList = memberService.selectMemberList(criteria);
+		
+		memberResultObj.put("memList", memberList);
 		memberResultObj.put("pager", pager);
 		logger.info("pager 포함해서 member list 재확인 : "+memberResultObj.toString());
 		logger.info("컨트롤러에서 화면에 리턴 전 pager.num재확인 : "+memberResultObj.get("pager"));
-		logger.info("컨트롤러에서 화면에 리턴 전 pager.num재확인 : "+memberResultObj.get("pager").toString());
 		
+		return memberResultObj;
+	}
+	
+	@RequestMapping(value="/admin/member/search",method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public JSONObject getSearchedMemberList(HttpServletRequest request, HttpServletResponse response) {
+		String searchType = request.getParameter("searchType");
+		String searchWord = request.getParameter("searchWord");
+		
+		List<Member> searchedMemberList = null;
+		int pageSize = 5;
+		SearchCriteria searchCriteria = new SearchCriteria(request, pageSize);
+		JSONObject memberResultObj = new JSONObject();
+
+		if (searchWord != null && !(searchWord.isEmpty())) {
+			searchCriteria.setSearchType(searchType);
+			searchCriteria.setSearchWord(searchWord);
+			pager.setCriteria(searchCriteria);
+			pager.init(memberService.getSearchedMemberCnt(searchCriteria));
+			searchedMemberList = memberService.selectSearchedMemberList(searchCriteria);
+		} else {
+			try {
+				response.sendRedirect("/rest/admin/member");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		memberResultObj.put("searchCriteria", searchCriteria);
+		memberResultObj.put("memList", searchedMemberList);
+		memberResultObj.put("pager", pager);
 		return memberResultObj;
 	}
 	

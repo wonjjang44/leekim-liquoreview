@@ -1,6 +1,7 @@
 package com.liquoreview.model.repository.member;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.Criteria;
+import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
@@ -26,12 +28,22 @@ public class MybatisMemberDAO implements MemberDAO {
 	public int getTotalMemberCnt() {
 		return sessionTemplate.selectOne("Member.totalMemberCnt");
 	}
+	@Override
+	public int getSearchedMemberCnt(SearchCriteria searchCriteria) {
+		return sessionTemplate.selectOne("Member.searchedMemberCnt", searchCriteria);
+	}
+	
 	// 전체멤버조회
 	public List<Member> selectMemberList(Criteria criteria) {
 		logger.info("mybatis memberDAO=======================");
 		logger.info("criteria currentPage확인 : "+criteria.getCurrentPage());
 		logger.info("criteria pageSize확인 : "+criteria.getPageSize());
 		return sessionTemplate.selectList("Member.selectMemberList", criteria);
+	}
+	// 멤버 검색
+	@Override
+	public List<Member> selectSearchedMemberList(SearchCriteria searchCriteria) {
+		return sessionTemplate.selectList("Member.search", searchCriteria);
 	}
 
 	// 권한별 멤버조회
@@ -110,15 +122,15 @@ public class MybatisMemberDAO implements MemberDAO {
 	}
 
 	@Override
-	public List<Member> search(String searchWord) {
-		return sessionTemplate.selectList("Member.search", searchWord);
+	public List<Member> search(Map<String, Object> searchMap) {
+		logger.info("멤버 검색 직전 searchMap의 criteria 확인 : "+searchMap.get("criteria"));
+		logger.info("멤버 검색 직전 searchMap의 searchWord 확인 : "+searchMap.get("searchWord"));
+		return sessionTemplate.selectList("Member.search", searchMap);
 	}
 
 	@Override
 	public String idOverlapCheck(String userid) {
 		return sessionTemplate.selectOne("Member.idOverlapCheck",userid);
 	}
-
-
 
 }

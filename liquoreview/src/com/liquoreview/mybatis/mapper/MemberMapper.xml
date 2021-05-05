@@ -35,17 +35,28 @@
 	</sql>
 	
 	<select id="totalMemberCnt" resultType="int">
-		select count(MEMBER_ID)
+		select 
+			count(MEMBER_ID)
 		  from member
 		where MEMBER_ID > 0
 		   and DEL_YN = '0'
 	</select>
 	
-	<!-- <select id="selectAll" resultMap = "memberMap">
+	<select id="searchedMemberCnt" resultType="int">
+		select
+			count(MEMBER_ID)
+		  from member
+		where MEMBER_ID > 0
+		<include refid="searchDynamic"/>
+	</select>
+	
+	<!-- 
+	<select id="selectAll" resultMap = "memberMap">
 		<include refid="sql_select"/> order by AUTH_ID asc
-	</select> -->
+	</select> 
+	-->
+	
 	<select id="selectMemberList"
-				parameterType="int" 
 	 			resultMap="memberMap">
 		select q.MEMBER_ID
 		         ,AUTH_ID
@@ -62,6 +73,32 @@
 		  from (
 		  		select MEMBER_ID
 		  		  from member
+		  		 LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER} 
+		  ) q
+		  JOIN member p
+		  ON p.MEMBER_ID = q.MEMBER_ID
+		  order by MEMBER_ID asc
+	</select>
+	
+	<select id="search" 
+				resultMap="memberMap">
+		select q.MEMBER_ID
+		         ,AUTH_ID
+		         ,USERID
+		         ,USERNAME
+		         ,BIRTH
+		         ,EMAIL
+		         ,PHONENUM
+		         ,REGDATE
+		         ,LAST_MODI_YMD
+		         ,HIBER_YN
+		         ,DEL_YN
+		         ,LAST_LOGIN_YMD
+		  from (
+		  		select MEMBER_ID
+		  		  from member
+		  		where MEMBER_ID > 0
+		  		    <include refid="searchDynamic"/>
 		  		 LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER} 
 		  ) q
 		  JOIN member p
@@ -155,4 +192,19 @@
 							    ,LAST_MODI_YMD = now()
 		 where MEMBER_ID = #{member_id}				
 	</update>
+	
+	<!-- search type and keyword-->
+	<sql id="searchDynamic">
+		<if test="searchType != null">
+			<if test="searchType == 'i'.toString()">
+				and USERID like concat('%', #{searchWord}, '%')
+			</if>
+			<if test="searchType == 'n'.toString()">
+				and USERNAME like concat('%', #{searchWord}, '%')
+			</if>
+			<if test="searchType == 'p'.toString()">
+				and PHONENUM like concat('%', #{searchWord}, '%')
+			</if>
+		</if>
+	</sql>
 </mapper>

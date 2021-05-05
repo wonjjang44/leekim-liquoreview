@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.liquoreview.common.Criteria;
+import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
 public interface MemberDAO {
 	public int getTotalMemberCnt();
 	public List<Member> selectMemberList(Criteria criteria);
+	public int getSearchedMemberCnt(SearchCriteria searchCriteria);
+	public List<Member> selectSearchedMemberList(SearchCriteria searchCriteria);
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
 	public Member selectByUserid(String userid);
@@ -25,5 +28,5 @@ public interface MemberDAO {
 	public Member infoCheck(Member member);
 	public boolean send(String subject, String text, String from, String to);
 	public int updateAuth(Member member);
-	public List<Member> search(String searchWord);
+	public List<Member> search(Map<String, Object> searchMap);
 }

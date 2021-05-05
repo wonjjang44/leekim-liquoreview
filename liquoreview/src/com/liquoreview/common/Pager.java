@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Pager {
 	
-	Logger logger = Logger.getLogger(this.getClass().getName());
 	private int totalRecord;
 	private int totalPage;
 	private int blockSize;
@@ -18,6 +17,8 @@ public class Pager {
 	
 	private Criteria criteria;
 	
+	Logger logger = Logger.getLogger(this.getClass().getName());
+
 	public void setCriteria(Criteria criteria) {
 		this.criteria = criteria;
 		logger.info("criteria set되는 시점에 criteria.currentPage확인 : "+this.criteria.getCurrentPage());
@@ -81,6 +82,13 @@ public class Pager {
 
 	public Criteria getCriteria() {
 		return criteria;
+	}
+
+	@Override
+	public String toString() {
+		return "Pager [logger=" + logger + ", totalRecord=" + totalRecord + ", totalPage=" + totalPage + ", blockSize="
+				+ blockSize + ", firstPage=" + firstPage + ", lastPage=" + lastPage + ", num=" + num + ", criteria="
+				+ criteria + "]";
 	}
 	
 }

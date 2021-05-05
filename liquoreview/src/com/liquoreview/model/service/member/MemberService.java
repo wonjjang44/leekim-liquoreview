@@ -8,12 +8,15 @@ import org.json.simple.JSONObject;
 
 import com.liquoreview.common.Criteria;
 import com.liquoreview.common.JoinCode;
+import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.model.domain.member.Member;
 import com.liquoreview.model.domain.member.MemberPw;
 
 public interface MemberService {
 	public int getTotalMemberCnt();
 	public List<Member> selectMemberList(Criteria criteria);
+	public int getSearchedMemberCnt(SearchCriteria searchCriteria);
+	public List<Member> selectSearchedMemberList(SearchCriteria searchCriteria);
 	public JSONObject adminSelectMemberList(Criteria criteria);
 	public List<Member> selectByAuth(int auth_id);
 	public Member select(int member_id);
@@ -32,6 +35,6 @@ public interface MemberService {
 	public JSONObject infoCheck(Member member);
 	public boolean send(JoinCode joinCode);
 	public JSONObject updateAuth(Member member);
-	public List<Member> search(String searchWord);
+	public List<Member> search(Criteria criteria, String searchWord);
 	
 }
