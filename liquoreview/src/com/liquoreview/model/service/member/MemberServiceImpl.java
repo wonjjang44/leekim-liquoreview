@@ -297,17 +297,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Member> search(Criteria criteria, String searchWord) {
-		Map<String, Object> searchMap = new HashMap<String, Object>();
-		searchMap.put("criteria", criteria);
-		searchMap.put("searchWord", searchWord);
-		logger.info("searchMap에 criteria 어떻게 담겼나 확인 : "+searchMap.get("criteria"));
-		logger.info("searchMap에 searchWord 어떻게 담겼나 확인 : "+searchMap.get("searchWord"));
-		List<Member> memList = memberDAO.search(searchMap);
-		return null;
-	}
-
-	@Override
 	public String idOverlapCheck(String userid) {
 		logger.info("중복체크 요청 넘어온 userid : " + userid);
 		String searchedUserId = memberDAO.idOverlapCheck(userid);

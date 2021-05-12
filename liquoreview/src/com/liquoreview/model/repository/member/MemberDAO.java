@@ -28,5 +28,4 @@ public interface MemberDAO {
 	public Member infoCheck(Member member);
 	public boolean send(String subject, String text, String from, String to);
 	public int updateAuth(Member member);
-	public List<Member> search(Map<String, Object> searchMap);
 }

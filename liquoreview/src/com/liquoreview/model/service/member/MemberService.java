@@ -35,6 +35,4 @@ public interface MemberService {
 	public JSONObject infoCheck(Member member);
 	public boolean send(JoinCode joinCode);
 	public JSONObject updateAuth(Member member);
-	public List<Member> search(Criteria criteria, String searchWord);
-	
 }

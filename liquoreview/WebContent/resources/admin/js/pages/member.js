@@ -9,10 +9,15 @@ jQuery(document).ready(function(){
 
 //회원 리스트 조회
 function getMemberList() {
+	let prevPage = $("input[name='prevPage']").val();
+	console.log("prevPage확인 : "+prevPage);
 	console.log("회원 리스트 조회 클라이언트 요청");
 	$.ajax({
 		url:"/rest/admin/member",
 		type:"GET",
+		data:{
+			currentPage:prevPage
+		},
 		success:function(data) {
 			console.log("회원목록 조회 성공");
 			console.log(data);
@@ -82,6 +87,10 @@ function handlePaging(data) {
 	pageIndicator(data);
 	// 페이징 번호 버튼 조립
 	pageNumBtn(data);
+	//페이지 정보 유지 위한 hidden data set
+	pageInfoSet(data.criteria);
+	//비동기 페이지로드 이후 url변경
+	pageUrlSet(data);
 }
 
 //prev next btn 조립
@@ -117,7 +126,7 @@ function pageNumBtn(pager) {
 		for(let i=pager.firstPage;i<=pager.totalPage;i++) {
 			con.append("<li class='active'>");
 			//con.append("<a href='/rest/admin/member?currentPage="+i+"'>"+i+"</a>");
-			con.append("<a href='javascript:callAsyncPage("+i+")'>"+i+"</a>")
+			con.append("<a href='javascript:callAsyncPage("+i+")'>"+i+"</a>");
 			con.append("</li>");
 		}
 	} else {
@@ -130,9 +139,50 @@ function pageNumBtn(pager) {
 	}
 }
 
-function callAsyncPage(currentPage){
+//페이지 정보 유지 위한 hidden data set
+function pageInfoSet(criteria) {
+	let listPageForm = $("#hiddenListPageForm");
+	
+	$("input[name='currentPage']").val(criteria.currentPage);
+	$("input[name='pageSize']").val(criteria.pageSize);
+	$("input[name='curPos']").val(criteria.curPos);
+}
+
+//비동기 페이지로드 이후 url변경
+function pageUrlSet(data) {
+	//pager obj를 parameter로 받아옴
+	//currentPage 추출 :: data.criteria.currentPage
+	console.log("비동기 페이지로드 이후 url도 맞춰서 변경시키기 위한 함수호출됨");
+	console.log("pageUrlSet위해 물고 온 currentPage확인 : "+data.criteria.currentPage);
+	
+	//pushState가 지원되는 브라우저에서만 사용하도록 분기
+	if (typeof(history.pushState) == 'function') {
+		//get current url
+		let renewUrl = location.href;
+		//url string 값이 누적되는 것을 방지하기 위해 pageUrlSet 호출시마다 초기화
+		//초기화 안해주면 &currentPage= 부분이 누적으로 붙는다.
+		console.log("현재 url 확인 : "+renewUrl);
+		renewUrl = renewUrl.replaceAll(/(\&|\?)currentPage=([0-9]+)/ig,'');
+			// 정규표현식 사용할 때 특수문자를 일반문자로 인식시키려면 앞에 \를 붙인다
+			// 또는은 |으로 구분시킨다.
+			// 물음표나 앰퍼센드 뒤에 currentPage=숫자 를 공백으로 대체함 
+		console.log("currentPage 한 번 잘라낸 url 확인 : "+renewUrl);
+		
+		//data에서 currentPage 추출해서 새로 부여할 url 조립
+		renewUrl += '&currentPage='+data.criteria.currentPage;
+		//페이지 url 갱신
+		history.pushState(null, null, renewUrl);
+	} else {
+		console.log("이 분기를 탔다면 구형 비표준 브라우저임. 기능 확인 필요.");
+		renewUrl.setQuery('currentPage',currentPage);
+	}
+}
+
+function callAsyncPage(targetPage){
+	console.log("페이징버튼 눌러 callAsyncPage함수호출됨");
+	console.log("callAsyncPage targetPage : "+targetPage);
 	$.ajax({
-		url:"/rest/admin/member?currentPage="+currentPage,
+		url:"/rest/admin/member?currentPage="+targetPage,
 		type:"GET",
 		success:function(data) {
 			console.log("회원목록 조회 성공");
@@ -149,9 +199,16 @@ function callAsyncPage(currentPage){
 }
 
 //회원 1명 상세조회
+/*
+ * member_id와 pager.criteria 를 함께 넘겨
+ * 상세조회 이전의 목록페이지 정보를 유지하도록 한다. 
+ * */
 function getDetail(member_id) {
 	console.log("회원 상세보기 클라이언트 사이드 요청시작");
-	location.href="/admin/member/" + member_id;
+	//location.href="/admin/member/" + member_id;
+	let listPageForm = $("#hiddenListPageForm");
+	let currentPage = listPageForm.find("[name='currentPage']").val();
+	location.href="/admin/member/"+member_id+"/page?currentPage="+currentPage;
 }
 
 //회원 검색

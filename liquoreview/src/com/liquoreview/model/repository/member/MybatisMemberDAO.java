@@ -122,13 +122,6 @@ public class MybatisMemberDAO implements MemberDAO {
 	}
 
 	@Override
-	public List<Member> search(Map<String, Object> searchMap) {
-		logger.info("멤버 검색 직전 searchMap의 criteria 확인 : "+searchMap.get("criteria"));
-		logger.info("멤버 검색 직전 searchMap의 searchWord 확인 : "+searchMap.get("searchWord"));
-		return sessionTemplate.selectList("Member.search", searchMap);
-	}
-
-	@Override
 	public String idOverlapCheck(String userid) {
 		return sessionTemplate.selectOne("Member.idOverlapCheck",userid);
 	}

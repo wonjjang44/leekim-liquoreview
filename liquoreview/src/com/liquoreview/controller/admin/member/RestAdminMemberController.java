@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.liquoreview.common.Criteria;
@@ -36,10 +37,11 @@ public class RestAdminMemberController {
 	
 	// 회원정보관리용 회원목록 조회
 	@RequestMapping(value="/admin/member", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	public JSONObject getMemberList(HttpServletRequest request) {
+	public JSONObject getMemberList(HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage) {
 		logger.info("rest admin member controller 호출 :: member list 조회");
 		logger.info("member list 조회 전 페이징 세팅 시작");
-				
+		logger.info("request로 받은 currentPage 확인 : "+ request.getParameter("currentPage"));		
+		
 		List<Member> memberList = null;
 		int pageSize = 5;
 		JSONObject memberResultObj = new JSONObject();

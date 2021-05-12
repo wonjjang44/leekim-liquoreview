@@ -15,7 +15,7 @@
 		<div class="main-panel">
 			<!-- Navbar -->
 			<%@ include file="/WEB-INF/views/admin/inc/navi.jsp"%>
-
+			<input type="hidden" name="prevPage" value="<c:out value="${prevPage }"/>"/>
 			<div class="content">
 				<div class="row">
 					<div class="col-md-12">
@@ -90,10 +90,11 @@
 										</a>
 										 -->
 									</div>
-									<!-- <form id="hiddenListPageForm">
+									<form id="hiddenListPageForm">
 										<input type="hidden" name="currentPage" value="" />
 										<input type="hidden" name="pageSize" value="" />
-									</form> -->
+										<input type="hidden" name="curPos" value=""/>
+									</form>
 								</nav>
 								<!-- pager end -->
 								<!-- 검색영역 -->

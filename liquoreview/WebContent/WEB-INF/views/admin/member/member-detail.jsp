@@ -19,6 +19,9 @@ $(function(){
 
 	//Button 들 이벤트 추가
 	bt_editFlag=false;
+	$("button[name='bt_list']").click(function(){
+		location.href="/admin/member?currentPage="+<c:out value="${currentPage}"/>;
+	});
 	
 	$("button[name='bt_edit']").click(function(){
 		bt_editFlag=!bt_editFlag;
@@ -88,6 +91,9 @@ function removeDisabled(){
 	$("select[name='auth_id']").removeAttr("disabled");
 	$("select[name='auth_id']").focus();
 };
+//==========================================================
+//목록버튼 :: back to list
+//==========================================================
 
 //==========================================================
 //수정 버튼 한번 더 눌렀을 때 정보 수정
@@ -349,6 +355,10 @@ function setBirthDate() {
 									</div>
 									<div class="row">
 										<div class="update ml-5 mr-5">
+											<button type="button" class="btn btn-primary btn-round" name="bt_list">
+												목록
+											</button>
+											<input id="prevPage" type="hidden" name="currentPage" value="<c:out value="${currentPage }"/>"/>
 											<button type="button" class="btn btn-primary btn-round" name="bt_edit">
 												수정
 											</button>
