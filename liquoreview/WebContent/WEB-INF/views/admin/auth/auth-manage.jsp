@@ -75,6 +75,7 @@
 									</div>
 								</div>
 							</div>
+							<!-- card-footer end -->
 						</div>
 					</div>
 				</div>

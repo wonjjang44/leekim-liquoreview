@@ -31,7 +31,7 @@
 				</a>
 			</li>
 			<li
-				<%if (request.getRequestURI().equals("/admin/dashboard/manager.jsp")) {%>
+				<%if (request.getRequestURI().equals("/admin/auth")) {%>
 					class="active "
 				<%}%>
 			>
@@ -91,15 +91,23 @@
 					<span>리뷰 정보 관리</span>
 				</a>
 			</li>
-			<li
-				<%if (request.getRequestURI().equals("/admin/board/board-table.jsp")) {%>
-					class="active " 
-				<%}%>
-			>
+			<li class="has-dropdown">
 				<a href="/admin/dashboard/board-table.jsp">
 					<i	class="nc-icon nc-tile-56"></i>
-					<span>게시글 관리</span>
+					<span>게시판 관리</span>
 				</a>
+				<ul class="dropdown">
+						<li>
+							<a href="/admin/board/tag">
+								<span>글머리 관리</span>
+							</a>
+						</li>
+						<li>
+							<a href="">
+								<span>게시물 관리</span>
+							</a>
+						</li>
+					</ul>
 			</li>
 		</ul>
 	</div>
