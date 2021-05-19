@@ -9,6 +9,7 @@
 		<typeAlias type="com.liquoreview.model.domain.member.MemberPw" alias="MemberPw"/>
 		<typeAlias type="com.liquoreview.model.domain.admin.HiberAccount" alias="HiberAccount"/>
 		<typeAlias type="com.liquoreview.model.domain.admin.DelAccount" alias="DelAccount"/>
+		<typeAlias type="com.liquoreview.model.domain.board.Tag" alias="Tag"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/liquoreview/mybatis/mapper/AuthMapper.xml"/>
@@ -16,5 +17,6 @@
 		<mapper resource="com/liquoreview/mybatis/mapper/MemberPwMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/HiberAccountMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/DelAccountMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/BoardTagMapper.xml"/>
 	</mappers>
 </configuration>

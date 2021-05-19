@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Tag">
+	<sql id="sql_select">
+		select TAG_ID
+				,TAG_NAME
+				,REGDATE
+				,LAST_MODI_YMD
+		 from tag	
+	</sql>
+	
+	<select id="selectAll" resultType="Tag">
+		<include refid="sql_select"/> order by TAG_ID asc
+	</select>
+	
+	<select id="select" parameterType="int" resultType="Tag">
+		<include refid="sql_select"/>
+		where TAG_ID = #{tag_id}
+	</select>
+	
+	<insert id="insert" parameterType="Tag">
+		insert into tag(
+							    TAG_NAME
+							   ,LAST_MODI_YMD
+							)
+		 values(
+		 						#{tag_name}
+		 						,now()
+		 );
+	</insert>
+	<update id="update" parameterType="Tag">
+		update tag
+		set
+				 TAG_NAME = #{tag_name}
+				,LAST_MODI_YMD=now()
+		where TAG_ID=#{tag_id}
+	</update>
+	<delete id="delete" parameterType="int">
+		delete from tag
+		where TAG_ID=#{tag_id}
+	</delete>
+</mapper>

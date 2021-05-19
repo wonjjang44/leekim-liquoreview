@@ -8,7 +8,19 @@ jQuery(document).ready(function(){
 	console.log("auth.js import 성공");
 	$("#authModal").hide();
 	getAuthList();
+	
+	//모달 close hide 이후 이벤트 제어
+	//모달 open(show) 이후 그냥 닫았을 때 javascript 이벤트로 닫지 않고
+	//부트스트랩 속성으로 닫았더니, 모달 오픈 시 이벤트로 얻어놓은 값이 reset되지 않아서 추가
+	$("#authModal").on('hidden.bs.modal', function(){
+		console.log('모달 닫힘');
+		$(".auth_id_checkbox").prop("checked",false);
+		$("#hidden_auth_id").val(0);
+	});
+	
 });
+
+
 
 //권한 리스트 조회
 function getAuthList() {
@@ -108,9 +120,9 @@ function authAddPop(){
 		authModalPop();
 	}else{
 		alert("체크박스 해제 후 다시 진행해주세요.");
-		$(".auth_id_checkbox").prop("checked",false);
-		$("#hidden_auth_id").val(0);
 	}
+	$(".auth_id_checkbox").prop("checked",false);
+	$("#hidden_auth_id").val(0);
 }
 
 //권한수정버튼 모달 요청
@@ -125,7 +137,7 @@ function authModiPop(){
 		authModalPop();
 	}
 }
-//권한 추가 Modal pop - add
+//권한 추가/수정 Modal pop - add
 function authModalPop() {
 	console.log("권한추가/수정 버튼 클릭으로 authModalPop 호출");
 	
@@ -286,3 +298,5 @@ function authDel() {
 	}
 	
 }
+
+

@@ -36,7 +36,7 @@
 												<th>최종 수정일시</th>
 											</tr>
 										</thead>
-										<tbody class="tabl_data_container">
+										<tbody id="tbl_data_container">
 										</tbody>
 									</table>
 									<input id="hidden_tag_id" type="hidden" name="tag_id"/>

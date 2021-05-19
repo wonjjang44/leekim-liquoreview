@@ -8,6 +8,12 @@ jQuery(document).ready(function(){
 	console.log("boardTag.js import 성공");
 	$("#boardTagModal").hide();
 	getBoardTagList();
+	
+	$("#boardTagModal").on('hidden.bs.modal', function(){
+		console.log('모달 닫힘');
+		$(".tag_id_checkbox").prop("checked",false);
+		$("#hidden_tag_id").val(0);
+	});
 });
 
 // 글머리(boardTag) 리스트 조회
@@ -35,7 +41,7 @@ function handleBoardTagList(data) {
 		let obj = data[key];
 		con.append("<tr id='table_tr_"+obj.tag_id+"'>");
 		//tag_id
-		con.append("<td><input class='tag_id_checkbox' type='checkbox' name='tag_id' value='"+obj.tag_id+"'/></td>");
+		con.append("<td><input class='tag_id_checkbox' type='checkbox' name='tag_id' value='"+obj.tag_id+"' onChange='checkboxHandle("+obj.tag_id+")'/></td>");
 		//tag_name
 		con.append("<td>"+obj.tag_name+"</td>");
 		//regdate
@@ -55,9 +61,9 @@ function boardTagAddPop() {
 		boardTagModalPop();
 	} else {
 		alert("체크박스 해제 후 다시 진행해주세요.");
-		$(".tag_id_checkbox").prop("checked", false);
-		$("#hidden_tag_id").val(0);
 	}
+	$(".tag_id_checkbox").prop("checked", false);
+	$("#hidden_tag_id").val(0);
 }
 
 //글머리 수정버튼 모달 요청
@@ -85,16 +91,16 @@ function boardTagModalPop() {
 		tag_id = $("#hidden_tag_id").val();
 	}
 	$.ajax({
-		url:"/rest/admin/board/modal/"+tag_id,
-		type:"GET",
+		url:"/rest/admin/board/tag/modal/"+tag_id,
+		type:"get",
 		dataType:"html",
 		contentType:"application/html; charset=UTF8",
-		success: (data) => {
+		success: function(data) {
 			console.log(data);
 			$(".modal-dialog").html(data);
-			$("boardTagModal").modal('toggle');
+			$("#boardTagModal").modal('toggle');
 		},
-		error: (data) => {
+		error: function(data) {
 			console.log("에러발생");
 			console.log(data);
 			alert("에러가 발생했습니다.");
@@ -139,6 +145,13 @@ function checkCnt() {
 
 function checkboxHandle(tag_id) {
 	console.log("체크박스 눌러 채집된 tag_id 확인: "+tag_id);
+	let checkArray = checkCnt();
+	if(checkArray.length > 0) {
+		console.log(checkArray);
+	}
+	//$(".tag_id_checkbox").prop("checked", false);
+	//$("#hidden_tag_id").val(0);
+	
 	$("#hidden_tag_id").val(tag_id);
 	console.log("체크박스 눌러 hidden에 보관된 tag_id 확인 : "+$("#hidden_tag_id").val());
 }
@@ -150,9 +163,9 @@ function reset() {
 }
 
 //글머리 추가
-function tagAdd() {
+function boardTagAdd() {
 	//validate form in modal
-	let validResult = validateAuthModal();
+	let validResult = validateboardTagModal();
 	
 	if (validResult) {
 		$.ajax({
@@ -161,11 +174,11 @@ function tagAdd() {
 			data: {
 				tag_name:$("#new_tag_name").val()
 			},
-			success:(result) => {
+			success:function(result) {
 				let tagInsertResult = JSON.parse(result);
 				handleInsertResult(tagInsertResult);
 			},
-			error:(data) => {
+			error:function(data) {
 				console.log("글머리 추가 실패");
 				console.log(data);
 			}
@@ -198,11 +211,11 @@ function boardTagDel() {
 				url:"/rest/admin/board/tag/"+checkArray,
 				contentType:"application/json",
 				dataType:'json',
-				success:(result) => {
+				success:function(result) {
 					console.log(result);
 					getBoardTagList();
 				},
-				error:(result) => {
+				error:function(result) {
 					console.log(result);
 				}
 			});

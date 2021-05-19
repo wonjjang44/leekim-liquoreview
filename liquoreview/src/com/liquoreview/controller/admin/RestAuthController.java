@@ -40,7 +40,6 @@ public class RestAuthController {
 		logger.info("최종수정시간의 자료형확인 : "+authList.get(0).getLast_modi_ymd().getClass().getName());
 		logger.info("authList첫 번째 리스트 통째로 확인 : "+authList.get(0));
 		return authList;
-		//return null;
 	}
 	
 	//auth_id로 1건 조회
@@ -81,7 +80,6 @@ public class RestAuthController {
 	}
 	
 	@RequestMapping(value="/admin/auth",method=RequestMethod.POST,produces = "application/text;charset=UTF-8")
-	//public String insertAuth(Auth auth, HttpServletRequest request) {
 	public String insertAuth(Auth auth, HttpServletRequest request) {
 		
 		logger.info("adm_assign requestParam 확인 : "+request.getParameter("adm_assign"));
