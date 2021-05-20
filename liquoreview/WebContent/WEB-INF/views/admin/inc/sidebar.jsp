@@ -81,18 +81,15 @@
 					<span>회원 정보 관리</span>
 				</a>
 			</li>
-			<li
-				<%if (request.getRequestURI().equals("/WEB-INF/admin/review/review-table.jsp")) {%>
-					class="active "
-				<%}%>
-			>
-				<a href="/admin/reviews">
+			<li>
+				<a href="/admin/review">
 					<i class="nc-icon nc-caps-small"></i>
 					<span>리뷰 정보 관리</span>
 				</a>
 			</li>
 			<li class="has-dropdown">
-				<a href="/admin/dashboard/board-table.jsp">
+				<!-- <a href="/admin/dashboard/board-table.jsp"> -->
+				<a href="#none">
 					<i	class="nc-icon nc-tile-56"></i>
 					<span>게시판 관리</span>
 				</a>
@@ -103,7 +100,7 @@
 							</a>
 						</li>
 						<li>
-							<a href="">
+							<a href="/admin/board">
 								<span>게시물 관리</span>
 							</a>
 						</li>
