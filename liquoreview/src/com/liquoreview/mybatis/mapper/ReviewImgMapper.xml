@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReviewImg">
+	<resultMap type="ReviewImg" id="reviewImgMap">
+		<id column="REVIEW_IMG_ID" property="review_img_id"/>
+		<result column="FILENAME" property="filename"/>
+		<result column="THUMB_YN" property="thumb_yn"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="REVIEW_ID" property="review" javaType="Review" select="Review.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+	</sql>
+	
+	<select id="selectAll" resultMap="reviewImgMap">
+		<include refid="sql_select"/> order by REVIEW_IMG_ID asc
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="reviewImgMap">
+		<include refid="sql_select"/>
+		where REVIEW_IMG_ID=#{review_img_id}
+	</select>
+	
+	<select id="selectByReview" parameterType="int" resultMap="reviewImgMap">
+		<include refid="sql_select"/>
+		where REVIEW_ID = #{review.review_id}
+		order by REVIEW_ID
+	</select>
+	
+	<insert id="insert" parameterType="ReviewImg">
+		insert into review_img(REVIEW_ID
+										,FILENAME
+										,THUMB_YN
+										,LAST_MODI_YMD
+										)
+			values(
+									   #{review.review_id}
+									  ,#{filename}
+									  ,#{thumb_yn}
+									  ,now()
+			);	
+	</insert>
+	
+	<update id="update" parameterType="ReviewImg">
+		update review_img
+								set
+										REVIEW_ID = #{review.review_id}
+									   ,FILENAME = #{filename}
+									   ,THUMB_YN = #{thumb_yn}
+									   ,LAST_MODI_YMD = now()
+		   where REVIEW_IMG_ID = #{review_img_id}			
+	</update>
+	<insert id="updateFile" parameterType="ReviewImg">
+		insert into review_img(REVIEW_ID
+										,FILENAME
+										,THUMB_YN
+										,LAST_MODI_YMD
+										)
+			values(
+									   #{review.review_id}
+									  ,#{filename}
+									  ,#{thumb_yn}
+									  ,now()
+			);
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from review_img
+		where REVIEW_IMG_ID = #{review_img_id}
+	</delete>
+	<delete id="deleteFile" parameterType="ReviewImg">
+		delete from review_img
+		where FILENAME = #{filename}
+	</delete>
+</mapper>

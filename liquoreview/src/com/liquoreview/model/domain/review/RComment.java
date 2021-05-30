@@ -10,11 +10,13 @@ public class RComment {
 	private Review review;
 	private Member member;
 	private String detail;
+	private int like_hit;
+	private int hate_hit;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
 	private Timestamp regdate;
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
 	private Timestamp last_modi_ymd;
-	
+
 	//getters and setters
 	public int getR_comment_id() {
 		return r_comment_id;
@@ -40,6 +42,18 @@ public class RComment {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	public int getLike_hit() {
+		return like_hit;
+	}
+	public void setLike_hit(int like_hit) {
+		this.like_hit = like_hit;
+	}
+	public int getHate_hit() {
+		return hate_hit;
+	}
+	public void setHate_hit(int hate_hit) {
+		this.hate_hit = hate_hit;
+	}
 	public Timestamp getRegdate() {
 		return regdate;
 	}
@@ -52,12 +66,11 @@ public class RComment {
 	public void setLast_modi_ymd(Timestamp last_modi_ymd) {
 		this.last_modi_ymd = last_modi_ymd;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "RComment [r_comment_id=" + r_comment_id + ", review=" + review + ", member=" + member + ", detail="
-				+ detail + ", regdate=" + regdate + ", last_modi_ymd=" + last_modi_ymd + "]";
+				+ detail + ", like_hit=" + like_hit + ", hate_hit=" + hate_hit + ", regdate=" + regdate
+				+ ", last_modi_ymd=" + last_modi_ymd + "]";
 	}
-	
-	
 }

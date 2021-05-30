@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Review">
+	<resultMap type="Review" id="reviewMap">
+		<id column="REVIEW_ID" property="review_id"/>
+		<result column="TITLE" property="title"/>
+		<result column="DETAIL" property="detail"/>
+		<result column="SCORE" property="score"/>
+		<result column="HIT" property="hit"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="ALCOHOL_ID" property="alcohol" javaType="Alcohol" select="Alcohol.select"/>
+		<association column="MEMBER_ID" property="member" javaType="Member" select="Member.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+		select REVIEW_ID
+				,ALCOHOL_ID
+				,MEMBER_ID
+				,TITLE
+				,DETAIL
+				,SCORE
+				,HIT
+				,REGDATE
+				,LAST_MODI_YMD
+		  from review
+	</sql>
+	
+	<select id="selectAll" resultMap="reviewMap">
+		<include refid="sql_select"/> order by REVIEW_ID asc
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="reviewMap">
+		<include refid="sql_select"/>
+		where REVIEW_ID=#{review_id}
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="Review">
+		
+	</insert>
+	
+	<update id="update" parameterType="Review">
+				
+	</update>
+	
+	<delete id="delete" parameterType="int">
+	</delete>
+</mapper>

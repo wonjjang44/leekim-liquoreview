@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RComment">
+	<resultMap type="RComment" id="RCommentMap">
+		<id column="R_COMMENT_ID" property="r_comment_id"/>
+		<result column="DETAIL" property="detail"/>
+		<result column="LIKE_HIT" property="like_hit"/>
+		<result column="HATE_HIT" property="hate_hit"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="REVIEW_ID" property="review" javaType="Review" select="Review.select"/>
+		<association column="MEMBER_ID" property="member" javaType="Member" select="Member.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+	</sql>
+	
+	<select id="selectAll" resultMap="RCommentMap">
+		<include refid="sql_select"/> order by REVIEW_ID asc
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="RCommentMap">
+		<include refid="sql_select"/>
+		where R_COMMENT_ID=#{r_comment_id}
+	</select>
+	
+	
+	
+	<insert id="insert" parameterType="RComment">
+		
+	</insert>
+	
+	<update id="update" parameterType="RComment">
+				
+	</update>
+	
+	<delete id="delete" parameterType="int">
+	</delete>
+</mapper>

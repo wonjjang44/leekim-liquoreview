@@ -8,6 +8,7 @@ public class ReviewImg {
 	private int review_img_id;
 	private Review review;
 	private String filename;
+	private boolean thumb_yn;
 	private MultipartFile[] myFile;
 	private String[] deleteFile;
 	public int getReview_img_id() {
@@ -28,6 +29,12 @@ public class ReviewImg {
 	public void setFilename(String filename) {
 		this.filename = filename;
 	}
+	public boolean isThumb_yn() {
+		return thumb_yn;
+	}
+	public void setThumb_yn(boolean thumb_yn) {
+		this.thumb_yn = thumb_yn;
+	}
 	public MultipartFile[] getMyFile() {
 		return myFile;
 	}
@@ -44,8 +51,8 @@ public class ReviewImg {
 	@Override
 	public String toString() {
 		return "ReviewImg [review_img_id=" + review_img_id + ", review=" + review + ", filename=" + filename
-				+ ", myFile=" + Arrays.toString(myFile) + ", deleteFile=" + Arrays.toString(deleteFile) + "]";
+				+ ", thumb_yn=" + thumb_yn + ", myFile=" + Arrays.toString(myFile) + ", deleteFile="
+				+ Arrays.toString(deleteFile) + "]";
 	}
-	
 	
 }
