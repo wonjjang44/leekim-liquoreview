@@ -3,7 +3,7 @@ package com.liquoreview.model.domain.alcohol;
 
 import java.sql.Timestamp;
 
-import com.liquoreview.model.domain.admin.Subcategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class Alcohol {
 	private int alcohol_id;
@@ -11,7 +11,9 @@ public class Alcohol {
 	private String name;
     private Float degree;
     private String text;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Timestamp regdate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Timestamp last_modi_ymd;
 
     //getters and setters
@@ -57,4 +59,12 @@ public class Alcohol {
 	public void setLast_modi_ymd(Timestamp last_modi_ymd) {
 		this.last_modi_ymd = last_modi_ymd;
 	}
+	
+	@Override
+	public String toString() {
+		return "Alcohol [alcohol_id=" + alcohol_id + ", subcategory=" + subcategory + ", name=" + name + ", degree="
+				+ degree + ", text=" + text + ", regdate=" + regdate + ", last_modi_ymd=" + last_modi_ymd + "]";
+	}
+	
+	
 }

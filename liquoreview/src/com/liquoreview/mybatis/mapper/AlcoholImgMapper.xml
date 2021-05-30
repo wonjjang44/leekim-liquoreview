@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AlcImg">
+	<resultMap type="AlcImg" id="AlcImgMap">
+		<id column="ALC_IMG_ID" property="alc_img_id"/>
+		<result column="FILENAME" property="filename"/>
+		<result column="THUMB_YN" property="thumb_yn"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="ALCOHOL_ID" property="alcohol" javaType="Alcohol" select="Alcohol.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+		select 	 ALC_IMG_ID
+					,ALCOHOL_ID
+					,FILENAME
+					,THUMB_YN
+					,REGDATE
+					,LAST_MODI_YMD
+		  from   alc_img
+	</sql>
+	
+	<select  id="selectAll">
+		<include refid="sql_select"/>
+		order by ALCOHOL_ID, ALC_IMG_ID
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="AlcoholMap">
+		<include refid="sql_select"/>
+		where ALC_IMG_ID = #{alc_img_id}
+	</select>
+	
+	<select id="selectByAlcohol" parameterType="int" resultMap="AlcoholMap">
+		<include refid="sql_select"/>
+		where ALCOHOL_ID = #{alcohol.alcohol_id}
+		order by ALCOHOL_ID
+	</select>
+	
+	<insert id="insert" parameterType="AlcImg">
+		insert into alc_img(ALCOHOL_ID
+								   ,FILENAME
+								   ,THUMB_YN
+								   ,LAST_MODI_YMD
+								)
+			values(
+								#{alcohol.alcohol_id}
+							   ,#{filename}
+							   ,#{thumb_yn}
+							   ,now()
+			);
+	</insert>
+	
+	<!-- 알콜제품 이미지 수정 -->
+	<update id="update" parameterType="AlcImg">
+		update alc_img 
+							set
+									ALCOHOL_ID = #{alcohol.alcohol_id}
+							   	   ,FILENAME = #{filename}
+							       ,THUMB_YN = #{thumb_yn}
+							       ,LAST_MODI_YMD = now()
+		   where ALC_IMG_ID = #{alc_img_id}
+	</update>
+	<!-- 수정 이미지 파일 insert처리 -->
+	<insert id="updateFile" parameterType="AlcImg">
+		insert into alc_img(ALCOHOL_ID
+								   ,FILENAME
+								   ,THUMB_YN
+								   ,LAST_MODI_YMD
+								)
+			values(
+								#{alcohol.alcohol_id}
+							   ,#{filename}
+							   ,#{thumb_yn}
+							   ,now()
+			);
+	</insert>
+	
+	<!-- 알콜제품 이미지 DB삭제 -->
+	<delete id="delete" parameterType="int">
+		delete from alc_img
+		where ALC_IMG_ID = #{alc_img_id}
+	</delete>
+	<!-- 알콜제품 이미지 실제파일 삭제 -->
+	<delete id="deleteFile" parameterType="AlcImg">
+		delete from alc_img
+		where FILENAME = #{filename}
+	</delete>
+</mapper>

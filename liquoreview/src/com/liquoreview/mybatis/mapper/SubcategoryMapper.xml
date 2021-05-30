@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Subcategory">
+	<resultMap type="Subcategory" id="SubcategoryMap">
+		<id column="SUBCATEGORY_ID" property="subcategory_id"/>
+		<result column="NAME" property="name"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="TOPCATEGORY_ID" property="topcategory" javaType="Topcategory" select="Topcategory.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+		select 	 SUBCATEGORY_ID
+					,NAME
+					,REGDATE
+					,LAST_MODI_YMD
+		  from 	subcategory
+	</sql>
+	
+	<select id="selectAll" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		order by TOPCATEGORY_ID, SUBCATEGORY_ID
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		where SUBCATEGORY_ID = #{subcategory_id}
+	</select>
+	
+	<select id="selectAllByTopCate" parameterType="int" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		where TOPCATEGORY_ID = #{topcategory.topcategory_id}
+		order by TOPCATEGORY_ID
+	</select>
+	
+	<select id="selectByName" parameterType="String" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		where NAME = #{name}
+	</select>
+	
+	<!-- 서브카테고리 중복확인 -->
+	<select id="cateNameCheck" parameterType="String" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		where NAME = #{name}
+	</select>
+	
+	<insert id="insert" parameterType="Subcategory">
+		insert into subcategory(TOPCATEGORY_ID
+										 ,NAME
+										 ,LAST_MODI_YMD
+										)
+	 		values(
+	 									#{topcategory.topcategory_id}
+	 								   ,#{name}
+	 								   ,now()
+	 		);
+	 	<selectKey order="AFTER" resultType="int" keyProperty="subcategory_id">
+	 		select last_insert_id()
+	 	</selectKey>
+	</insert>
+	
+	<update id="update" parameterType="Subcategory">
+		update subcategory
+								set
+									 TOPCATEGORY_ID = #{topcategory.topcategory_id}
+									,NAME = #{name}
+									,LAST_MODI_YMD = now()
+		 where SUBCATEGORY_ID = #{subcategory_id} 
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from subcategory
+		where SUBCATEGORY_ID = #{subcategory_id}
+	</delete>
+	
+	<!-- 검색 -->
+	<select id="search" parameterType="String" resultMap="SubcategoryMap">
+		<include refid="sql_select"/>
+		where NAME like CONCAT('%',#{searchWord},'%')
+	</select>
+</mapper>

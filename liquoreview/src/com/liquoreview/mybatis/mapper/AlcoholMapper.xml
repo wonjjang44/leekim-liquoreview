@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Alcohol">
+	<resultMap type="Alcohol" id="AlcoholMap">
+		<id column="ALCOHOL_ID" property="alcohol_id"/>
+		<result column="NAME" property="name"/>
+		<result column="DEGREE" property="degree"/>
+		<result column="DETAIL" property="detail"/>
+		<result column="REGDATE" property="regdate"/>
+		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
+		<association column="SUBCATEGORY_ID" property="subcategory" javaType="Subcategory" select="Subcategory.select"/>
+	</resultMap>
+	
+	<sql id="sql_select">
+		select 	 ALCOHOL_ID
+					,SUBCATEGORY_ID
+					,NAME
+					,DEGREE
+					,DETAIL
+					,REGDATE
+					,LAST_MODI_YMD
+		  from   alcohol
+	</sql>
+	
+	<select  id="selectAll">
+		<include refid="sql_select"/>
+		order by SUBCATEGORY_ID, ALCOHOL_ID
+	</select>
+	
+	<select id="select" parameterType="int" resultMap="AlcoholMap">
+		<include refid="sql_select"/>
+		where ALCOHOL_ID = #{alcohol_id}
+	</select>
+	
+	<select id="selectBySubCategory" parameterType="int" resultMap="AlcoholMap">
+		<include refid="sql_select"/>
+		where SUBCATEGORY_ID = #{subcategory.subcategory_id}
+		order by SUBCATEGORY_ID
+	</select>
+	
+	<!-- 알콜명 중복확인 -->
+	<select id="alcoholNameCheck" parameterType="Alcohol" resultMap="AlcoholMap">
+		<include refid="sql_select"/>
+		where NAME = #{name}
+	</select>
+	
+	<insert id="insert" parameterType="Alcohol">
+		insert into alcohol(SUBCATEGORY_ID
+								  ,NAME
+								  ,DEGREE
+								  ,DETAIL
+								  ,LAST_MODI_YMD
+								)
+			values(
+								#{subcategory.subcategory_id}
+							   ,#{name}
+							   ,#{degree}
+							   ,#{detail}
+							   ,now()
+			);
+	</insert>
+	
+	<update id="update" parameterType="Alcohol">
+		update alcohol 
+						set
+								SUBCATEGORY_ID = #{subcategory.subcategory_id}
+							   ,NAME = #{name}
+							   ,DEGREE = #{degree}
+							   ,DETAIL = #{detail}
+							   ,LAST_MODI_YMD = now()
+		   where ALCOHOL_ID = #{alcohol_id}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete from alcohol
+		where ALCOHOL_ID = #{alcohol_id}
+	</delete>
+</mapper>
