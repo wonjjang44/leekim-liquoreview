@@ -10,6 +10,13 @@
 		<typeAlias type="com.liquoreview.model.domain.admin.HiberAccount" alias="HiberAccount"/>
 		<typeAlias type="com.liquoreview.model.domain.admin.DelAccount" alias="DelAccount"/>
 		<typeAlias type="com.liquoreview.model.domain.board.Tag" alias="Tag"/>
+		<typeAlias type="com.liquoreview.model.domain.review.Review" alias="Review"/>
+		<typeAlias type="com.liquoreview.model.domain.review.RComment" alias="RComment"/>
+		<typeAlias type="com.liquoreview.model.domain.review.ReviewImg" alias="ReviewImg"/>
+		<typeAlias type="com.liquoreview.model.domain.alcohol.Topcategory" alias="Topcategory"/>
+		<typeAlias type="com.liquoreview.model.domain.alcohol.Subcategory" alias="Subcategory"/>
+		<typeAlias type="com.liquoreview.model.domain.alcohol.Alcohol" alias="Alcohol"/>
+		<typeAlias type="com.liquoreview.model.domain.alcohol.AlcImg" alias="AlcImg"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/liquoreview/mybatis/mapper/AuthMapper.xml"/>
@@ -18,5 +25,12 @@
 		<mapper resource="com/liquoreview/mybatis/mapper/HiberAccountMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/DelAccountMapper.xml"/>
 		<mapper resource="com/liquoreview/mybatis/mapper/BoardTagMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/ReviewMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/RCommentMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/ReviewImgMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/TopcategoryMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/SubcategoryMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/AlcoholMapper.xml"/>
+		<mapper resource="com/liquoreview/mybatis/mapper/AlcoholImgMapper.xml"/>
 	</mappers>
 </configuration>
