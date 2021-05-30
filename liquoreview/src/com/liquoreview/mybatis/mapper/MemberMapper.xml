@@ -193,6 +193,11 @@
 		 where MEMBER_ID = #{member_id}				
 	</update>
 	
+	<delete id="delete" parameterType="int">
+		delete from member 
+		where MEMBER_ID = #{member_id}
+	</delete>
+	
 	<!-- search type and keyword-->
 	<sql id="searchDynamic">
 		<if test="searchType != null">
