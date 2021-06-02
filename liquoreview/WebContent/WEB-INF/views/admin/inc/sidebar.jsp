@@ -40,6 +40,18 @@
 					<span>권한 관리</span>
 				</a>
 			</li>
+			<li>
+				<a href="/admin/member">
+					<i class="nc-icon nc-single-02"></i>
+					<span>회원 정보 관리</span>
+				</a>
+			</li>
+			<li>
+				<a href="/admin/categories">
+					<i	class="nc-icon nc-bell-55"></i>
+					<span>카테고리 관리</span>
+				</a>
+			</li>
 			<li
 				<%if (request.getRequestURI().equals("/WEB-INF/admin/alcohol/alcohol-table.jsp")
 					|| request.getRequestURI().equals("/WEB-INF/admin/alcohol/alcohol-regist.jsp")
@@ -50,35 +62,6 @@
 				<a href="/admin/alcohols">
 					<i class="nc-icon nc-spaceship"></i>
 					<span>술 정보 관리</span>
-				</a>
-			</li>
-			<li
-				<%if (request.getRequestURI().equals("/WEB-INF/admin/category/category-top-table.jsp")) {%>
-				class="active " <%}%>
-			>
-				<a href="/admin/topcategories">
-					<i	class="nc-icon nc-bell-55"></i>
-					<span>탑 카테고리 관리</span>
-				</a>
-			</li>
-			<li
-				<%if (request.getRequestURI().equals("/WEB-INF/admin/category/category-sub-table.jsp")) {%>
-					class="active " 
-				<%}%>
-			>
-				<a href="/admin/subcategories">
-					<i	class="nc-icon nc-satisfied"></i>
-					<span>서브 카테고리 관리</span>
-				</a>
-			</li>
-			<li
-				<%if (request.getRequestURI().equals("/WEB-INF/admin/member/member-table.jsp")) {%>
-					class="active "
-				<%}%>
-			>
-				<a href="/admin/member">
-					<i class="nc-icon nc-single-02"></i>
-					<span>회원 정보 관리</span>
 				</a>
 			</li>
 			<li>
