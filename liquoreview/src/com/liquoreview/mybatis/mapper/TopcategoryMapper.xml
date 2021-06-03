@@ -11,7 +11,7 @@
 		  from 	topcategory
 	</sql>
 	
-	<select id="selectAll" resultType="Topcategory">
+	<select id="selectTopcateList" resultType="Topcategory">
 		<include refid="sql_select"/>
 		order by TOPCATEGORY_ID asc
 	</select>

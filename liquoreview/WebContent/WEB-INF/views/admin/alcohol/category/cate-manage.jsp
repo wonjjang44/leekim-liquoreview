@@ -36,7 +36,9 @@
 												<table class="table">
 													<thead class="text-primary">
 														<tr>
-															<th>No</th>
+															<th>
+																<input id="topCateCheck" type="checkbox" name="topCateCheck" onClick="checkAll()"/>
+															</th>
 															<th>Name</th>
 															<th>REGDATE</th>
 															<th>최종수정일시</th>
@@ -125,6 +127,13 @@
 									</div>
 								</div>
 							</div>
+							<!-- modal setting -->
+							<div id="cateModal" class="modal fade" role="dialog">
+								<div class="modal-dialog">
+									<!-- Modal content :: 카테고리명 추가 또는 수정 -->
+								</div>
+							</div>
+							<!-- modal end -->
 							<!-- card-body end -->
 							<div class="card-footer">
 								<!-- 검색영역 -->
