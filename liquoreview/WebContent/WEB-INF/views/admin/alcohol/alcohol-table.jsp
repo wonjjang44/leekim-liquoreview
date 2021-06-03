@@ -39,6 +39,12 @@ $(function(){
 		$('#delModal').modal("hide");
 	});
 
+	//선택한 엑셀 파일명 input태그에 나타내기
+	$("#excelFile").change(function(){
+		 $(this).next('.custom-file-label').html(event.target.files[0].name);
+	});
+	
+
 });
 
 function changeModalValue(alcohol_id){
@@ -74,7 +80,7 @@ function checkFileType(filePath) {
 	}
 }
 
-function check() {
+function excelCheck() {
 	var file = $("#excelFile").val();
 
 	if (file == "" || file == null) {
@@ -103,8 +109,12 @@ function check() {
             success: function(data){
 				console.log(data);
 				console.log(data.excelResult);
+				
                 if(data> 0){
 	                alert("업로드 완료");
+	                
+	                //업로드 완료 후 비동기로 화면을 다시 불러와야 함.
+	                
                 }
             },
             error : function(xhr){
@@ -114,6 +124,16 @@ function check() {
         })
 
 	}
+}
+
+//주류 정보 등록 엑셀 서식 다운로드
+function excelDown(){
+	$("#excelDownloadForm").attr({
+		action : "/excelDownload",
+		method : "get"
+	});
+	
+	$("#excelDownloadForm").submit();
 }
 
 </script>
@@ -126,11 +146,11 @@ function check() {
 				<!-- Start Modal content-->
 				<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">카테고리 삭제</h4>
+						<h4 class="modal-title">주류정보 삭제</h4>
 						<button type="button" class="close" data-dismiss="modal">&times;</button>
 					</div>
 					<div class="modal-body">
-						<form name="del_form">
+						<form id="del_form">
 							<input type="hidden" name="alcohol_id">
 							<p>정말 삭제 하시겠습니까?</p>
 						</form>
@@ -166,18 +186,25 @@ function check() {
 									<!-- 파일 업로드 Start -->
 									<form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data">
 					                	<div class="form-group row" align="right">
-								            <label for="inputFile" class="col-sm-2 col-form-label" style = "left:820px;"><strong>첨부 파일</strong></label>
-								            <div class="col-sm-10"  align="right">
-								                <div class="custom-file" id="inputFile" style = "width : 270px;">
-								                    <input name="excelFile" type="file" class="custom-file-input" id="excelFile" style = "width : 270px;">
-								                    <label class="custom-file-label" for="excelFile" style="position: absolute; left : 20px;">파일선택</label>
+								            <div class="col-sm-10"  align="right" style = "left : 174px;">
+								                <div class="custom-file" id="inputFile" style = "width : 250px;">
+								                    <input name="excelFile" type="file" class="custom-file-input" id="excelFile" style = "width : 250px;">
+								                    <label class="custom-file-label" for="excelFile" style="position: absolute; text-align : left;">파일선택</label>
 								                </div>
 								                
-									          <button type="button" id="addExcelImpoartBtn" class="btn" onclick="check()" style = "position: relative; top : -15px;"><span>추가</span></button>
+									          <button type="button" id="addExcelImpoartBtn" class="btn" onclick="excelCheck()" style = "position: relative; top : -15px;"><span>엑셀업로드</span></button>
 								            </div>
 							        	</div>
 									</form>
-								<!-- 파일 업로드 End -->
+									<!-- 파일 업로드 End -->
+								
+								<!-- 파일 다운로드 Start -->
+								<form id = "excelDownloadForm">
+									<div class="custom-file" id="downFile" align="right">
+										<button type="button" id="excel_down_btn" class="btn" onclick="excelDown()" style = "position: relative; top : -35px;"><span>서식다운로드</span></button>
+					                </div>
+								</form>
+								<!-- 파일 다운로드 End -->
 								
 								<!-- 옵션선택 Start -->
 								<div id="outter">
@@ -223,7 +250,7 @@ function check() {
 														<td>${alcoholVal.getALCOHOL_ID() }</td>
 														<td>${alcoholVal.getTOP_NM() }</td>
 														<td>${alcoholVal.getSUB_NM() }</td>
-														<td><a href = "#">${alcoholVal.getALCOHOL_NM()}</a></td>
+														<td><a href = "/admin/alcohol/alcoholLstDtl?alcoholId=${alcoholVal.getALCOHOL_ID() }" id = "al_dtl_btn">${alcoholVal.getALCOHOL_NM()}</a></td>
 														<td>${alcoholVal.getALC_DEGREE() }</td>
 														<td>
 															<button type = "button" id = "al_del" class = "btn btn-primary btn-round" 

@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <%@ include file="/WEB-INF/views/admin/inc/head.jsp"%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -119,6 +119,16 @@ $(function(){
 	CKEDITOR.replace( "detail" );
 	
 	
+	var path = URL.createObjectURL(obj.files[0]); 
+	var dtlValue = '${alcoholDtl}'; 
+		
+	if(dtlValue == null || dtlValue == ""){
+		$("#photo").attr("src", "/resources/images/icon_camera.png");
+	}else{
+		$("#photo").attr("src", path);
+	}
+	
+	
 });
 
 
@@ -208,6 +218,13 @@ function createSubcategory(obj){
 	}
 }
 
+function regist(){
+	$("form").attr({
+		method:"post",
+		action:"/admin/alcohols"
+	});
+	$("form").submit();
+}
 
 //이미지 등록 이벤트
 function addPhoto(obj){
@@ -226,9 +243,6 @@ function addPhoto(obj){
 	//최종적으로 업로드할 파일의 확장자를 가져온다.
 	var getFileExtension = arrFilename[1];
 	
-	//파일을 몇개 등록했는지 카운팅
-	var fileCnt = obj.files.length;
-	
 	//이미지 파일이 아니면 등록 불가    
 	if(getFileExtension != "jpg" && getFileExtension != "png" && getFileExtension != "jpeg" && getFileExtension != "gif"){
 		alert("이미지 파일만 등록 가능합니다.");
@@ -236,10 +250,11 @@ function addPhoto(obj){
 	}else{
 		$("#carousel-items").html("");
 		$("#carousel-indicators").html("");
+		
+		//다중 이미지 첨부(한 번에 두 건 이상 등록할 시)
 		$("#carousel-items").append("<div class='item active'><img class='img-thumbnail' src='"+path+"' style='width: 100%;height: 300px;'/></div>");
 		$("#carousel-indicators").append("<li data-target='#myCarousel' data-slide-to='0' class='active'></li>");
 		
-		//다중 이미지 첨부(한 번에 두 건 이상 등록할 시)
 		for(var i=1;i<obj.files.length;i++){
 			path = URL.createObjectURL(obj.files[i]);
 			$("#carousel-items").append("<div class='item'><img class='img-thumbnail' src='"+path+"' style='width: 100%;height: 300px;'/></div>");
@@ -260,36 +275,39 @@ function addPhoto(obj){
          <!-- Navbar -->
          <%@ include file="/WEB-INF/views/admin/inc/navi.jsp"%>
          <!-- End Navbar -->
-
-		<div class="content">
+         <!-- <div class="panel-header panel-header-sm">
+  
+  
+</div> -->
+<div class="content">
             <div class="row">
                <div class="col-md-3">
-                  <!-- Carousel Start -->
-                  <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 100%;">
                   
-					  <!-- 등록된 파일 갯수 -->
+                  <div id="myCarousel" class="carousel slide" data-ride="carousel" style="width: 100%;">
+					  <!-- Indicators -->
 					  <ol class="carousel-indicators" id="carousel-indicators">
 					    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
 					  </ol>
 					
-					  <!-- 등록된 이미지 파일들 -->
+					  <!-- Wrapper for slides -->
 					  <div class="carousel-inner" id="carousel-items">
 					    <div class="item active">
-					      <img name="photo" class="img-thumbnail" src="/resources/images/icon_camera.png" alt="" style="width: 100%;height: 300px;">
+					      <img name="photo" class="img-thumbnail" id = "photo" src="/resources/images/icon_camera.png" alt="" style="width: 100%;height: 300px;">
 					    </div>
+					
 					  </div>
 					
 					  <!-- Left and right controls -->
 					  <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-					    <span class="glyphicon glyphicon-chevron-left" aria-hidden = "true"></span>
-					    <!-- <span class="sr-only">Previous</span> -->
+					    <span class="glyphicon glyphicon-chevron-left"></span>
+					    <span class="sr-only">Previous</span>
 					  </a>
 					  <a class="right carousel-control" href="#myCarousel" data-slide="next">
-					    <span class="glyphicon glyphicon-chevron-right" aria-hidden = "true"></span>
-					    <!-- <span class="sr-only">Next</span> -->
+					    <span class="glyphicon glyphicon-chevron-right"></span>
+					    <span class="sr-only">Next</span>
 					  </a>
 					</div>
-                  	<!-- Carousel End -->
+                  
                </div>
 
                <div class="col-md-8">
@@ -305,7 +323,7 @@ function addPhoto(obj){
                                  <div class="form-group">
                                     <label for="topcategory">주류 상위 카테고리</label> 
                                     <select class="form-control" id="top_option_val" name="topcategory_id" style="font-size: 14px;height:50px;">
-                                       <option value="default">전체</option>
+                                       <option value="default">${alcoholDtl.getTOP_NM() }</option>
                                     </select>
                                  </div>
                               </div>
@@ -316,7 +334,7 @@ function addPhoto(obj){
                                  <div class="form-group">
                                     <label for="subcategory">주류 하위 카테고리</label> 
                                     <select class="form-control" id="sub_option_val" name="subcategory_id" style="font-size: 14px;height:50px;">
-                                       <option value="default">전체</option>
+                                       <option value="default" >${alcoholDtl.getSUB_NM()}</option>
                                     </select>
                                  </div>
                               </div>
@@ -326,7 +344,7 @@ function addPhoto(obj){
                               <div class="col-md-5 pr-1">
                                  <div class="form-group">
                                     <label>주류 이름</label> 
-                                    <input type="text" class="form-control" id = "alc_name" name="name" placeholder="Input Alcohol's Name" value="">
+                                    <input type="text" class="form-control" id = "alc_name" name="name" placeholder="Input Alcohol's Name" value="${ alcoholDtl.getALCOHOL_NM()}">
                                  </div>
                               </div>
                            </div>
@@ -335,7 +353,7 @@ function addPhoto(obj){
                               <div class="col-md-6 pr-1">
                                  <div class="form-group">
                                     <label>도수</label> 
-                                    <input type="text" id = "alc_degree" name="degree" class="form-control" placeholder="ex)15.0" value="" style = "width:70px;" maxlength="5">
+                                    <input type="text" id = "alc_degree" name="degree" class="form-control" placeholder="ex)15.0" value="${alcoholDtl.getALC_DEGREE() }" style = "width:70px;" maxlength="5">
                                  </div>
                               </div>
                            </div>
@@ -345,7 +363,7 @@ function addPhoto(obj){
                                  	<label>Image</label></br>
                                  	<div class="custom-file" id="inputFile" style = "width : 400px;">
 					                    <input name="imageFile" type="file" onchange="addPhoto(this)" multiple="multiple" class="custom-file-input" id="imageFile">
-					                    <label class="custom-file-label" for="excelFile" style="position: absolute; text-align : left; height: 30px;">파일선택</label>
+					                    <label class="custom-file-label" for="excelFile" style="position: absolute; text-align : left; height: 30px;">${alcoholDtl.getFILENAME() }</label>
 					                </div>
                               </div>
                            </div>
@@ -355,7 +373,7 @@ function addPhoto(obj){
                               <div class="col-md-12">
                                  <div class="form-group">
                                     <label for="detail">세부정보</label>
-                                    <textarea id="alc_detail" name="detail" class="form-control textarea" placeholder="Input Details"></textarea>
+                                    <textarea id="alc_detail" name="detail" class="form-control textarea" placeholder="Input Details">${alcoholDtl.getALC_DETAIL()}</textarea>
                                  </div>
                               </div>
                            </div>

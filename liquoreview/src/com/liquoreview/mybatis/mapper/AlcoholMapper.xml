@@ -3,10 +3,50 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="AlcoholMapper">
-	<select id="alcoholLst" resultType="Alcohol">
-		/*알콜 및 상위, 하위 카테고리 전체 조회, 이양원*/
-		SELECT  /*alcoholLst*/
+	<select id="alcCountTopCate" resultType="int">
+		/*총 게시물 수 조회*/
+		SELECT   /*alcCountTopCate*/
+				COUNT(1)
+		FROM ALCOHOL A
+	</select>
+	
+	<select id="alcoholLstIqrPager" resultType="Alcohol">
+		/*주류 전체 조회 + 페이징(추 후 검색 조건 추가 예정), 이양원*/
+		SELECT   /*alcoholLstIqrPager*/
+				XX.*
+		  FROM (SELECT  
+					     @ROWNUM:=@ROWNUM+1 AS NUM
+					  ,  A.ALCOHOL_ID
+					  , (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
+					  , (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
+					  , B.SUBCATEGORY_ID
+					  , B.NAME AS SUB_NM
+					  , A.NAME AS ALCOHOL_NM
+					  , A.DEGREE AS ALC_DEGREE
+					  , A.DETAIL AS ALC_DETAIL
+					  , A.REGDATE
+					  , A.LAST_MODI_YMD
+				    FROM ALCOHOL A INNER JOIN SUBCATEGORY B
+				    ON A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
+						INNER JOIN (SELECT @ROWNUM := 0) TMP
+					  LEFT OUTER JOIN ALC_IMG C
+						ON A.ALCOHOL_ID = C.ALCOHOL_ID
+				    WHERE 1=1
+				    ORDER BY A.ALCOHOL_ID DESC) XX
+				    /* NewPager 로직 수정하고 아래 조회쿼리 사용할 것.*/
+		  WHERE 1=1
+		      AND XX.ALCOHOL_ID BETWEEN #{start} AND #{end}
+		  ORDER BY XX.ALCOHOL_ID DESC
+	</select> 
+	
+		<!-- 사용하던 페이징 쿼리 변경  예정   
+			=> 변경 사유 : sorting이 제대로 안먹힘.
+			쿼리 수정시 NewPager 수정해야함.
+	<select id="alcoholLstIqrPager" resultType="Alcohol">
+		/*주류 전체 조회 + 페이징(추 후 검색 조건 추가 예정) + 기존에 사용하던 조회쿼리 수정  2021. 06. 01, 이양원*/
+		SELECT  /*alcoholLstIqrPager*/
 			  A.ALCOHOL_ID
+			, A.ALC_IMG_ID
 			, (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
 			, (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
 			, B.SUBCATEGORY_ID
@@ -14,13 +54,41 @@
 			, A.NAME AS ALCOHOL_NM
 			, A.DEGREE AS ALC_DEGREE
 			, A.DETAIL AS ALC_DETAIL
+			, C.FILENAME
 			, A.REGDATE
 			, A.LAST_MODI_YMD
-		  FROM ALCOHOL A
-				 , SUBCATEGORY B
+		  FROM ALCOHOL A INNER JOIN SUBCATEGORY B
+		  	ON A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
+		  LEFT OUTER JOIN ALC_IMG C
+		  	ON A.ALCOHOL_ID = C.ALCOHOL_ID
 		  WHERE 1=1
-			  AND A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
-		  ORDER BY ALCOHOL_ID
+			  /*검색 기능 추가 전(mybatis 조건 부여 예정)*/
+			  /*AND ALCOHOL_NM LIKE '%'||ALCOHOL_NM||'%' */
+		  ORDER BY ALCOHOL_ID DESC
+		  LIMIT #{start}
+	</select> -->
+	
+	<select id="alcoholLstDtl" resultType="Alcohol" parameterType="int">
+		/*주류 상세 조회, 이양원*/
+		SELECT   /*alcoholLstDtl*/
+			  A.ALCOHOL_ID
+			, A.ALC_IMG_ID
+			, (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
+			, (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
+			, B.SUBCATEGORY_ID
+			, B.NAME AS SUB_NM
+			, A.NAME AS ALCOHOL_NM
+			, A.DEGREE AS ALC_DEGREE
+			, A.DETAIL AS ALC_DETAIL
+			, C.FILENAME
+			, A.REGDATE
+			, A.LAST_MODI_YMD
+		    FROM ALCOHOL A INNER JOIN SUBCATEGORY B
+		      ON A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
+		    LEFT OUTER JOIN ALC_IMG C
+		      ON A.ALC_IMG_ID = C.ALC_IMG_ID
+		    WHERE 1=1
+		  		 AND A.ALCOHOL_ID = #{ALCOHOL_ID}
 	</select>
 	
 	<select id="topLst" resultType="Alcohol">
@@ -77,7 +145,7 @@
 	
 	<insert id="alcoholReg" parameterType="map">
 		/*주류 정보 등록, 이양원*/
-		INSERT
+		INSERT   /*alcoholReg*/
 			INTO ALCOHOL(
 				  SUBCATEGORY_ID
 				, NAME
@@ -96,38 +164,26 @@
 			)	
 	</insert>
 	
-	<select id="alcCountTopCate" resultType="int">
-		/*총 게시물 수 조회*/
-		SELECT   /*alcCountTopCate*/
-				COUNT(1)
-		FROM ALCOHOL A
-	</select>
+	<insert id="" parameterType="map">
+		/*주류 이미지 등록, 이양원*/
+		INSERT   /**/
+			INTO ALC_IMG(
+				  ALCOHOL_ID
+				, FILENAME
+				, THUMB_YN
+				, REGDATE
+				, LAST_MODI_YMD
+			)
+			VALUES(
+				  #{ALCOHOL_ID}
+				, #{FILENAME}
+				, #{THUMB_YN}
+				, SYSDATE()
+				, SYSDATE()
+			)	
+	</insert>
 	
-	<!-- 기존 알콜 리스트 조회 쿼리는 사용하지 않는다.(id = alcoholLst) -->
-	<select id="alcoholLstIqrPager" resultType="Alcohol">
-		/*알콜 및 상위, 하위 카테고리 전체 조회 + 페이징, 이양원*/
-		SELECT   /*alcoholLstIqrPager*/
-				XX.*
-		  FROM (SELECT  
-					     @ROWNUM:=@ROWNUM+1 AS NUM
-					  ,  A.ALCOHOL_ID
-					  , (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
-					  , (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
-					  , B.SUBCATEGORY_ID
-					  , B.NAME AS SUB_NM
-					  , A.NAME AS ALCOHOL_NM
-					  , A.DEGREE AS ALC_DEGREE
-					  , A.DETAIL AS ALC_DETAIL
-					  , A.REGDATE
-					  , A.LAST_MODI_YMD
-				    FROM ALCOHOL A
-						   , SUBCATEGORY B
-						   , (SELECT @ROWNUM := 0) TMP
-				    WHERE 1=1
-					    AND A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
-				    ORDER BY ALCOHOL_ID) XX
-		  WHERE 1=1
-		      AND NUM BETWEEN #{start} AND #{end}
-		  ORDER BY XX.ALCOHOL_ID DESC
-	</select>
+
+	
+
 </mapper>

@@ -61,4 +61,12 @@ public interface AlcoholService {
 	 * @date 2021. 04. 18
 	 * */
 	public int countTopCate();
+	
+	/**
+	 * 주류 정보 상세보기
+	 * @author 이양원
+	 * @date 2021. 05. 31  최초생성
+	 * @param alcoholId
+	 * */
+	public Alcohol alcoholLstIqrDtl(int alcoholId);
 }

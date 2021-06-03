@@ -24,7 +24,7 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	 * */
 	@Override
 	public List<Alcohol> alcoholLst(NewPager pager) {
-
+		
 		return session.selectList("alcoholLstIqrPager", pager);
 	}
 	
@@ -98,7 +98,17 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 		return session.selectOne("alcCountTopCate");
 	}
 
-
+	/**
+	 * 주류 정보 상세보기
+	 * @author 이양원
+	 * @date 2021. 05. 31  최초생성
+	 * @param alcoholId
+	 * */
+	@Override
+	public Alcohol alcoholLstIqrDtl(int alcoholId) {
+		
+		return session.selectOne("alcoholLstDtl", alcoholId);
+	}
 
 	
 }

@@ -98,6 +98,27 @@ public class RestAlcoholController {
 		
 		return alcoholService.alcoholReg(param);
 	}
+	
+	/**
+	 * 주류 정보 상세보기
+	 * @author 이양원
+	 * @date 2021. 05. 29  최초생성
+	 * @param alcoholId
+	 * */
+	@RequestMapping(value = "alcoholLstDtl", method = RequestMethod.GET)
+	public ModelAndView alcoholLstIqrDtl(@RequestParam int alcoholId) {
+		logger.debug("상세보기 컨트롤러 접근");
+		
+		Alcohol alcoholDtl = alcoholService.alcoholLstIqrDtl(alcoholId);
+		
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("alcoholDtl", alcoholDtl);
+		mav.setViewName("/admin/alcohol/alcohol-detail");
+		
+		
+		return mav;
+	}
 
 	
 }

@@ -6,9 +6,12 @@ import java.util.Date;
  * AlcoholVO
  * @author 이양원
  * @date 2021. 03. 10  최초생성
+ * 개정이력 
+ * 			   2021. 06. 01 ALC_IMG_ID, FILENAME 추가	  
  * */
 public class Alcohol extends Subcategory{
 	private int ALCOHOL_ID;
+	private int ALC_IMG_ID;
 	private int TOPCATEGORY_ID;
 	private String TOP_NM;
 	private int SUBCATEGORY_ID;
@@ -18,6 +21,7 @@ public class Alcohol extends Subcategory{
 	private String ALC_DETAIL;
 	private Date REGDATE;
 	private Date LAST_MODI_YMD;
+	private String FILENAME;
 	
 	private int NUM;//정렬을 위한 번호
 	
@@ -33,6 +37,12 @@ public class Alcohol extends Subcategory{
 	}
 	public void setALCOHOL_ID(int aLCOHOL_ID) {
 		ALCOHOL_ID = aLCOHOL_ID;
+	}
+	public int getALC_IMG_ID() {
+		return ALC_IMG_ID;
+	}
+	public void setALC_IMG_ID(int aLC_IMG_ID) {
+		ALC_IMG_ID = aLC_IMG_ID;
 	}
 	public int getTOPCATEGORY_ID() {
 		return TOPCATEGORY_ID;
@@ -88,5 +98,16 @@ public class Alcohol extends Subcategory{
 	public void setLAST_MODI_YMD(Date lAST_MODI_YMD) {
 		LAST_MODI_YMD = lAST_MODI_YMD;
 	}
+	
+	public String getFILENAME() {
+		return FILENAME;
+	}
+	public void setFILENAME(String fILENAME) {
+		FILENAME = fILENAME;
+	}
+	
+	
+	
+	
 	
 }

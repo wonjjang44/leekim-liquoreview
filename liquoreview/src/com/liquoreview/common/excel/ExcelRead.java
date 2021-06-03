@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 public class ExcelRead {
+	private static Logger logger = Logger.getLogger(ExcelRead.class);
+	
 	public static List<Map<String, Object>> read(ExcelReadOption excelReadOption) {
         //엑셀 파일 자체
         //엑셀파일을 읽어 들인다.
@@ -18,6 +21,8 @@ public class ExcelRead {
         Workbook wb = ExcelFileType.getWorkbook(excelReadOption.getFilePath());
       
         int sheetNum = wb.getNumberOfSheets();  //시트의 수를 가져오기 위한 변수 
+        logger.debug("Sheet의 수 : "+sheetNum);
+        
         int numOfCells = 0;
         
         Row row = null;
@@ -43,16 +48,19 @@ public class ExcelRead {
         
         for(int i =0; i<sheetNum; i++){
             System.out.println("Sheet : "+ wb.getSheetName(i));
+            
             Sheet sheet = wb.getSheetAt(i);
         
             int numOfRows = sheet.getPhysicalNumberOfRows(); //유효한 데이터가 있는 행의 개수를 가져온다.
+            logger.debug("행의 수 : "+numOfRows);
         
             //각 Row만큼 반복을 한다.
             for(int rowIndex = excelReadOption.getStartRow() - 1; rowIndex < numOfRows; rowIndex++) {
 	            //워크북에서 가져온 시트에서 rowIndex에 해당하는 Row를 가져온다. 
 	            //하나의 Row는 여러개의 Cell을 가진다.
 	            row = sheet.getRow(rowIndex);
-            
+
+	            
 	            if(row != null) {
 	            	//가져온 Row의 Cell의 개수를 구한다. 
 	                numOfCells = row.getPhysicalNumberOfCells(); //한개의 행마다 몇개의 cell이 있는지 체크 
@@ -64,6 +72,7 @@ public class ExcelRead {
 	                for(int cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
 	                   //Row에서 CellIndex에 해당하는 Cell을 가져온다.
 	                    cell = row.getCell(cellIndex);
+	                    logger.debug("각 행의 값(ex_A,B,C...의 값) : "+cell);
 	                    
 	                    //현재 Cell의 이름을 가져온다 (이름의 예 : A,B,C,D,......)
 	                    cellName = ExcelCellRef.getName(cell, cellIndex);
@@ -87,16 +96,16 @@ public class ExcelRead {
     return result;  
 
 }
-	
+	  //TEST
 	  /*public static void main(String[] args) {
 			  ExcelReadOption ro = new ExcelReadOption();
-			  ro.setFilePath("F:\\2021.04.06_developer\\AlcoholExcelUpload.xlsx");//엑셀 파일의 경로 set
-			  ro.setOutputColumns("A", "B", "C", "D");//엑셀 파일의 컬럼 값(ex_ A, B, C, D......), 열의 값은 1, 2, 3, 4....
+			  ro.setFilePath("F:\\2021.04.06_developer\\AlcoholUploadMac.xlsx");//엑셀 파일의 경로 set
+			  ro.setOutputColumns("A", "B", "C", "D", "E");//엑셀 파일의 컬럼 값(ex_ A, B, C, D......), 열의 값은 1, 2, 3, 4....
 			  ro.setStartRow(2);//데이터를 읽어올 열의 시작 위치 값(1로 하면 컬럼값을 포함하여 읽어오므로 2부터 시작)
 			  
-			  List<Map<String, String>> result = ExcelRead.read(ro);
+			  List<Map<String, Object>> result = ExcelRead.read(ro);
 			  
-			  for(Map<String, String> map : result) {
+			  for(Map<String, Object> map : result) {
 			      System.out.println(map.get("A"));
 			      System.out.println(map.get("B"));
 			  }
