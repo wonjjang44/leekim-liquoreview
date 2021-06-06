@@ -48,6 +48,7 @@
 													<tbody id="tbl_topcate_data_container">
 													</tbody>
 												</table>
+												<input id="hidden_topcategory_id" type="hidden" name="topcategory_id" value=""/>
 											</div>
 										</div>
 										<div class="card-footer">
@@ -94,9 +95,11 @@
 															<th>최종수정일시</th>
 														</tr>
 													</thead>
-													<tbody id="tbl_subcate_date_container">
+													<tbody id="tbl_subcate_data_container">
 													</tbody>
 												</table>
+												<input id="hidden_subcategory_id" type="hidden" name="subcategory_id" value=""/>
+												<input id="hidden_sub_topcategory_id" type="hidden" name="topcategory_id" value=""/>
 											</div>
 										</div>
 										<div class="card-footer">

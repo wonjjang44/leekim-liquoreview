@@ -11,9 +11,31 @@
 		  from 	topcategory
 	</sql>
 	
-	<select id="selectTopcateList" resultType="Topcategory">
+	<select id="totalTopcateCnt" resultType="int">
+		select
+			count(TOPCATEGORY_ID)
+		  from topcategory
+		 where TOPCATEGORY_ID > 0
+	</select>
+	
+	<select id="selectAll" resultType="Topcategory">
 		<include refid="sql_select"/>
 		order by TOPCATEGORY_ID asc
+	</select>
+	
+	<select id="selectTopcateList" resultType="Topcategory">
+		select  q.TOPCATEGORY_ID
+				 ,NAME
+				 ,REGDATE
+				 ,LAST_MODI_YMD
+		  from (
+		  		select TOPCATEGORY_ID
+		  		  from topcategory
+		  		LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER} 
+		  ) q
+		  JOIN topcategory p
+		  ON p.TOPCATEGORY_ID = q.TOPCATEGORY_ID
+		  order by TOPCATEGORY_ID asc
 	</select>
 	
 	<select id="select" parameterType="int" resultType="Topcategory">

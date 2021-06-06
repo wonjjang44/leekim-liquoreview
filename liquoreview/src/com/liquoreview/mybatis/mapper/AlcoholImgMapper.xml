@@ -27,12 +27,12 @@
 		order by ALCOHOL_ID, ALC_IMG_ID
 	</select>
 	
-	<select id="select" parameterType="int" resultMap="AlcoholMap">
+	<select id="select" parameterType="int" resultMap="AlcImgMap">
 		<include refid="sql_select"/>
 		where ALC_IMG_ID = #{alc_img_id}
 	</select>
 	
-	<select id="selectByAlcohol" parameterType="int" resultMap="AlcoholMap">
+	<select id="selectByAlcohol" parameterType="int" resultMap="AlcImgMap">
 		<include refid="sql_select"/>
 		where ALCOHOL_ID = #{alcohol.alcohol_id}
 		order by ALCOHOL_ID
