@@ -54,7 +54,7 @@
 										<div class="card-footer">
 											<nav class="blog-pagination justify-content-center d-flex">
 												<div class="prevPage">이전</div>
-												<ul class="pagination">
+												<ul class="pagination top_pagination">
 													<li><a href="#none">1</a></li>
 												</ul>
 												<div class="nextPage">다음</div>
@@ -64,7 +64,7 @@
 													<button type="button" class="btn btn-primary btn-round" name="bt_top_add" onClick="topAddPop()">
 														top cate 추가
 													</button>
-													<button type="button" class="btn btn-primary btn-round" name="bt_top_edit" onClick="topModiPop()">
+													<button type="button" class="btn btn-primary btn-round" name="bt_top_edit" onClick="topModiPop(this)">
 														top cate 수정
 													</button>
 													<button type="button" class="btn btn-primary btn-round" name="bt_top_delete" onClick="topDel()">
@@ -105,7 +105,7 @@
 										<div class="card-footer">
 											<nav class="blog-pagination justify-content-center d-flex">
 												<div class="prevPage">이전</div>
-												<ul class="pagination">
+												<ul class="pagination sub_pagination">
 													<li><a href="#none">1</a></li>
 												</ul>
 												<div class="nextPage">다음</div>
@@ -115,7 +115,7 @@
 													<button type="button" class="btn btn-primary btn-round" name="bt_sub_add" onClick="subAddPop()">
 														sub cate 추가
 													</button>
-													<button type="button" class="btn btn-primary btn-round" name="bt_sub_edit" onClick="subModiPop()">
+													<button type="button" class="btn btn-primary btn-round" name="bt_sub_edit" onClick="subModiPop(this)">
 														sub cate 수정
 													</button>
 													<button type="button" class="btn btn-primary btn-round" name="bt_sub_delete" onClick="subDel()">

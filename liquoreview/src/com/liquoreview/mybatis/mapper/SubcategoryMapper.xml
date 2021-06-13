@@ -5,7 +5,7 @@
 <mapper namespace="Subcategory">
 	<resultMap type="Subcategory" id="SubcategoryMap">
 		<id column="SUBCATEGORY_ID" property="subcategory_id"/>
-		<result column="NAME" property="name"/>
+		<result column="SUBNAME" property="subname"/>
 		<result column="REGDATE" property="regdate"/>
 		<result column="LAST_MODI_YMD" property="last_modi_ymd"/>
 		<association column="TOPCATEGORY_ID" property="topcategory" javaType="Topcategory" select="Topcategory.select"/>
@@ -13,15 +13,46 @@
 	
 	<sql id="sql_select">
 		select 	 SUBCATEGORY_ID
-					,NAME
+					,SUBNAME
 					,REGDATE
 					,LAST_MODI_YMD
 		  from 	subcategory
 	</sql>
 	
+	<select id="totalSubcateCnt" resultType="int">
+		select
+			count(SUBCATEGORY_ID)
+		  from subcategory
+		where SUBCATEGORY_ID > 0
+	</select>
+	
+	<select id="sortedSubcateCnt" resultType="int">
+		select
+			count(SUBCATEGORY_ID)
+		 from subcategory
+		where SUBCATEGORY_ID > 0
+		   and TOPCATEGORY_ID = #{topcategory.topcategory_id}
+	</select>
+	
 	<select id="selectAll" resultMap="SubcategoryMap">
 		<include refid="sql_select"/>
 		order by TOPCATEGORY_ID, SUBCATEGORY_ID
+	</select>
+	
+	<select id="selectSubcateList" resultType="Subcategory">
+		select     q.SUBCATEGORY_ID
+					,TOPCATEGORY_ID
+					,SUBNAME
+					,REGDATE
+					,LAST_MODI_YMD
+		  from (
+		  		select SUBCATEGORY_ID
+		  		 from subcategory
+		  		LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER}
+		  )q
+		  JOIN subcategory p
+		  ON p.SUBCATEGORY_ID = q.SUBCATEGORY_ID
+		  order by SUBCATEGORY_ID asc
 	</select>
 	
 	<select id="select" parameterType="int" resultMap="SubcategoryMap">
@@ -35,25 +66,42 @@
 		order by TOPCATEGORY_ID
 	</select>
 	
+	<select id="sortedSubcateList" parameterType="hashmap" resultMap="SubcategoryMap">
+		select     q.SUBCATEGORY_ID
+					,p.TOPCATEGORY_ID
+					,p.SUBNAME
+					,p.REGDATE
+					,p.LAST_MODI_YMD
+		  from (
+		  		select SUBCATEGORY_ID
+		  		 from subcategory
+		  		where TOPCATEGORY_ID = #{topcategory_id}
+		  		LIMIT #{criteria.pageSize, jdbcType=INTEGER} OFFSET #{criteria.curPos, jdbcType=INTEGER}
+		  )q
+		  JOIN subcategory p
+		  ON p.SUBCATEGORY_ID = q.SUBCATEGORY_ID
+		  order by q.SUBCATEGORY_ID asc
+	</select>
+	
 	<select id="selectByName" parameterType="String" resultMap="SubcategoryMap">
 		<include refid="sql_select"/>
-		where NAME = #{name}
+		where NAME = #{subname}
 	</select>
 	
 	<!-- 서브카테고리 중복확인 -->
 	<select id="cateNameCheck" parameterType="String" resultMap="SubcategoryMap">
 		<include refid="sql_select"/>
-		where NAME = #{name}
+		where NAME = #{subname}
 	</select>
 	
 	<insert id="insert" parameterType="Subcategory">
 		insert into subcategory(TOPCATEGORY_ID
-										 ,NAME
+										 ,SUBNAME
 										 ,LAST_MODI_YMD
 										)
 	 		values(
 	 									#{topcategory.topcategory_id}
-	 								   ,#{name}
+	 								   ,#{subname}
 	 								   ,now()
 	 		);
 	 	<selectKey order="AFTER" resultType="int" keyProperty="subcategory_id">
@@ -65,7 +113,7 @@
 		update subcategory
 								set
 									 TOPCATEGORY_ID = #{topcategory.topcategory_id}
-									,NAME = #{name}
+									,NAME = #{subname}
 									,LAST_MODI_YMD = now()
 		 where SUBCATEGORY_ID = #{subcategory_id} 
 	</update>

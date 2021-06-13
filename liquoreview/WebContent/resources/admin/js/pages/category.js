@@ -40,7 +40,7 @@ function handleTopcateList(data) {
 			let obj = data[key];
 			con.append("<tr id='top_table_tr_"+obj.topcategory_id+"'>");
 			con.append("<td><input class='topCate_id_checkbox' type='checkbox' name='topCate_id' value='"+obj.topcategory_id+"'/></td>");
-			con.append("<td>"+obj.name+"</td>");
+			con.append("<td>"+obj.topname+"</td>");
 			con.append("<td>"+obj.regdate+"</td>");
 			con.append("<td>"+obj.last_modi_ymd+"</td>");
 			con.append("<td><button type='button' onClick='getSubCategoryList("+obj.topcategory_id+")'>Sub보기</button></td>");
@@ -63,7 +63,7 @@ function getSubCategoryList(topcategory_id) {
 		type:"GET",
 		success:function(data) {
 			console.log(data);
-			handleSubcateList(data.subcateList);
+			handleSubcateList(data.sortedSubcateList);
 		},
 		error:function(data) {
 			console.log(data);
@@ -82,14 +82,15 @@ function handleSubcateList(data) {
 			console.log(data[key]);
 			let obj = data[key];
 			con.append("<tr id='sub_table_tr_"+obj.subcategory_id+"'>");
-			con.append("<td><input class='subCate_id_checkbox' type='checkbox' name='subCate_id' value='"+obj.subcategory_id+"'/></td>");
-			con.append("<td>"+obj.name+"</td>");
+			con.append("<td><input class='subCate_id_checkbox' type='checkbox' name='subCate_id' value='"+obj.subcategory_id+"' onChange='subCheckHandle("+obj.subcategory_id+")'/></td>");
+			con.append("<td>"+obj.topcategory.topname+"</td>");
+			con.append("<td>"+obj.subname+"</td>");
 			con.append("<td>"+obj.regdate+"</td>");
 			con.append("<td>"+obj.last_modi_ymd+"</td>");
 			con.append("</tr>");
 		}
 	} else {
-		con.append("<tr><td colspan='5' style='text-align:center; line-height: 1.2rem; vertical-align:middle;'>저장된 top category data가 없습니다.</td></tr>");
+		con.append("<tr><td colspan='5' style='text-align:center; line-height: 1.2rem; vertical-align:middle;'>저장된 sub category data가 없습니다.</td></tr>");
 	}
 	//modal close
 	$("#cateModal").modal('hide');
@@ -108,8 +109,9 @@ function topAddPop() {
 }
 
 //top category 수정 모달 호출
-function topModiPop() {
-	var checkArray = checkCnt();
+function topModiPop(e) {
+	console.log($(e).attr('name'));
+	var checkArray = checkCnt(e.name);
 	if (checkArray.length == 0) {
 		alert("수정할 top category를 선택한 후 다시 진행해주세요.");
 	} else if (checkArray.length > 1) {
@@ -132,8 +134,10 @@ function subAddPop() {
 }
 
 //sub category 수정 모달 호출
-function subModiPop() {
-	var checkArray = checkCnt();
+function subModiPop(e) {
+	console.log($(e).attr('name'));
+	var checkArray = checkCnt(e.name);
+	console.log("checkArray.length확인 : "+checkArray.length);
 	if (checkArray.length == 0) {
 		alert("수정할 sub category를 선택한 후 다시 진행해주세요.");
 	} else if (checkArray.length > 1) {
@@ -142,6 +146,13 @@ function subModiPop() {
 	} else {
 		subCateModalPop();
 	}
+}
+
+//subcategory 수정 모달 팝업에 필요한 subcategory_id hidden set
+function subCheckHandle(subcategory_id) {
+	console.log("subcategory 체크박스 눌러 채집된 subcategory_id 확인 : "+subcategory_id);
+	$("#hidden_subcategory_id").val(subcategory_id);
+	console.log("체크박스 눌러 hidden에 보관된 subcategory_id 확인 : "+$("#hidden_subcategory_id").val());
 }
 
 //top category 추가 / 수정 Modal pop
@@ -176,7 +187,7 @@ function topCateModalPop() {
 
 //sub cate 추가 /수정 Modal pop
 function subCateModalPop() {
-	console.log("top category 추가/수정버튼 클릭으로 topCateModalPop 호출");
+	console.log("sub category 추가/수정버튼 클릭으로 subCateModalPop 호출");
 	
 	//modal-dialog 영역 채우기 전 초기화
 	$(".modal-dialog").empty();
@@ -185,6 +196,8 @@ function subCateModalPop() {
 	if($("#hidden_subcategory_id").val() != "" || $("#hidden_subcategory_id").val() !=  0) {
 		subcategory_id = $("#hidden_subcategory_id").val();
 	}
+	
+	console.log("모달 호출 직전 subcategory_id확인 : "+subcategory_id);
 	
 	$.ajax({
 		url:"/rest/admin/subCate/modal/"+subcategory_id,
@@ -213,16 +226,38 @@ function validateCateModal() {
 	}
 }
 
+function validateSubCateModal() {
+	if (!($("#topSelect").val()) || !($("#new_sub_name").val())) {
+		alert("상위 카테고리 선택 또는 하위카테고리명 입력을 확인해주세요.");
+		return false;
+	} else {
+		return true;
+	}
+}
+
 //count checked checkbox
-function checkCnt() {
+function checkCnt(obj) {
 	console.log("선택된 체크박스 갯수와 value를 얻기 위해 checkCnt() 호출됨");
+	console.log("obj확인 : "+obj);
+	
 	let checkArray = new Array();
-	$(".topCate_id_checkbox").each(function(i) {
-		console.log($(this).prop("checked"));
-		if ($(this).prop("checked")) {
-			checkArray.push(parseInt($(this).val()));
-		}
-	});
+	
+	//topcate 수정, subcate 수정 모달 구분
+	if (obj.includes('top')) {
+		$(".topCate_id_checkbox").each(function(i) {
+			console.log($(this).prop("checked"));
+			if ($(this).prop("checked")) {
+				checkArray.push(parseInt($(this).val()));
+			}
+		});
+	} else {
+		$(".subCate_id_checkbox").each(function(i) {
+			console.log($(this).prop("checked"));
+			if ($(this).prop("checked")) {
+				checkArray.push(parseInt($(this).val()));
+			}
+		});
+	}
 	return checkArray;
 }
 
@@ -273,3 +308,40 @@ function handleTopcateInsertResult(data) {
 //top category 수정
 
 // top category 삭제
+
+// sub category insert
+function subcateAdd() {
+	let validResult = validateSubCateModal();
+	if (validResult) {
+		$.ajax({
+			url: "/rest/admin/alcohol/subcategory",
+			type: "POST",
+			data: {
+				topcategory_id: $("#topSelect").val(),
+				name: $("#new_sub_name").val()
+			},
+			success:function(result) {
+				let subcateInsertResult = JSON.parse(result);
+				handleSubcateInsertResult(subcateInsertResult);
+			},
+			error:function(result) {
+				console.log("subcategory 추가 실패");
+				console.log(result);
+			}
+		});
+	}
+}
+
+// sub category insert result handle
+function handleSubcateInsertResult(data) {
+	console.log(data);
+	if (data.resultCode === "1") {
+		alert(data.msg);
+		//리스트 갱신, 모달 close
+		console.log("서브리스트 갱신위한 top_id확인 : "+data.topcategory_id);
+		getSubCategoryList(data.topcategory_id);
+	} else {
+		alert(data.msg);
+		return;
+	}
+}

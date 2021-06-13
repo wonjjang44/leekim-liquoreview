@@ -5,7 +5,7 @@
 <mapper namespace="Topcategory">
 	<sql id="sql_select">
 		select 	 TOPCATEGORY_ID
-					,NAME
+					,TOPNAME
 					,REGDATE
 					,LAST_MODI_YMD
 		  from 	topcategory
@@ -25,7 +25,7 @@
 	
 	<select id="selectTopcateList" resultType="Topcategory">
 		select  q.TOPCATEGORY_ID
-				 ,NAME
+				 ,TOPNAME
 				 ,REGDATE
 				 ,LAST_MODI_YMD
 		  from (
@@ -54,7 +54,7 @@
 										,LAST_MODI_YMD
 										) 
 			values(
-										#{name}
+										#{topname}
 									   ,now()
 			)
 	</insert>
@@ -62,7 +62,7 @@
 	<update id="update" parameterType="Topcategory">
 		update topcategory
 								set
-									 NAME = #{name}
+									 NAME = #{topname}
 									,LAST_MODI_YMD = now()
 		 where TOPCATEGORY_ID = #{topcategory_id}
 	</update>

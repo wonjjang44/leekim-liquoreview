@@ -83,7 +83,7 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 
 	@Override
 	public int getTotalTopcateCnt() {
-		return 0;
+		return topcategoryDAO.getTotalTopcateCnt();
 	}
 
 	@Override

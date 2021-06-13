@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.liquoreview.common.Criteria;
@@ -70,6 +71,7 @@ public class RestAdminCategoryController {
 
 		try {
 			List<Topcategory> topcateList = topcategoryService.selectAll();
+			request.getSession().setAttribute("topcateList", topcateList);
 			if (subcategory_id == 0) {
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/alcohol/category/subAdd.jsp");
 			} else {
@@ -77,7 +79,6 @@ public class RestAdminCategoryController {
 				logger.info("subcategory_id로 조회한 topcateInfo : " + subcateInfo);
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/alcohol/category/subModify.jsp");
 
-				request.getSession().setAttribute("topcateList", topcateList);
 				request.getSession().setAttribute("subcateInfo", subcateInfo);
 			}
 			response.setContentType("text/html;charset=UTF-8");
@@ -111,6 +112,22 @@ public class RestAdminCategoryController {
 	}
 	
 	//topcategory_id로 연관된 subcategory list 조회
+	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public JSONObject getSubcateListByTopId(@RequestParam("topcategory_id") int topcategory_id, HttpServletRequest request) {
+		List<Subcategory> sortedSubcateList = null;
+		int pageSize=5;
+		JSONObject subcateResultObj = new JSONObject();
+		
+		Criteria criteria = new Criteria(request, pageSize);
+		pager.setCriteria(criteria);
+		pager.init(subcategoryService.getSortedSubcateCnt(topcategory_id));
+		//sortedSubcateList = subcategoryService.selectAllByTopCate(topcategory_id);
+		sortedSubcateList = subcategoryService.selectSortedSubcateList(criteria, topcategory_id);
+		
+		subcateResultObj.put("sortedSubcateList", sortedSubcateList);
+		subcateResultObj.put("pager", pager);
+		return subcateResultObj;
+	}
 	
 
 	// insert top category
@@ -122,4 +139,22 @@ public class RestAdminCategoryController {
 	}
 	
 	// insert sub category
+	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.POST, produces = "application/text;charset=UTF-8")
+	public String insertSubcate(int topcategory_id, Subcategory subcategory, HttpServletRequest request) {
+		logger.info("sub cate 추가위한 top_id 확인 : "+topcategory_id);
+		logger.info("sub cate 추가위한 name 확인 : "+subcategory.getSubname());
+		//top category info set
+		Topcategory topcategory = topcategoryService.select(topcategory_id);
+		//checking whether sub name is duplicated
+		List<Subcategory> checkSubName = subcategoryService.cateNameCheck(subcategory.getSubname());
+		JSONObject subcateInsertResult = null;
+		if (checkSubName.isEmpty()) {
+			subcategory.setTopcategory(topcategory);
+			subcateInsertResult = subcategoryService.insert(subcategory);
+			logger.info("succeeded to register sub cate");
+		} else {
+			logger.info("failed to register sub cate");
+		}
+		return subcateInsertResult.toString();
+	}
 }
