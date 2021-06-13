@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Subcategory {
 	private int subcategory_id;
 	private Topcategory topcategory;
-	private String name;
+	private String subname;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
 	private Timestamp regdate;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
@@ -26,11 +26,11 @@ public class Subcategory {
 	public void setTopcategory(Topcategory topcategory) {
 		this.topcategory = topcategory;
 	}
-	public String getName() {
-		return name;
+	public String getSubname() {
+		return subname;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setSubname(String subname) {
+		this.subname = subname;
 	}
 	public Timestamp getRegdate() {
 		return regdate;
@@ -47,7 +47,7 @@ public class Subcategory {
 	
 	@Override
 	public String toString() {
-		return "Subcategory [last_modi_ymd=" + last_modi_ymd + ", name=" + name + ", regdate=" + regdate
-				+ ", subcategory_id=" + subcategory_id + ", topcategory=" + topcategory + "]";
+		return "Subcategory [subcategory_id=" + subcategory_id + ", topcategory=" + topcategory + ", subname=" + subname
+				+ ", regdate=" + regdate + ", last_modi_ymd=" + last_modi_ymd + "]";
 	}
 }
