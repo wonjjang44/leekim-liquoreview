@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SequenceMapper">
+	<select id="selectAlcImgSequence" resultType = "int">
+		/*각 테이블의 pk 시퀀스 가져오기, 이양원(추 후 mariadb 시퀀스 함수를 정의할 것.(FN_GETSEQUENCE))*/
+		SELECT   /*selectAlcImgSequence*/
+		      NVL(MAX(ALC_IMG_ID), 0) + 1 
+		  FROM ALC_IMG
+	</select>
+</mapper>

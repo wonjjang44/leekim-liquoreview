@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.common.NewPager;
 import com.liquoreview.model.domain.Alcohol;
 
@@ -23,9 +24,9 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	 * @param 
 	 * */
 	@Override
-	public List<Alcohol> alcoholLst(NewPager pager) {
+	public List<Alcohol> alcoholLst(Criteria cri) {
 		
-		return session.selectList("alcoholLstIqrPager", pager);
+		return session.selectList("alcoholLstIqrPager", cri);
 	}
 	
 	/**
@@ -91,11 +92,12 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	/**
 	 * 게시물 총 갯수
 	 * @date 2021. 04. 18
+	 *            개정이력 2021. 06. 12 함수명 변경
 	 * */
 	@Override
-	public int countTopCate() {
+	public int alcLstAllCnt() {
 		
-		return session.selectOne("alcCountTopCate");
+		return session.selectOne("alcLstAllCnt");
 	}
 
 	/**
@@ -109,6 +111,44 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 		
 		return session.selectOne("alcoholLstDtl", alcoholId);
 	}
+
+	/**
+	 * 주류 정보 등록 직후 주류 이미지 데이터 등록
+	 * @author 이양원
+	 * @date 2021. 06. 04  최초생성
+	 * @param param
+	 * */
+	@Override
+	public int alcImgReg(Map<String, Object> param) {
+		
+		return session.insert("alcImgReg", param);
+	}
+
+	/**
+	 * 주류 정보 삭제
+	 * @author 이양원
+	 * @date 2021. 06. 04  최초생성
+	 * @param alcohol_id
+	 * */
+	@Override
+	public int alcoholDel(int alcohol_id) {
+		
+		return session.delete("alcoholDel", alcohol_id);
+	}
+
+	/**
+	 * 주류 이미지 정보 삭제
+	 * @author 이양원
+	 * @date 2021. 06. 05  최초생성
+	 * @param alcohol_id
+	 * */
+	@Override
+	public int alcoholImgDel(int alcohol_id) {
+
+		return session.delete("alcoholImgDel", alcohol_id);
+	}
+	
+	
 
 	
 }

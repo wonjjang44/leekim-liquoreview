@@ -2,12 +2,16 @@ package com.liquoreview.model.domain;
 
 import java.util.Date;
 
+import com.liquoreview.common.Criteria;
+
 /**
  * AlcoholVO
  * @author 이양원
  * @date 2021. 03. 10  최초생성
  * 개정이력 
  * 			   2021. 06. 01 ALC_IMG_ID, FILENAME 추가	  
+ *            2021. 06. 12 페이징으로 인한 변수 NUM 제거
+ *                                새롭게 정의한 게시글 조회 쿼리에 전달될 파라미터를 담게 될 클래스 선언
  * */
 public class Alcohol extends Subcategory{
 	private int ALCOHOL_ID;
@@ -22,15 +26,16 @@ public class Alcohol extends Subcategory{
 	private Date REGDATE;
 	private Date LAST_MODI_YMD;
 	private String FILENAME;
+	private int THUMB_YN;
+
+	private Criteria criteria;// 게시글 조회 쿼리에 전달될 파라미터를 담게 될 클래스
 	
-	private int NUM;//정렬을 위한 번호
 	
-	
-	public int getNUM() {
-		return NUM;
+	public Criteria getCriteria() {
+		return criteria;
 	}
-	public void setNUM(int nUM) {
-		NUM = nUM;
+	public void setCriteria(Criteria criteria) {
+		this.criteria = criteria;
 	}
 	public int getALCOHOL_ID() {
 		return ALCOHOL_ID;
@@ -105,7 +110,12 @@ public class Alcohol extends Subcategory{
 	public void setFILENAME(String fILENAME) {
 		FILENAME = fILENAME;
 	}
-	
+	public int getTHUMB_YN() {
+		return THUMB_YN;
+	}
+	public void setTHUMB_YN(int tHUMB_YN) {
+		THUMB_YN = tHUMB_YN;
+	}
 	
 	
 	

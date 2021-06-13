@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.liquoreview.common.NewPager;
+import com.liquoreview.common.Criteria;
+import com.liquoreview.common.PageMaker;
 import com.liquoreview.model.domain.Alcohol;
-import com.liquoreview.model.domain.Topcategory;
 import com.liquoreview.model.service.AlcoholService;
 
 @RestController
@@ -34,24 +33,27 @@ public class RestAlcoholController {
 	 * @author 이양원
 	 * @date 2021. 03. 10  최초생성
 	 * 			   개정이력  2021. 04. 18  페이징 추가
-	 * @param pager
-	 * @param nowPage
-	 * @param cntPerPage
+	 *                       2021. 06. 12 새로운 페이징 객체 선언으로 인한 nowPage, cntPerPage 제거(생성자로 하여금 기본 값 셋팅했으므로)
+	 * @param 현재 페이지 번호와 페이지당 보여줄 게시글 수가 담긴 Criteria 객체
 	 * */
 	@RequestMapping(value = "alcoholLst", method = RequestMethod.GET)
-	public ModelAndView alcoholLstIqr(NewPager pager, 
-			@RequestParam(value = "nowPage", required=false, defaultValue = "1") String nowPage, 
-			@RequestParam(value = "cntPerPage", required = false, defaultValue = "5") String cntPerPage) {
+	public ModelAndView alcoholLstIqr(Criteria cri) {
 		ModelAndView mav = new ModelAndView();
 		
-		int total = alcoholService.countTopCate();
+		//주류 테이블 총 레코드 수
+		int totalPageCnt = alcoholService.alcLstAllCnt();
 		
-		pager = new NewPager(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(totalPageCnt);
+		
+		//pager = new NewPager(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
 		
 		List<Alcohol> alcoholVal = new ArrayList<Alcohol>();
-		alcoholVal = alcoholService.alcoholLst(pager);
+		//alcoholVal = alcoholService.alcoholLst(pager);
+		alcoholVal = alcoholService.alcoholLst(cri);
 		
-		mav.addObject("pager", pager);
+		mav.addObject("pageMaker", pageMaker);
 		mav.addObject("alcoholVal", alcoholVal);
 		mav.setViewName("/admin/alcohol/alcohol-table");
 		
@@ -96,7 +98,7 @@ public class RestAlcoholController {
 	@RequestMapping(value = "alcoholReg", method = RequestMethod.POST)
 	public int alcoholReg(@RequestBody Map<String, Object> param) {
 		
-		return alcoholService.alcoholReg(param);
+		return alcoholService.alcoholReg(param); 
 	}
 	
 	/**
@@ -107,17 +109,26 @@ public class RestAlcoholController {
 	 * */
 	@RequestMapping(value = "alcoholLstDtl", method = RequestMethod.GET)
 	public ModelAndView alcoholLstIqrDtl(@RequestParam int alcoholId) {
-		logger.debug("상세보기 컨트롤러 접근");
-		
 		Alcohol alcoholDtl = alcoholService.alcoholLstIqrDtl(alcoholId);
-		
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("alcoholDtl", alcoholDtl);
 		mav.setViewName("/admin/alcohol/alcohol-detail");
 		
-		
 		return mav;
+	}
+	
+	/**
+	 * 주류 정보 삭제
+	 * @author 이양원
+	 * @date 2021. 06. 04  최초생성
+	 *            개정이력  2021. 06. 05  주류 정보 삭제 후 이어서 주류 이미지 데이터 삭제    
+	 * @param alcohol_id
+	 * */
+	@RequestMapping(value = "alcoholDel", method = RequestMethod.GET)
+	public int alcoholDel(@RequestParam int alcohol_id) {
+		
+		return alcoholService.alcoholDel(alcohol_id);
 	}
 
 	

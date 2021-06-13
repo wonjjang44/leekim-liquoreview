@@ -11,20 +11,7 @@
 <script>
 $(function(){
 	//페이지가 로드 될 때 주류 항목 조회
-	$.ajax({
-		url : "/admin/alcohol/alcoholLst",
-		type : "get",
-		//dataType : "json",
-		//contentType : "application/json; charset = UTF-8",
-		data : {},
-		success : function(data){
-			var alcoholVal = '${alcoholVal}';
-		},
-		error : function(xhr){
-			console.log(xhr);
-		}
-	});
-	
+	alcoholLst();
 	
 	//술 항목 추가
 	$("#al_add_btn").click(function(){
@@ -33,7 +20,29 @@ $(function(){
 	
 	//모달 팝업창 주류 삭제
 	$("#al_del_btn").click(function(){
-		alert("주류 삭제 완료");
+		var alc_id = $("#alcohol_id").val();
+		
+		$.ajax({
+			url : "/admin/alcohol/alcoholDel?ALCOHOL_ID="+alc_id,
+			type : "get",
+			data : {
+				"ALCOHOL_ID" : alc_id
+			},
+			success : function(data){
+				if(data > 0){
+					alert("삭제 완료");
+					
+					//삭제 후 다시 로드
+					alcoholLst();
+				}else{
+					alert("이런.. 주류삭제에 문제가 생겼습니다..관리자에 문의하세요.");
+				}
+			},
+			error : function(xhr){
+				console.log(xhr);
+			}
+		
+		});
 		
 		//모달 팝업창 닫기
 		$('#delModal').modal("hide");
@@ -46,6 +55,24 @@ $(function(){
 	
 
 });
+
+function alcoholLst(){
+	//페이지가 로드 될 때 주류 항목 조회
+	$.ajax({
+		url : "/admin/alcohol/alcoholLst",
+		type : "get",
+		//검색기능 추가 시 주석 제거할 것.
+		//dataType : "json",
+		//contentType : "application/json; charset = UTF-8",
+		data : {},
+		success : function(data){
+			var alcoholVal = '${alcoholVal}';
+		},
+		error : function(xhr){
+			console.log(xhr);
+		}
+	});
+} 	
 
 function changeModalValue(alcohol_id){
 	$("input[name='alcohol_id']").val(alcohol_id);
@@ -151,7 +178,6 @@ function excelDown(){
 					</div>
 					<div class="modal-body">
 						<form id="del_form">
-							<input type="hidden" name="alcohol_id">
 							<p>정말 삭제 하시겠습니까?</p>
 						</form>
 					</div>
@@ -186,7 +212,7 @@ function excelDown(){
 									<!-- 파일 업로드 Start -->
 									<form id="excelUploadForm" name="excelUploadForm" enctype="multipart/form-data">
 					                	<div class="form-group row" align="right">
-								            <div class="col-sm-10"  align="right" style = "left : 174px;">
+								            <div class="col-sm-10"  align="right" style = "left : 230px;">
 								                <div class="custom-file" id="inputFile" style = "width : 250px;">
 								                    <input name="excelFile" type="file" class="custom-file-input" id="excelFile" style = "width : 250px;">
 								                    <label class="custom-file-label" for="excelFile" style="position: absolute; text-align : left;">파일선택</label>
@@ -246,6 +272,7 @@ function excelDown(){
 											</c:when>
 											<c:otherwise>
 												<c:forEach items="${alcoholVal }" var="alcoholVal">
+													<input type = "hidden" id = "alcohol_id" value = "${alcoholVal.getALCOHOL_ID()}">
 													<tr>
 														<td>${alcoholVal.getALCOHOL_ID() }</td>
 														<td>${alcoholVal.getTOP_NM() }</td>
@@ -265,7 +292,10 @@ function excelDown(){
 									</table>
 									
 									<!-- 페이징 Start -->
-									<div style="display: block; text-align: center;">		
+									
+									<!-- 기존 페이징 로직 주석처리 -->
+									
+									<!-- <div style="display: block; text-align: center;">		
 										<ul class = "pagination" style = "justify-content: center;">
 											<c:choose>
 												<c:when test="${pager.startPage != 1 }">
@@ -300,6 +330,45 @@ function excelDown(){
 													<li>
 														<a class = "page-link" href="javascript:alert('마지막 페이지입니다');">&gt;</a>
 													</li>
+												</c:otherwise>
+											</c:choose>
+										</ul>
+									</div> -->
+									<!-- 페이징 End -->	
+									
+									
+									<!-- 페이징 Start -->
+									<div style="display: block; text-align: center;">		
+										<ul class = "pagination" style = "justify-content: center;">
+											<c:choose>
+												<c:when test="${pageMaker.prev }">
+													<li class = "page-item">
+														<a class = "page-link" href="/admin/alcohol/alcoholLst?page=${pageMaker.startPage - 1 }">&lt;</a>
+													</li>	
+												</c:when>
+												<c:otherwise>
+													<a class = "page-link" href="javascript:alert('첫 페이지입니다');">&lt;</a>
+												</c:otherwise>
+											</c:choose>
+											<c:forEach begin="${pageMaker.startPage }" end="${pageMaker.endPage }" var="pageNum">
+												<c:choose>
+													<c:when test="${pageNum == pageMaker.getCri().getPage() }">
+														<li class = "page-item active"><a class = "page-link" href="/admin/alcohol/alcoholLst?page=${pageNum }">${pageNum }</a></li>
+													</c:when>
+													<c:when test="${pageNum != pageMaker.getCri().getPage() }">
+														<li class = "page-item"><a class = "page-link" href="/admin/alcohol/alcoholLst?page=${pageNum }">${pageNum }</a></li>
+													</c:when>
+												</c:choose>
+												
+											</c:forEach>
+											<c:choose>
+												<c:when test="${pageMaker.next && pageMaker.endPage >0 }">
+													<li class = "page-item">
+														<a class = "page-link" href="/admin/alcohol/alcoholLst?page=${pageMaker.endPage+1 }">&gt;</a>
+													</li>
+												</c:when>
+												<c:otherwise>
+													<a class = "page-link" href="javascript:alert('마지막 페이지입니다');">&gt;</a>
 												</c:otherwise>
 											</c:choose>
 										</ul>

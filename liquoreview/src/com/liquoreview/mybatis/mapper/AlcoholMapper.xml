@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="AlcoholMapper">
-	<select id="alcCountTopCate" resultType="int">
+	<select id="alcLstAllCnt" resultType="int">
 		/*총 게시물 수 조회*/
 		SELECT   /*alcCountTopCate*/
 				COUNT(1)
@@ -11,6 +11,32 @@
 	</select>
 	
 	<select id="alcoholLstIqrPager" resultType="Alcohol">
+		/*주류 전체 조회(LIMIT 함수 사용) 기존에 사용하던 ROWNUM 사용 안함.(정렬에 문제가 있으므로 변경), 이양원*/
+		SELECT  /*alcoholLstIqrPager*/
+			  A.ALCOHOL_ID
+			, A.ALC_IMG_ID
+			, (SELECT TOPCATEGORY_ID FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOPCATEGORY_ID
+			, (SELECT NAME  FROM TOPCATEGORY WHERE 1=1 AND TOPCATEGORY_ID = B.TOPCATEGORY_ID) AS TOP_NM
+			, B.SUBCATEGORY_ID
+			, B.NAME AS SUB_NM
+			, A.NAME AS ALCOHOL_NM
+			, A.DEGREE AS ALC_DEGREE
+			, A.DETAIL AS ALC_DETAIL
+			, C.FILENAME
+			, A.REGDATE
+			, A.LAST_MODI_YMD
+		  FROM ALCOHOL A INNER JOIN SUBCATEGORY B
+		  	ON A.SUBCATEGORY_ID = B.SUBCATEGORY_ID
+		  LEFT OUTER JOIN ALC_IMG C
+		  	ON A.ALCOHOL_ID = C.ALCOHOL_ID
+		  WHERE 1=1
+			  /*검색 기능 추가 전(mybatis 조건 부여 예정)*/
+			  /*AND ALCOHOL_NM LIKE '%'||ALCOHOL_NM||'%' */
+		  ORDER BY ALCOHOL_ID DESC
+		  LIMIT #{pageStart}, #{perPageNum}/*시작 행, 출력할 갯수*/		
+	</select>
+	
+	<!-- <select id="alcoholLstIqrPager" resultType="Alcohol">
 		/*주류 전체 조회 + 페이징(추 후 검색 조건 추가 예정), 이양원*/
 		SELECT   /*alcoholLstIqrPager*/
 				XX.*
@@ -37,7 +63,7 @@
 		  WHERE 1=1
 		      AND XX.ALCOHOL_ID BETWEEN #{start} AND #{end}
 		  ORDER BY XX.ALCOHOL_ID DESC
-	</select> 
+	</select>  -->
 	
 		<!-- 사용하던 페이징 쿼리 변경  예정   
 			=> 변경 사유 : sorting이 제대로 안먹힘.
@@ -65,7 +91,7 @@
 			  /*검색 기능 추가 전(mybatis 조건 부여 예정)*/
 			  /*AND ALCOHOL_NM LIKE '%'||ALCOHOL_NM||'%' */
 		  ORDER BY ALCOHOL_ID DESC
-		  LIMIT #{start}
+		  LIMIT #{start} OFFSET #{end}
 	</select> -->
 	
 	<select id="alcoholLstDtl" resultType="Alcohol" parameterType="int">
@@ -128,7 +154,7 @@
 	
 	<insert id="subCateReg" parameterType="Alcohol">
 		/*하위 카테고리 등록, 이양원*/
-		INSERT
+		INSERT  /*subCateReg*/
 			INTO SUBCATEGORY(
 				  TOPCATEGORY_ID
 				, NAME
@@ -151,6 +177,7 @@
 				, NAME
 				, DEGREE
 				, DETAIL
+				, ALC_IMG_ID
 				, REGDATE
 				, LAST_MODI_YMD
 			)
@@ -159,31 +186,62 @@
 				, #{ALCOHOL_NM}
 				, #{ALC_DEGREE}
 				, #{ALC_DETAIL}
+				<!-- <choose>  서비스단에서 조건 부여, 2021. 06. 12 by 이양원
+					<when test="ALC_IMG_ID != null and ALC_IMG_ID != ''">
+						, (SELECT NVL(MAX(ALC_IMG_ID),0 )+ 1 FROM ALC_IMG)
+					</when>
+					<otherwise>
+						, null
+					</otherwise>
+				</choose> -->
+				, #{ALC_IMG_ID}
 				, SYSDATE()
 				, SYSDATE()
 			)	
 	</insert>
 	
-	<insert id="" parameterType="map">
+	<insert id="alcImgReg" parameterType="map">
 		/*주류 이미지 등록, 이양원*/
-		INSERT   /**/
-			INTO ALC_IMG(
-				  ALCOHOL_ID
+		INSERT
+			INTO ALC_IMG (
+				  ALC_IMG_ID
+				, ALCOHOL_ID
 				, FILENAME
 				, THUMB_YN
 				, REGDATE
 				, LAST_MODI_YMD
-			)
-			VALUES(
-				  #{ALCOHOL_ID}
-				, #{FILENAME}
-				, #{THUMB_YN}
-				, SYSDATE()
-				, SYSDATE()
-			)	
+		    )
+		    SELECT
+		          /*(SELECT NVL(MAX(ALC_IMG_ID),0 )+ 1 FROM ALC_IMG) AS ALC_IMG_ID  서비스단에서 조건 부여, 2021. 06. 12 by 이양원 */
+		          #{ALC_IMG_ID}
+		  	    , NVL(MAX(A.ALCOHOL_ID), 0) AS ALCOHOL_ID
+		  	    , #{FILENAME} AS FILENAME
+		  	    , #{THUMB_YN} AS THUMB_YN
+		  	    , SYSDATE()
+		  	    , SYSDATE()
+			  FROM ALCOHOL A
 	</insert>
 	
-
+	<delete id="alcoholDel" parameterType="int">
+		/*주류 정보 삭제, 이양원*/
+		 DELETE FROM ALCOHOL  /*alcoholDel*/
+		 WHERE 1=1
+		     AND ALCOHOL_ID = #{ALCOHOL_ID}
+	</delete>
+	
+	<delete id="alcoholImgDel" parameterType="int">
+		/*주류 이미지 삭제, 이양원*/
+		DELETE   /*alcoholImgDel*/
+			FROM ALC_IMG 
+			WHERE 1=1 
+					AND ALCOHOL_ID = (SELECT
+														 A.ALCOHOL_ID 
+													FROM ALCOHOL A
+															, ALC_IMG B
+													WHERE 1=1
+														AND A.ALCOHOL_ID = B.ALCOHOL_ID
+														AND A.ALCOHOL_ID = #{ALCOHOL_ID}) 
+	</delete>
 	
 
 </mapper>
