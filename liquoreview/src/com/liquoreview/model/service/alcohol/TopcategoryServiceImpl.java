@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.Criteria;
 import com.liquoreview.common.SearchCriteria;
+import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
 import com.liquoreview.model.domain.alcohol.Topcategory;
 import com.liquoreview.model.repository.alcohol.TopcategoryDAO;
@@ -58,9 +59,19 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 	}
 
 	@Override
-	public JSONObject update(Topcategory topcategory) {
-		// TODO Auto-generated method stub
-		return null;
+	public JSONObject update(Topcategory topcategory) throws EditFailException{
+		int result = topcategoryDAO.update(topcategory);
+		JSONObject resultObj = new JSONObject();
+		if (result == 0) {
+			resultObj.put("resultCode", "0");
+			resultObj.put("msg", "상위카테고리 수정 실패");
+			throw new EditFailException("상위카테고리 수정 실패");
+		} else {
+			resultObj.put("resultCode", "1");
+			resultObj.put("msg", "상위카테고리 수정 성공");
+		}
+
+		return resultObj;
 	}
 
 	@Override

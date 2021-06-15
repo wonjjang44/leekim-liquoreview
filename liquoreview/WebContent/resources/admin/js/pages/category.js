@@ -39,7 +39,7 @@ function handleTopcateList(data) {
 			console.log(data[key]);
 			let obj = data[key];
 			con.append("<tr id='top_table_tr_"+obj.topcategory_id+"'>");
-			con.append("<td><input class='topCate_id_checkbox' type='checkbox' name='topCate_id' value='"+obj.topcategory_id+"'/></td>");
+			con.append("<td><input class='topCate_id_checkbox' type='checkbox' name='topCate_id' value='"+obj.topcategory_id+"' onChange='topCheckboxHandle("+obj.topcategory_id+")'/></td>");
 			con.append("<td>"+obj.topname+"</td>");
 			con.append("<td>"+obj.regdate+"</td>");
 			con.append("<td>"+obj.last_modi_ymd+"</td>");
@@ -166,7 +166,7 @@ function topCateModalPop() {
 	if($("#hidden_topcategory_id").val() != "" || $("#hidden_topcategory_id").val() !=  0) {
 		topcategory_id = $("#hidden_topcategory_id").val();
 	}
-	
+	console.log("topid 확인 : "+topcategory_id);
 	$.ajax({
 		url:"/rest/admin/topCate/modal/"+topcategory_id,
 		type:"GET",

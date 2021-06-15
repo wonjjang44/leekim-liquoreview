@@ -165,6 +165,12 @@ public class RestAdminCategoryController {
 	}
 	
 	//topcategory 수정
+	@RequestMapping(value = "/admin/alcohol/topcategory", method = RequestMethod.PUT, produces = "application/text;charset=UTF-8")
+	public String updateTopcateInfo(Topcategory topcategory, HttpServletRequest request) {
+		JSONObject topcateModiResult = topcategoryService.update(topcategory);
+		return topcateModiResult.toString();
+	}
+	
 	
 	//subcategory 수정
 	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.PUT, produces = "application/text;charset=UTF-8")

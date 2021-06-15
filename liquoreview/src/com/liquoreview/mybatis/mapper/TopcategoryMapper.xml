@@ -50,7 +50,7 @@
 	</select>
 	
 	<insert id="insert" parameterType="Topcategory">
-		insert into topcategory(NAME
+		insert into topcategory(TOPNAME
 										,LAST_MODI_YMD
 										) 
 			values(
@@ -62,7 +62,7 @@
 	<update id="update" parameterType="Topcategory">
 		update topcategory
 								set
-									 NAME = #{topname}
+									 TOPNAME = #{topname}
 									,LAST_MODI_YMD = now()
 		 where TOPCATEGORY_ID = #{topcategory_id}
 	</update>
@@ -75,6 +75,6 @@
 	<!-- 검색 -->
 	<select id="search" parameterType="String" resultType="Topcategory">
 		<include refid="sql_select"/>
-		where NAME like CONCAT('%',#{searchWord},'%')
+		where TOPNAME like CONCAT('%',#{searchWord},'%')
 	</select>
 </mapper>

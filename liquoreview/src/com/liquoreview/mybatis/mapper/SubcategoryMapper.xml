@@ -86,13 +86,13 @@
 	
 	<select id="selectByName" parameterType="String" resultMap="SubcategoryMap">
 		<include refid="sql_select"/>
-		where NAME = #{subname}
+		where SUBNAME = #{subname}
 	</select>
 	
 	<!-- 서브카테고리 중복확인 -->
 	<select id="cateNameCheck" parameterType="String" resultMap="SubcategoryMap">
 		<include refid="sql_select"/>
-		where NAME = #{subname}
+		where SUBNAME = #{subname}
 	</select>
 	
 	<insert id="insert" parameterType="Subcategory">
