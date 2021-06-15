@@ -241,22 +241,23 @@ function checkCnt(obj) {
 	console.log("obj확인 : "+obj);
 	
 	let checkArray = new Array();
-	
-	//topcate 수정, subcate 수정 모달 구분
-	if (obj.includes('top')) {
-		$(".topCate_id_checkbox").each(function(i) {
-			console.log($(this).prop("checked"));
-			if ($(this).prop("checked")) {
-				checkArray.push(parseInt($(this).val()));
-			}
-		});
-	} else {
-		$(".subCate_id_checkbox").each(function(i) {
-			console.log($(this).prop("checked"));
-			if ($(this).prop("checked")) {
-				checkArray.push(parseInt($(this).val()));
-			}
-		});
+	if(obj != undefined) {
+		//topcate 수정, subcate 수정 모달 구분
+		if (obj.includes('top')) {
+			$(".topCate_id_checkbox").each(function(i) {
+				console.log($(this).prop("checked"));
+				if ($(this).prop("checked")) {
+					checkArray.push(parseInt($(this).val()));
+				}
+			});
+		} else {
+			$(".subCate_id_checkbox").each(function(i) {
+				console.log($(this).prop("checked"));
+				if ($(this).prop("checked")) {
+					checkArray.push(parseInt($(this).val()));
+				}
+			});
+		}
 	}
 	return checkArray;
 }
