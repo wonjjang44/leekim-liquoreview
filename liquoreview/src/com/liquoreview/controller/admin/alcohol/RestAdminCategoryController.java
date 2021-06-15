@@ -75,11 +75,17 @@ public class RestAdminCategoryController {
 			if (subcategory_id == 0) {
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/alcohol/category/subAdd.jsp");
 			} else {
+				//subcategoryId로 subcategory정보 조회
 				Subcategory subcateInfo = subcategoryService.select(subcategory_id);
-				logger.info("subcategory_id로 조회한 topcateInfo : " + subcateInfo);
+				//조회된 subcategory정보에서 topcategoryId 추출
+				logger.info("subcategory_id로 특정한 subcateInfo에서 topid 추출 : " + subcateInfo.getTopcategory().getTopcategory_id());
+				//추출한 topid로 topcategory info 조회
+				Topcategory topcateInfo = topcategoryService.select(subcateInfo.getTopcategory().getTopcategory_id());
 				requestDispatcher = request.getRequestDispatcher("/WEB-INF/views/admin/alcohol/category/subModify.jsp");
 
 				request.getSession().setAttribute("subcateInfo", subcateInfo);
+				request.getSession().setAttribute("topcateInfo", topcateInfo);
+				request.getSession().setAttribute("topcateList", topcateList);
 			}
 			response.setContentType("text/html;charset=UTF-8");
 			response.setCharacterEncoding("UTF-8");
@@ -156,5 +162,17 @@ public class RestAdminCategoryController {
 			logger.info("failed to register sub cate");
 		}
 		return subcateInsertResult.toString();
+	}
+	
+	//topcategory 수정
+	
+	//subcategory 수정
+	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.PUT, produces = "application/text;charset=UTF-8")
+	public String updateSubcateInfo(Subcategory subcategory, HttpServletRequest request) {
+		Topcategory topcategory = new Topcategory();
+		topcategory.setTopcategory_id(Integer.parseInt(request.getParameter("topcategory_id")));
+		subcategory.setTopcategory(topcategory);
+		JSONObject subcateModiResult = subcategoryService.update(subcategory);
+		return subcateModiResult.toString();
 	}
 }

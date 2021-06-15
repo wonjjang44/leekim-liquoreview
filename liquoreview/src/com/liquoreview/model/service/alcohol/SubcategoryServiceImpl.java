@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.Criteria;
+import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
 import com.liquoreview.model.domain.alcohol.Subcategory;
 import com.liquoreview.model.repository.alcohol.SubcategoryDAO;
@@ -40,8 +41,7 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 
 	@Override
 	public Subcategory select(int subcategory_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return subcategoryDAO.select(subcategory_id);
 	}
 
 	@Override
@@ -89,9 +89,18 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 	}
 
 	@Override
-	public JSONObject update(Subcategory subcategory) {
-		// TODO Auto-generated method stub
-		return null;
+	public JSONObject update(Subcategory subcategory) throws EditFailException{
+		int result = subcategoryDAO.update(subcategory);
+		JSONObject resultObj = new JSONObject();
+		if (result == 0) {
+			resultObj.put("resultCode", "0");
+			resultObj.put("msg", "subcategory 수정 실패");
+			throw new EditFailException("subcategory 수정 실패");
+		} else {
+			resultObj.put("resultCode", "1");
+			resultObj.put("msg", "subcategory 수정 성공");
+		}
+		return resultObj;
 	}
 
 	@Override

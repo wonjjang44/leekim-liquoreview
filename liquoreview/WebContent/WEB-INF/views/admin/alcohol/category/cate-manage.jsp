@@ -99,7 +99,6 @@
 													</tbody>
 												</table>
 												<input id="hidden_subcategory_id" type="hidden" name="subcategory_id" value=""/>
-												<input id="hidden_sub_topcategory_id" type="hidden" name="topcategory_id" value=""/>
 											</div>
 										</div>
 										<div class="card-footer">
