@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.Criteria;
+import com.liquoreview.exception.DeleteFailException;
 import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
 import com.liquoreview.model.domain.alcohol.Subcategory;
@@ -110,14 +111,25 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 	}
 
 	@Override
-	public void delete(int subcategory_id) {
-		// TODO Auto-generated method stub
+	public void delete(int subcategory_id) throws DeleteFailException{
+		int result = subcategoryDAO.delete(subcategory_id);
+		if (result ==0) {
+			throw new DeleteFailException("subcategory 삭제 실패");
+		}
 		
 	}
 
 	@Override
-	public void delete(List<Integer> deleteList) {
-		// TODO Auto-generated method stub
+	public void delete(List<Integer> deleteList) throws DeleteFailException{
+		logger.info(deleteList);
+		int result = 0;
+		for (Integer num : deleteList) {
+			int subcategory_id = num;
+			result = subcategoryDAO.delete(subcategory_id);
+			if(result == 0) {
+				throw new DeleteFailException("subcategory 삭제 실패");
+			}
+		}
 		
 	}
 

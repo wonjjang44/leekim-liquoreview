@@ -279,7 +279,7 @@ function topcateAdd() {
 			url: "/rest/admin/alcohol/topcategory",
 			type: "POST",
 			data: {
-				name: $("#new_top_name").val()
+				topname: $("#new_top_name").val()
 			},
 			success:function(result) {
 				let topcateInsertResult = JSON.parse(result);
@@ -306,10 +306,30 @@ function handleTopcateInsertResult(data) {
 	}
 }
 
-//top category 수정
-
 // top category 삭제
-
+function topDel(e) {
+	console.log("topcate 삭제 요청받음");
+	var checkArray = checkCnt(e.name);
+	if (checkArray.length == 0) {
+		alert("삭제할 topcategory를 체크하세요.");
+	} else {
+		if(confirm("선택한 topcategory 목록을 삭제하시겠습니까?")) {
+			$.ajax({
+				type:"DELETE",
+				url:"/rest/admin/alcohol/topcategory/"+checkArray,
+				contentType:"application/json",
+				dataType:'json',
+				success:function(result) {
+					console.log(result);
+					getTopcateList();
+				},
+				error:function(result) {
+					console.log(result);
+				}
+			});
+		}
+	}
+}
 // sub category insert
 function subcateAdd() {
 	let validResult = validateSubCateModal();
@@ -319,7 +339,7 @@ function subcateAdd() {
 			type: "POST",
 			data: {
 				topcategory_id: $("#topSelect").val(),
-				name: $("#new_sub_name").val()
+				subname: $("#new_sub_name").val()
 			},
 			success:function(result) {
 				let subcateInsertResult = JSON.parse(result);
@@ -344,5 +364,30 @@ function handleSubcateInsertResult(data) {
 	} else {
 		alert(data.msg);
 		return;
+	}
+}
+
+//sub category 삭제
+function subDel(e) {
+	console.log("subcate 삭제 요청받음");
+	var checkArray = checkCnt(e.name);
+	if (checkArray.length == 0) {
+		alert("삭제할 subcategory를 체크하세요.");
+	} else {
+		if(confirm("선택한 subcategory 목록을 삭제하시겠습니까?")) {
+			$.ajax({
+				type:"DELETE",
+				url:"/rest/admin/alcohol/subcategory/"+checkArray,
+				contentType:"application/json",
+				dataType:'json',
+				success:function(result) {
+					console.log(result);
+					getSubCategoryList(result.topcategory_id);
+				},
+				error:function(result) {
+					console.log(result);
+				}
+			});
+		}
 	}
 }

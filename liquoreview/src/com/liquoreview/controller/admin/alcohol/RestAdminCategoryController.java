@@ -181,4 +181,28 @@ public class RestAdminCategoryController {
 		JSONObject subcateModiResult = subcategoryService.update(subcategory);
 		return subcateModiResult.toString();
 	}
+	
+	//topcategory 삭제
+	@RequestMapping(value = "/admin/alcohol/topcategory/{checkArray}", method = RequestMethod.DELETE)
+	public String delTopcate(@PathVariable("checkArray") List<Integer> deleteList, HttpServletRequest request) {
+		logger.info("topcate deleteList 확인 : "+deleteList);
+		topcategoryService.delete(deleteList);
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"result\":1");
+		sb.append("}");
+		return sb.toString();
+	}
+	
+	//subcategory 삭제
+	@RequestMapping(value = "/admin/alcohol/subcategory/{checkArray}", method = RequestMethod.DELETE)
+	public String delSubcate(@PathVariable("checkArray") List<Integer> deleteList, HttpServletRequest request) {
+		logger.info("subcate deleteList 확인 : "+deleteList);
+		subcategoryService.delete(deleteList);
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+		sb.append("\"result\":1");
+		sb.append("}");
+		return sb.toString();
+	}
 }

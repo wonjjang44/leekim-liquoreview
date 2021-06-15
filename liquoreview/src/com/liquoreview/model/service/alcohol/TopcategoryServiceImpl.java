@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.liquoreview.common.Criteria;
 import com.liquoreview.common.SearchCriteria;
+import com.liquoreview.exception.DeleteFailException;
 import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
 import com.liquoreview.model.domain.alcohol.Topcategory;
@@ -81,15 +82,25 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 	}
 
 	@Override
-	public void delete(int topcategory_id) {
+	public void delete(int topcategory_id) throws DeleteFailException{
 		// TODO Auto-generated method stub
-		
+		int result = topcategoryDAO.delete(topcategory_id);
+		if (result ==0) {
+			throw new DeleteFailException("topcategory 삭제 실패");
+		}
 	}
 
 	@Override
-	public void delete(List<Integer> deleteList) {
-		// TODO Auto-generated method stub
-		
+	public void delete(List<Integer> deleteList) throws DeleteFailException{
+		logger.info(deleteList);
+		int result = 0;
+		for (Integer num : deleteList) {
+			int topcategory_id = num;
+			result = topcategoryDAO.delete(topcategory_id);
+			if(result == 0) {
+				throw new DeleteFailException("topcategory 삭제 실패");
+			}
+		}
 	}
 
 	@Override

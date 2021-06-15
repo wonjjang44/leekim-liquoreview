@@ -16,7 +16,7 @@
 			<form id="topcate_add_form" name="topcate_add_form">
 				<p class="nameArea">
 					<label for="new_top_name">추가할 상위카테고리명</label>
-					<input id="new_top_name" class="form-control" type="text" name="name" required/>
+					<input id="new_top_name" class="form-control" type="text" name="topname" required/>
 				</p>
 				<div class="addBtn">
 					<input id="btnTopcateInsert" type="button" title="상위카테고리추가" value="입력" onClick="topcateAdd()"/>
