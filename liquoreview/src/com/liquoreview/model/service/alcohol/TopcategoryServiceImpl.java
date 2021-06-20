@@ -1,5 +1,6 @@
 package com.liquoreview.model.service.alcohol;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,7 +15,9 @@ import com.liquoreview.common.SearchCriteria;
 import com.liquoreview.exception.DeleteFailException;
 import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
+import com.liquoreview.model.domain.alcohol.Subcategory;
 import com.liquoreview.model.domain.alcohol.Topcategory;
+import com.liquoreview.model.repository.alcohol.SubcategoryDAO;
 import com.liquoreview.model.repository.alcohol.TopcategoryDAO;
 
 @Service
@@ -24,6 +27,10 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 	@Autowired
 	@Qualifier("mybatisTopcategoryDAO")
 	TopcategoryDAO topcategoryDAO;
+	
+	@Autowired
+	@Qualifier("mybatisSubcategoryDAO")
+	SubcategoryDAO subcategoryDAO;
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
@@ -93,11 +100,34 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 	@Override
 	public void delete(List<Integer> deleteList) throws DeleteFailException{
 		logger.info(deleteList);
-		int result = 0;
+		List<Subcategory> subList = new ArrayList<Subcategory>();
+		int topDelResult = 0;
+		int subDelResult = 0;
+		
+		//deleteList에서 topcategory_id추출
 		for (Integer num : deleteList) {
 			int topcategory_id = num;
-			result = topcategoryDAO.delete(topcategory_id);
-			if(result == 0) {
+			//topcategory_id를 가진 subList 추출
+			subList.addAll(subcategoryDAO.selectAllByTopCate(topcategory_id));
+			//하위리스트 없으면
+			if (subList.isEmpty()) {
+				//topcategory 바로 삭제
+				topDelResult = topcategoryDAO.delete(topcategory_id);
+			} else {//하위리스트 있으면
+				for (Subcategory sub : subList) {
+					//topcategory_id 연결된 subList 삭제
+					logger.info("삭제대상으로 추출된 sub.getSubcategory_id 확인 : "+sub.getSubcategory_id());
+					subDelResult = subcategoryDAO.delete(sub.getSubcategory_id());
+					//subList 삭제 성공 시
+				}
+				if(subDelResult != 0) {
+					//topcategory 삭제
+					topDelResult = topcategoryDAO.delete(topcategory_id);
+				} else {
+					throw new DeleteFailException("subcategory 삭제 실패");
+				}
+			}
+			if (topDelResult == 0) {
 				throw new DeleteFailException("topcategory 삭제 실패");
 			}
 		}

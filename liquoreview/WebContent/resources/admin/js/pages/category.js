@@ -306,7 +306,7 @@ function handleTopcateInsertResult(data) {
 	}
 }
 
-// top category 삭제
+// top category 삭제1 : sub category 보유여부 조사
 function topDel(e) {
 	console.log("topcate 삭제 요청받음");
 	var checkArray = checkCnt(e.name);
@@ -315,6 +315,68 @@ function topDel(e) {
 	} else {
 		if(confirm("선택한 topcategory 목록을 삭제하시겠습니까?")) {
 			$.ajax({
+				type:"GET",
+				url:"/rest/admin/alcohol/subcategory/"+checkArray,
+				success:function(result) {
+					console.log(result);
+					excuteTopDel(result);
+				},
+				error:function(result) {
+					console.log(result);
+				}
+			});
+		}
+	}
+}
+
+function excuteTopDel(data) {
+	console.log(typeof(data));
+	console.log(data[0].hasSub);
+	
+	if(data[0].hasSub == "1") {
+		if (confirm("해당 topcategory는 subcategory list를 포함하고 있으며\n 삭제 진행 시 subcategory list까지 모두 삭제됩니다. 진행하시겠습니까? ")) {
+			doTopDel(data);
+		} else {
+			alert("포함된 subcategory list 삭제여부를 먼저 확인해주세요.");
+			return;
+		}
+	} else {
+		doTopDel(data);
+	}
+}
+
+function doTopDel(data) {
+	console.log(data);
+	console.log(data.length);
+	
+	let topDelArray = new Array();
+	for (let key in data) {
+		console.log(data[key]);
+		let obj = data[key];
+		topDelArray.push(obj.testedTopId);
+	}
+	
+	$.ajax({
+		type:"DELETE",
+		url:"/rest/admin/alcohol/topcategory/"+topDelArray,
+		contentType:"application/json",
+		dataType:'json',
+		success:function(result) {
+			console.log(result);
+			getTopcateList();
+		},
+		error:function(result) {
+			console.log(result);
+		}
+	});
+	
+	
+	
+	
+}
+
+/*
+ * $.ajax({
 				type:"DELETE",
 				url:"/rest/admin/alcohol/topcategory/"+checkArray,
 				contentType:"application/json",
@@ -327,9 +389,14 @@ function topDel(e) {
 					console.log(result);
 				}
 			});
-		}
-	}
-}
+ * 
+ * 
+ * 
+ * 
+ * 
+ * */
+
+
 // sub category insert
 function subcateAdd() {
 	let validResult = validateSubCateModal();
@@ -389,5 +456,21 @@ function subDel(e) {
 				}
 			});
 		}
+	}
+}
+
+//refresh category list
+function refresh(obj) {
+	if (obj.name.includes('top')) {
+		//topcategory list의 목록 checkbox 선택 reset
+		$(".topCate_id_checkbox").prop("checked", false);
+		//checkbox 선택해서 담았던 hidden value reset
+		$("#hidden_topcategory_id").val(0);
+		getTopcateList();
+	} else {
+		//subcategory list의 목록 checkbox 선택 reset
+		$(".subCate_id_checkbox").prop("checked", false);
+		//checkbox 선택해서 담았던 hidden value reset
+		$("#hidden_subcategory_id").val(0);
 	}
 }

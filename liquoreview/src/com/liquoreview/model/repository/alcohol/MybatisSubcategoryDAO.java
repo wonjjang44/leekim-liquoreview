@@ -80,7 +80,10 @@ public class MybatisSubcategoryDAO implements SubcategoryDAO{
 
 	@Override
 	public int delete(int subcategory_id) {
-		return sessionTemplate.delete("Subcategory.delete", subcategory_id);
+		logger.info("subcategory 삭제요청 넘어온 subid 확인 : "+subcategory_id);
+		int delResult = sessionTemplate.delete("Subcategory.delete", subcategory_id);
+		logger.info("subcategory 삭제결과 확인 : "+delResult);
+		return delResult;
 	}
 
 }

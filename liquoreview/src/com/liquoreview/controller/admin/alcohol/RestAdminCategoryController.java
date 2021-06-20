@@ -9,16 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.liquoreview.common.Criteria;
 import com.liquoreview.common.Pager;
+import com.liquoreview.exception.DeleteFailException;
+import com.liquoreview.exception.EditFailException;
 import com.liquoreview.model.domain.alcohol.Subcategory;
 import com.liquoreview.model.domain.alcohol.Topcategory;
 import com.liquoreview.model.service.alcohol.SubcategoryService;
@@ -117,11 +122,11 @@ public class RestAdminCategoryController {
 		return topcateResultObj;
 	}
 	
-	//topcategory_id로 연관된 subcategory list 조회
+	//topcategory_id 단건으로 연관된 subcategory list 조회
 	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public JSONObject getSubcateListByTopId(@RequestParam("topcategory_id") int topcategory_id, HttpServletRequest request) {
 		List<Subcategory> sortedSubcateList = null;
-		int pageSize=5;
+		int pageSize = 5;
 		JSONObject subcateResultObj = new JSONObject();
 		
 		Criteria criteria = new Criteria(request, pageSize);
@@ -135,6 +140,13 @@ public class RestAdminCategoryController {
 		return subcateResultObj;
 	}
 	
+	// topcategory_id 리스트로 연관된 subcategory list 여부조회
+	@RequestMapping(value = "/admin/alcohol/subcategory/{checkArray}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public JSONArray checkSubcateListByTopIdArray(@PathVariable("checkArray") List<Integer> topIdList, HttpServletRequest request) {
+		JSONArray subcateResultObj = subcategoryService.selectAllByTopCate(topIdList);
+		logger.info(subcateResultObj);
+		return subcateResultObj;
+	}
 
 	// insert top category
 	@RequestMapping(value = "/admin/alcohol/topcategory", method = RequestMethod.POST, produces = "application/text;charset=UTF-8")
@@ -183,8 +195,8 @@ public class RestAdminCategoryController {
 	}
 	
 	//topcategory 삭제
-	@RequestMapping(value = "/admin/alcohol/topcategory/{checkArray}", method = RequestMethod.DELETE)
-	public String delTopcate(@PathVariable("checkArray") List<Integer> deleteList, HttpServletRequest request) {
+	@RequestMapping(value = "/admin/alcohol/topcategory/{topDelArray}", method = RequestMethod.DELETE)
+	public String delTopcate(@PathVariable("topDelArray") List<Integer> deleteList, HttpServletRequest request) {
 		logger.info("topcate deleteList 확인 : "+deleteList);
 		topcategoryService.delete(deleteList);
 		StringBuffer sb = new StringBuffer();
@@ -204,5 +216,17 @@ public class RestAdminCategoryController {
 		sb.append("\"result\":1");
 		sb.append("}");
 		return sb.toString();
+	}
+	
+	@ExceptionHandler(DeleteFailException.class)
+	//@ResponseBody
+	public String deleteFail(DeleteFailException e) {
+		return "{\"resultCode\":0,\"msg\":\""+e.getMessage()+"\"}";
+	}
+	
+	@ExceptionHandler(EditFailException.class)
+	//@ResponseBody
+	public String updateFail(EditFailException e) {
+		return "{\"resultCode\":0,\"msg\":\""+e.getMessage()+"\"}";
 	}
 }

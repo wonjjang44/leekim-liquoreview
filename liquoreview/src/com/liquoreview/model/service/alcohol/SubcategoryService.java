@@ -2,6 +2,7 @@ package com.liquoreview.model.service.alcohol;
 
 import java.util.List;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.liquoreview.common.Criteria;
@@ -12,6 +13,7 @@ public interface SubcategoryService {
 	public List<Subcategory> selectAll();
 	public Subcategory select(int subcategory_id);
 	public List<Subcategory> selectAllByTopCate(int topcategory_id);
+	public JSONArray selectAllByTopCate(List<Integer> topIdList);
 	public List<Subcategory> selectSortedSubcateList(Criteria criteria, int topcategory_id);
 	public List<Subcategory> selectByName(String name);
 	public List<Subcategory> cateNameCheck(String name);

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -132,5 +133,29 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 		}
 		
 	}
+
+	@Override
+	public JSONArray selectAllByTopCate(List<Integer> topIdList) {
+		List<Subcategory> subcateList = null;
+		JSONArray subcateArray = new JSONArray();
+		for (Integer num : topIdList ) {
+			JSONObject resultObj = new JSONObject();
+			int topcategory_id = num;
+			subcateList = subcategoryDAO.selectAllByTopCate(topcategory_id);
+			if (subcateList.isEmpty()) {
+				resultObj.put("hasSubBoolean", false);
+				resultObj.put("hasSub", "0");
+			} else {
+				resultObj.put("hasSubBoolean", true);
+				resultObj.put("hasSub", "1");
+			}
+			resultObj.put("testedTopId", topcategory_id);
+			subcateArray.add(resultObj);
+		}
+		
+		return subcateArray;
+	}
+
+	
 
 }

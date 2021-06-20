@@ -70,7 +70,7 @@
 													<button type="button" class="btn btn-primary btn-round" name="bt_top_delete" onClick="topDel(this)">
 														top cate 삭제
 													</button>
-													<button type="button" class="btn btn-primary btn-round" name="bt_top_refresh" onClick="topRefresh()">
+													<button type="button" class="btn btn-primary btn-round" name="bt_top_refresh" onClick="refresh(this)">
 														refresh
 													</button>
 												</div>
@@ -120,7 +120,7 @@
 													<button type="button" class="btn btn-primary btn-round" name="bt_sub_delete" onClick="subDel(this)">
 														sub cate 삭제
 													</button>
-													<button type="button" class="btn btn-primary btn-round" name="bt_sub_refresh" onClick="subRefresh()">
+													<button type="button" class="btn btn-primary btn-round" name="bt_sub_refresh" onClick="refresh(this)">
 														refresh
 													</button>
 												</div>
