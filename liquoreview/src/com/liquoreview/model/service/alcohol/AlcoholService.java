@@ -1,5 +1,19 @@
 package com.liquoreview.model.service.alcohol;
 
-public interface AlcoholService {
+import java.util.List;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import com.liquoreview.model.domain.alcohol.Alcohol;
+
+public interface AlcoholService {
+	public List<Alcohol> selectAll();
+	public Alcohol select(int alcohol_id);
+	public List<Alcohol> selectAllBySubCate(int subcategory_id);
+	public JSONArray selectAllBySubCate(List<Integer> subIdList);
+	public JSONObject insert(Alcohol alcohol);
+	public JSONObject update(Alcohol alcohol);
+	public void delete(int alcohol_id);
+	public void delete(List<Integer> deleteList);
 }

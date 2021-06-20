@@ -1,5 +1,6 @@
 package com.liquoreview.model.service.alcohol;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +17,9 @@ import com.liquoreview.common.Criteria;
 import com.liquoreview.exception.DeleteFailException;
 import com.liquoreview.exception.EditFailException;
 import com.liquoreview.exception.RegistFailException;
+import com.liquoreview.model.domain.alcohol.Alcohol;
 import com.liquoreview.model.domain.alcohol.Subcategory;
+import com.liquoreview.model.repository.alcohol.AlcoholDAO;
 import com.liquoreview.model.repository.alcohol.SubcategoryDAO;
 
 @Service
@@ -26,6 +29,9 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 	@Autowired
 	@Qualifier("mybatisSubcategoryDAO")
 	SubcategoryDAO subcategoryDAO;
+	
+	@Qualifier("mybatisAlcoholDAO")
+	AlcoholDAO alcoholDAO;
 	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
@@ -92,16 +98,39 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 
 	@Override
 	public JSONObject update(Subcategory subcategory) throws EditFailException{
-		int result = subcategoryDAO.update(subcategory);
+		List<Alcohol> alcList = new ArrayList<Alcohol>();
+		
+		int subModiResult = 0;
+		int alcModiResult = 0;
 		JSONObject resultObj = new JSONObject();
-		if (result == 0) {
+		
+		//subcategory_id 가진 alcList 추출
+		alcList.addAll(alcoholDAO.selectAllBySubCate(subcategory.getSubcategory_id()));
+		//하위리스트 없으면 subcategory 바로 수정
+		if (alcList.isEmpty()) {
+			subModiResult = subcategoryDAO.update(subcategory);
+		} else {
+			//하위리스트 있으면 alcList 순회 수정 선행
+			for(Alcohol alc : alcList) {
+				logger.info("수정대상으로 추출된 alcohol_id 확인 : "+alc.getAlcohol_id());
+				alcModiResult = alcoholDAO.update(alc);
+			}
+			if (alcModiResult != 0) {//alc 수정 성공
+				subModiResult = subcategoryDAO.update(subcategory);
+			} else {
+				throw new EditFailException("alcohol 수정 실패");
+			}
+		}
+		if (subModiResult == 0) {
 			resultObj.put("resultCode", "0");
 			resultObj.put("msg", "subcategory 수정 실패");
 			throw new EditFailException("subcategory 수정 실패");
 		} else {
 			resultObj.put("resultCode", "1");
 			resultObj.put("msg", "subcategory 수정 성공");
+			resultObj.put("subcategory_id", subcategory.getSubcategory_id());
 		}
+		
 		return resultObj;
 	}
 
@@ -123,11 +152,36 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 	@Override
 	public void delete(List<Integer> deleteList) throws DeleteFailException{
 		logger.info(deleteList);
-		int result = 0;
+		int subDelResult = 0;
+		int alcDelResult = 0;
+		List<Alcohol> alcList = null;
+		//deleteList에서 subcategory_id 추출
 		for (Integer num : deleteList) {
 			int subcategory_id = num;
-			result = subcategoryDAO.delete(subcategory_id);
-			if(result == 0) {
+			//subcategory_id를 가진 alcoholList추출
+			alcList.addAll(alcoholDAO.selectAllBySubCate(subcategory_id));
+			//하위 alcohol list 없으면
+			if (alcList.isEmpty()) {
+				//subcategory 바로 삭제
+				subDelResult = subcategoryDAO.delete(subcategory_id);
+			} else {
+				//하위 alcohol list 있으면
+				/* 
+				for (Alcohol alc : alcList) {
+					//subcategory_id 연결된 alcohol list 삭제
+					logger.info("삭제대상으로 추출된 alc.getAlcohol_id 확인: "+alc.getAlcohol_id() );
+					alcDelResult = alcoholDAO.delete(alc.getAlcohol_id());
+				}
+				*/
+				//임시조치
+				subDelResult = 0;
+				if (alcDelResult != 0) {
+					subDelResult = subcategoryDAO.delete(subcategory_id);
+				} else {
+					throw new DeleteFailException("alcohol 삭제 실패");
+				}
+			}
+			if (subDelResult == 0) {
 				throw new DeleteFailException("subcategory 삭제 실패");
 			}
 		}

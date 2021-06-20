@@ -375,28 +375,6 @@ function doTopDel(data) {
 	
 }
 
-/*
- * $.ajax({
-				type:"DELETE",
-				url:"/rest/admin/alcohol/topcategory/"+checkArray,
-				contentType:"application/json",
-				dataType:'json',
-				success:function(result) {
-					console.log(result);
-					getTopcateList();
-				},
-				error:function(result) {
-					console.log(result);
-				}
-			});
- * 
- * 
- * 
- * 
- * 
- * */
-
-
 // sub category insert
 function subcateAdd() {
 	let validResult = validateSubCateModal();
@@ -443,6 +421,23 @@ function subDel(e) {
 	} else {
 		if(confirm("선택한 subcategory 목록을 삭제하시겠습니까?")) {
 			$.ajax({
+				type:"GET",
+				url:"/rest/admin/alcohol/subcategory/"+checkArray,
+				success:function(result) {
+					console.log(result);
+					//getSubCategoryList(result.topcategory_id);
+				},
+				error:function(result) {
+					console.log(result);
+				}
+			});
+		}
+	}
+}
+
+/*
+ * 
+ * $.ajax({
 				type:"DELETE",
 				url:"/rest/admin/alcohol/subcategory/"+checkArray,
 				contentType:"application/json",
@@ -455,9 +450,12 @@ function subDel(e) {
 					console.log(result);
 				}
 			});
-		}
-	}
-}
+ * 
+ * 
+ * 
+ * */
+
+
 
 //refresh category list
 function refresh(obj) {
