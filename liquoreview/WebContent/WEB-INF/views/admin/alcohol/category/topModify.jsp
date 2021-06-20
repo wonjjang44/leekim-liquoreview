@@ -37,11 +37,13 @@
 		
 		//topcate 수정 요청 결과처리
 		function handleTopModiResult(data) {
-			console.log(data);
+			console.log("topcate 수정 결과 handle data 확인 : "+data);
 			if(data.resultCode === "1") {
 				alert(data.msg);
 				//리스트 갱신, 모달 close
 				getTopcateList();
+				//해당 하위 sub 보기
+				getSubCategoryList(data.topcategory_id);
 			}
 		}
 	</script>

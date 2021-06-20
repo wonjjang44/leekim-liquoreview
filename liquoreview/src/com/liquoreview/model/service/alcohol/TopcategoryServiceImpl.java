@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -68,15 +69,37 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 
 	@Override
 	public JSONObject update(Topcategory topcategory) throws EditFailException{
-		int result = topcategoryDAO.update(topcategory);
+		List<Subcategory> subList = new ArrayList<Subcategory>();
+		int topModiResult = 0;
+		int subModiResult = 0;
 		JSONObject resultObj = new JSONObject();
-		if (result == 0) {
+		
+		//topcategory_id 가진 subList 추출
+		subList.addAll(subcategoryDAO.selectAllByTopCate(topcategory.getTopcategory_id()));
+		//하위리스트 없으면 topcategory 바로 수정
+		if (subList.isEmpty()) {
+			topModiResult = topcategoryDAO.update(topcategory);
+		} else {
+			//하위리스트 있으면 subList 순회 수정 선행
+			for (Subcategory sub : subList) {
+				logger.info("수정대상으로 추출된 subcategory_id 확인 : "+sub.getSubcategory_id());
+				subModiResult = subcategoryDAO.update(sub);
+			}
+			if (subModiResult != 0) {//sub 수정 성공
+				topModiResult = topcategoryDAO.update(topcategory);
+				
+			} else {
+				throw new EditFailException("subcategory 수정 실패");
+			}
+		}
+		if (topModiResult == 0) {
 			resultObj.put("resultCode", "0");
 			resultObj.put("msg", "상위카테고리 수정 실패");
-			throw new EditFailException("상위카테고리 수정 실패");
+			throw new EditFailException("topcategory 수정 실패");
 		} else {
 			resultObj.put("resultCode", "1");
 			resultObj.put("msg", "상위카테고리 수정 성공");
+			resultObj.put("topcategory_id", topcategory.getTopcategory_id());
 		}
 
 		return resultObj;

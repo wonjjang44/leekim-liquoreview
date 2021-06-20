@@ -75,7 +75,10 @@ public class MybatisSubcategoryDAO implements SubcategoryDAO{
 
 	@Override
 	public int update(Subcategory subcategory) {
-		return sessionTemplate.update("Subcategory.update", subcategory);
+		logger.info("subcategory 수정요청 넘어온 정보 확인 : "+subcategory);
+		int modiResult = sessionTemplate.update("Subcategory.update", subcategory); 
+		logger.info("subcategory 수정결과 확인 : "+ modiResult);
+		return modiResult;
 	}
 
 	@Override
