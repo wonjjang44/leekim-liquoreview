@@ -30,6 +30,7 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 	@Qualifier("mybatisSubcategoryDAO")
 	SubcategoryDAO subcategoryDAO;
 	
+	@Autowired
 	@Qualifier("mybatisAlcoholDAO")
 	AlcoholDAO alcoholDAO;
 	
@@ -105,6 +106,8 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 		JSONObject resultObj = new JSONObject();
 		
 		//subcategory_id 가진 alcList 추출
+		logger.info(subcategory.getSubcategory_id());
+		logger.info(alcoholDAO.selectAllBySubCate(subcategory.getSubcategory_id()));
 		alcList.addAll(alcoholDAO.selectAllBySubCate(subcategory.getSubcategory_id()));
 		//하위리스트 없으면 subcategory 바로 수정
 		if (alcList.isEmpty()) {
@@ -142,6 +145,7 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 
 	@Override
 	public void delete(int subcategory_id) throws DeleteFailException{
+		logger.info("param이 topcategory_id인 delete메서드 호출인가?");
 		int result = subcategoryDAO.delete(subcategory_id);
 		if (result ==0) {
 			throw new DeleteFailException("subcategory 삭제 실패");
@@ -154,14 +158,13 @@ public class SubcategoryServiceImpl implements SubcategoryService{
 		logger.info(deleteList);
 		int subDelResult = 0;
 		int alcDelResult = 0;
-		List<Alcohol> alcList = null;
 		//deleteList에서 subcategory_id 추출
 		for (Integer num : deleteList) {
 			int subcategory_id = num;
 			//subcategory_id를 가진 alcoholList추출
-			alcList.addAll(alcoholDAO.selectAllBySubCate(subcategory_id));
+			List<Alcohol> alcList = alcoholDAO.selectAllBySubCate(subcategory_id);
 			//하위 alcohol list 없으면
-			if (alcList.isEmpty()) {
+			if (alcList.isEmpty() || alcList == null) {
 				//subcategory 바로 삭제
 				subDelResult = subcategoryDAO.delete(subcategory_id);
 			} else {

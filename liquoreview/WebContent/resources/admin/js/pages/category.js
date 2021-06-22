@@ -57,7 +57,8 @@ function handleTopcateList(data) {
 function getSubCategoryList(topcategory_id) {
 	console.log("서브카테고리리스트 조회 클라이언트 요청 출발!");
 	console.log("topcategory_id 확인 : "+topcategory_id);
-	
+	//top_id 보관
+	$("#hidden_sub_topcategory_id").val(topcategory_id);
 	$.ajax({
 		url:"/rest/admin/alcohol/subcategory?topcategory_id="+topcategory_id,
 		type:"GET",
@@ -78,6 +79,7 @@ function handleSubcateList(data) {
 	let con = $("#tbl_subcate_data_container");
 	con.html("");//기존 데이터 init
 	if (data != null && data.length != 0) {
+		//sub list 조립
 		for (let key in data) {
 			console.log(data[key]);
 			let obj = data[key];
@@ -369,10 +371,6 @@ function doTopDel(data) {
 			console.log(result);
 		}
 	});
-	
-	
-	
-	
 }
 
 // sub category insert
@@ -415,17 +413,17 @@ function handleSubcateInsertResult(data) {
 //sub category 삭제
 function subDel(e) {
 	console.log("subcate 삭제 요청받음");
-	var checkArray = checkCnt(e.name);
-	if (checkArray.length == 0) {
+	var subIdArray = checkCnt(e.name);
+	if (subIdArray.length == 0) {
 		alert("삭제할 subcategory를 체크하세요.");
 	} else {
 		if(confirm("선택한 subcategory 목록을 삭제하시겠습니까?")) {
 			$.ajax({
 				type:"GET",
-				url:"/rest/admin/alcohol/subcategory/"+checkArray,
+				url:"/rest/admin/alcohol/subcate/"+subIdArray,
 				success:function(result) {
-					console.log(result);
-					//getSubCategoryList(result.topcategory_id);
+					console.log("sub 하위에 alc포함여부 확인 : "+result);
+					executeSubDel(result);
 				},
 				error:function(result) {
 					console.log(result);
@@ -435,27 +433,46 @@ function subDel(e) {
 	}
 }
 
-/*
- * 
- * $.ajax({
-				type:"DELETE",
-				url:"/rest/admin/alcohol/subcategory/"+checkArray,
-				contentType:"application/json",
-				dataType:'json',
-				success:function(result) {
-					console.log(result);
-					getSubCategoryList(result.topcategory_id);
-				},
-				error:function(result) {
-					console.log(result);
-				}
-			});
- * 
- * 
- * 
- * */
+function executeSubDel(data) {
+	console.log(data);
+	
+	if (data[0].hasAlc == "1") {
+		if (confirm("해당 subcategory는 alcohol(술) list를 포함하고 있으며\n 삭제 진행 시 alcohol list까지 모두 삭제됩니다. 진행하시겠습니까?")) {
+			doSubDel(data);
+		} else {
+			return;
+		}
+	} else {
+		doSubDel(data);
+	}
+}
 
-
+function doSubDel(data) {
+	console.log("진짜 삭제 실행하라고 넘겨받은 data 확인 : "+data);
+	
+	let subDelArray = new Array();
+	let deletedSubTopId = $("#hidden_sub_topcategory_id").val();
+	for (let key in data) {
+		console.log(data[key]);
+		let obj = data[key];
+		subDelArray.push(obj.testedSubId);
+	}
+	
+	$.ajax({
+		type:"DELETE",
+		url:"/rest/admin/alcohol/subcategory/"+subDelArray,
+		contentType:"application/json",
+		dataType:'json',
+		success:function(result) {
+			console.log("삭제결과 : ");
+			console.log(result);
+			getSubCategoryList(deletedSubTopId);
+		},
+		error:function(result) {
+			console.log(result);
+		}
+	});
+}
 
 //refresh category list
 function refresh(obj) {

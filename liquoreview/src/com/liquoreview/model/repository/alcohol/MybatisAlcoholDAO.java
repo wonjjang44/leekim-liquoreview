@@ -30,7 +30,9 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 
 	@Override
 	public List<Alcohol> selectAllBySubCate(int subcategory_id) {
-		return sessionTemplate.selectList("Alcohol.selectBySubCategory", subcategory_id);
+		List<Alcohol> alcList = sessionTemplate.selectList("Alcohol.selectBySubCategory", subcategory_id);
+		logger.info("dao impl에서 db조회 결과 리턴 직전에 alcohol list 확인 : "+alcList);
+		return alcList;
 	}
 
 	@Override

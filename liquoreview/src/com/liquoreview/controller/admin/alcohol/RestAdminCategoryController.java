@@ -26,6 +26,7 @@ import com.liquoreview.exception.DeleteFailException;
 import com.liquoreview.exception.EditFailException;
 import com.liquoreview.model.domain.alcohol.Subcategory;
 import com.liquoreview.model.domain.alcohol.Topcategory;
+import com.liquoreview.model.service.alcohol.AlcoholService;
 import com.liquoreview.model.service.alcohol.SubcategoryService;
 import com.liquoreview.model.service.alcohol.TopcategoryService;
 
@@ -37,6 +38,8 @@ public class RestAdminCategoryController {
 	TopcategoryService topcategoryService;
 	@Autowired
 	SubcategoryService subcategoryService;
+	@Autowired
+	AlcoholService alcoholService;
 
 	@Autowired
 	Pager pager;
@@ -122,7 +125,7 @@ public class RestAdminCategoryController {
 		return topcateResultObj;
 	}
 	
-	//topcategory_id 단건으로 연관된 subcategory list 조회
+	//topcategory_id 단건으로, 연관된 subcategory list 조회
 	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public JSONObject getSubcateListByTopId(@RequestParam("topcategory_id") int topcategory_id, HttpServletRequest request) {
 		List<Subcategory> sortedSubcateList = null;
@@ -146,6 +149,14 @@ public class RestAdminCategoryController {
 		JSONArray subcateResultObj = subcategoryService.selectAllByTopCate(topIdList);
 		logger.info(subcateResultObj);
 		return subcateResultObj;
+	}
+	
+	// subcategory_id 연관된 alcohol list 여부 조회
+	@RequestMapping(value = "/admin/alcohol/subcate/{subIdArray}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public JSONArray checkAlcListBySubIdArray(@PathVariable("subIdArray") List<Integer> subIdList, HttpServletRequest request) {
+		JSONArray alcoholResultObj = alcoholService.selectAllBySubCate(subIdList);
+		logger.info(alcoholResultObj);
+		return alcoholResultObj;
 	}
 
 	// insert top category
@@ -207,8 +218,8 @@ public class RestAdminCategoryController {
 	}
 	
 	//subcategory 삭제
-	@RequestMapping(value = "/admin/alcohol/subcategory/{checkArray}", method = RequestMethod.DELETE)
-	public String delSubcate(@PathVariable("checkArray") List<Integer> deleteList, HttpServletRequest request) {
+	@RequestMapping(value = "/admin/alcohol/subcategory/{subDelArray}", method = RequestMethod.DELETE)
+	public String delSubcate(@PathVariable("subDelArray") List<Integer> deleteList, HttpServletRequest request) {
 		logger.info("subcate deleteList 확인 : "+deleteList);
 		subcategoryService.delete(deleteList);
 		StringBuffer sb = new StringBuffer();

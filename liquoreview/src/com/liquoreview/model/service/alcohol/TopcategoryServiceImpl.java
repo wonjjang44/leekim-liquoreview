@@ -123,7 +123,7 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 	@Override
 	public void delete(List<Integer> deleteList) throws DeleteFailException{
 		logger.info(deleteList);
-		List<Subcategory> subList = new ArrayList<Subcategory>();
+		//List<Subcategory> subList = new ArrayList<Subcategory>();
 		int topDelResult = 0;
 		int subDelResult = 0;
 		
@@ -131,9 +131,12 @@ public class TopcategoryServiceImpl implements TopcategoryService{
 		for (Integer num : deleteList) {
 			int topcategory_id = num;
 			//topcategory_id를 가진 subList 추출
-			subList.addAll(subcategoryDAO.selectAllByTopCate(topcategory_id));
+			//collection의 addAll 메서드는 null파라미터 허용 안하기 때문에
+			//subcategory가 없는 topcategory 삭제경우를 대비해 addAll사용 안하는 코드로 변경
+			//subList.addAll(subcategoryDAO.selectAllByTopCate(topcategory_id));
+			List<Subcategory> subList = subcategoryDAO.selectAllByTopCate(topcategory_id);
 			//하위리스트 없으면
-			if (subList.isEmpty()) {
+			if (subList.isEmpty() || subList == null) {
 				//topcategory 바로 삭제
 				topDelResult = topcategoryDAO.delete(topcategory_id);
 			} else {//하위리스트 있으면
