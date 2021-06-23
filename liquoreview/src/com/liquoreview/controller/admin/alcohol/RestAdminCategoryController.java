@@ -125,6 +125,13 @@ public class RestAdminCategoryController {
 		return topcateResultObj;
 	}
 	
+	//topcategory 전체조회(페이징 안함)
+	@RequestMapping(value = "/admin/alcohol/alltopcategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	public List<Topcategory> getAllTopcateList(HttpServletRequest request) {
+		List<Topcategory> topcateList = topcategoryService.selectAll();
+		return topcateList;
+	}
+	
 	//topcategory_id 단건으로, 연관된 subcategory list 조회
 	@RequestMapping(value = "/admin/alcohol/subcategory", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
 	public JSONObject getSubcateListByTopId(@RequestParam("topcategory_id") int topcategory_id, HttpServletRequest request) {
