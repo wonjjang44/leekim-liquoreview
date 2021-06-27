@@ -24,7 +24,7 @@
 		  from   alcohol
 	</sql>
 	
-	<select  id="selectAll">
+	<select  id="selectAll" resultMap="AlcoholMap">
 		<include refid="sql_select"/>
 		order by SUBCATEGORY_ID, ALCOHOL_ID
 	</select>

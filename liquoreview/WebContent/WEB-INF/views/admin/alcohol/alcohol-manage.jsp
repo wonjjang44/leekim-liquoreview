@@ -7,7 +7,6 @@
 <%@ include file="/WEB-INF/views/admin/inc/head.jsp" %>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="<c:url value="/resources/admin/js/pages/alcohol.js" />"></script>
-
 </head>
 <body class="">
 	<div class="wrapper">
@@ -20,20 +19,20 @@
 			
 			<div class="content">
 				<div class="row">
-					<div class="con-md-12">
+					<div class="col-md-12">
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title">알콜 컨텐츠 관리</h4>
-								<select name="" id="">
-									<option value="">choose topcate</option>
+								<select id="topSelect" onChange="getSubList(this.value)">
+									<option>상위분류선택</option>
 								</select>
-								<select name="" id="">
-									<option value="">choose subcate</option>
+								<select id="subSelect" onChange="getSortedAlcList(this.value)">
+									<option>하위분류선택</option>
 								</select>
 								<button 
 									class="btn btn-primary btn-round" 
 									type="button"
-									onClick="'"
+									onClick="alcAddPop()"
 								>
 									단건 등록
 								</button>
@@ -61,9 +60,9 @@
 													<input id="alcCheck" type="checkbox" name="alcCheck" onClick="checkAll()"/>
 												</th>
 												<th>No</th>
+												<th>이미지</th>
 												<th>topCate</th>
 												<th>subCate</th>
-												<th>이미지</th>
 												<th>이름</th>
 												<th>도수</th>
 												<th>등록일</th>
@@ -140,7 +139,9 @@
 								</div>
 								<!-- 검색영역 종료 -->
 							</div>
+							<!-- card footer end -->
 						</div>
+						<!-- card end -->
 					</div>
 				</div>
 			</div>
