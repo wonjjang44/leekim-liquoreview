@@ -16,7 +16,7 @@
 		<div class="modal-body">
 			<form id="alc_add_form" name="alc_add_form" enctype="multipart/form-data">
 				<p class="topcategoryArea">
-					<label for="">상위분류명</label>
+					<label for="modalTopSelect">상위분류명</label>
 					<select name="modalTopSelect" id="modalTopSelect" onChange="getModalSubList(this.value)">
 						<option value="">선택</option>
 						<c:forEach var="top" items="${topcateInfo }">
@@ -25,8 +25,10 @@
 					</select>
 				</p>
 				<p class="subcategoryArea">
-					<label for="">하위분류명</label>
-					<select name="" id="">선택</select>
+					<label for="modalSubSelect">하위분류명</label>
+					<select name="modalSubSelect" id="modalSubSelect">
+						<option value="">선택</option>
+					</select>
 				</p>
 				<div class="desArea">
 					<p>
@@ -39,7 +41,7 @@
 					</p>
 					<p>
 						<label for="new_alc_detail">상세</label>
-						<textarea name="" id="new_alc_detail" cols="30" rows="10"></textarea>
+						<textarea name="detail" id="new_alc_detail" cols="50" rows="5" placeholder="상세 설명을 적어주세요."></textarea>
 					</p>
 					<p>
 						<label for="new_alc_img">이미지</label>

@@ -45,7 +45,8 @@ public class MybatisSubcategoryDAO implements SubcategoryDAO{
 	
 	@Override
 	public List<Subcategory> selectAll() {
-		return sessionTemplate.selectList("Subcategory.selectSubcateList");
+		//return sessionTemplate.selectList("Subcategory.selectSubcateList");
+		return sessionTemplate.selectList("Subcategory.selectAll");
 	}
 
 	@Override

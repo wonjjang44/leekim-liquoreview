@@ -1,5 +1,6 @@
 package com.liquoreview.model.service.alcohol;
 
+import java.io.File;
 import java.util.List;
 
 import org.json.simple.JSONArray;
@@ -13,6 +14,7 @@ public interface AlcoholService {
 	public List<Alcohol> selectAllBySubCate(int subcategory_id);
 	public JSONArray selectAllBySubCate(List<Integer> subIdList);
 	public JSONObject insert(Alcohol alcohol);
+	public JSONObject insertByExcel(File destFile);
 	public JSONObject update(Alcohol alcohol);
 	public void delete(int alcohol_id);
 	public void delete(List<Integer> deleteList);

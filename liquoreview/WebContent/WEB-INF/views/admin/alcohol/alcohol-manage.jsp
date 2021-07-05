@@ -75,6 +75,11 @@
 									</table>
 									<input id="hidden_alcohol_id" type="hidden" name="alcohol_id" value=""/>
 								</div>
+								<div class="excelFileFormArea">
+									<form id="ajaxExcelForm" class="excelFileForm" enctype="multipart/form-data">
+										<input id="ajaxExcelFile" type="file" name="ajaxExcelFile" onChange="ajaxFileChange()" style="display:none;"/>
+									</form>
+								</div>
 							</div>
 							<!-- modal setting -->
 							<div id="alcoholModal" class="modal fade" role="dialog">

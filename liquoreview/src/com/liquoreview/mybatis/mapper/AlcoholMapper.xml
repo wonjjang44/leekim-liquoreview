@@ -62,6 +62,26 @@
 			);
 	</insert>
 	
+	<insert id="insertByExcel" parameterType="Alcohol">
+		insert into alcohol(SUBCATEGORY_ID
+								  ,NAME
+								  ,DEGREE
+								  ,DETAIL
+								  ,LAST_MODI_YMD	
+								)
+		 values
+					<foreach collection="excelContent" item="item" separator=",">
+								(
+									#{item.B}
+								   ,#{item.C}
+								   ,#{item.D}
+								   ,#{item.E}
+								   ,now()
+								)			
+					</foreach>
+		 
+	</insert>
+	
 	<update id="update" parameterType="Alcohol">
 		update alcohol 
 						set

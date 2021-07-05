@@ -117,14 +117,14 @@ function renderAlcList(data) {
 	if (data != null && data.length != 0) {
 		//alc list 조립
 		for (let key in data) {
-			console.log(datap[key]);
+			console.log(data[key]);
 			let obj = data[key];
 			con.append("<tr id='alc_table_tr_"+obj.alcohol_id+"'>");
 			con.append("<td><input class='alcohol_id_checkbox' type='checkbox' name='alcohol_id' value='"+obj.alcohol_id+"' onChange='alcCheckHandle("+obj.alcohol_id+")'/></td>");
 			con.append("<td>"+obj.alcohol_id+"</td>");
 			con.append("<td>"+obj.filename+"</td>");
-			con.append("<td>"+obj.subcategory.subcategory_id+"</td>");
-			con.append("<td>"+obj.subcategory.subcategory_id+"</td>");
+			con.append("<td>"+obj.subcategory.topcategory.topname+"</td>");
+			con.append("<td>"+obj.subcategory.subname+"</td>");
 			con.append("<td>"+obj.name+"</td>");
 			con.append("<td>"+obj.degree+"</td>");
 			con.append("<td>"+obj.regdate+"</td>");
@@ -158,6 +158,78 @@ function alcAddPop() {
 			console.log("에러발생");
 			console.log(data);
 			alert("모달 호출 중 에러가 발생했습니다.");
+		}
+	});
+}
+
+//모달 subcategory list 얻어서 채우기
+function getModalSubList(topcategory_id) {
+	$.ajax({
+		url:"/rest/admin/alcohol/subcategory?topcategory_id="+topcategory_id,
+		type:"GET",
+		success:function(data) {
+			createModalSubOption(data.sortedSubcateList);
+		},
+		error:function(data) {
+			console.log(data);
+		}
+	});
+}
+
+function createModalSubOption(data) {
+	$("#modalSubSelect").html("");
+	$("#modalSubSelect").append("<option value='0' selected>하위분류선택</option>");
+	for(let key in data ){
+		console.log(data[key]);
+		let obj = data[key];
+		$("#modalSubSelect").append("<option value=\""+obj.subcategory_id+"\">"+obj.subname+"</option>")
+	}
+}
+
+function reset() {
+	console.log("alcohol 추가 modal 내 초기화 버튼 클릭");
+	$("#alc_add_form")[0].reset();
+}
+
+//alcohol list upload by excel file
+function excelUpload() {
+	//excelUpload 버튼이 클릭되면 파일 선택 창을 띄운다
+	$("#ajaxExcelFile").click();
+}
+
+//파일 선택 창의 onChange event handler
+function ajaxFileChange() {
+	//파일이 선택되면 업로드를 진행
+	ajaxFileSubmit();
+}
+
+function ajaxFileSubmit() {
+	let form = $("#ajaxExcelForm")[0];
+	let formData = new FormData(form);
+	$($("#ajaxExcelFile")[0].files).each(function(index,file){
+		formData.append("alcExcelFile",file);
+	});
+	
+	console.log("formData 확인 : ");
+	console.log(formData);
+
+	//등록요청
+	$.ajax({
+		url:"/rest/admin/alcohol/insertByExcel",
+		type:"POST",
+		processData: false,
+		contentType: false,
+		data: formData,
+		success:function(result) {
+			console.log(result);
+			alert("success");
+			//등록 후 form reset
+			$("#ajaxExcelForm").trigger("reset");
+			//list 갱신
+			getAlcoholList();
+		},
+		error:function(result) {
+			console.log(result);
 		}
 	});
 }
