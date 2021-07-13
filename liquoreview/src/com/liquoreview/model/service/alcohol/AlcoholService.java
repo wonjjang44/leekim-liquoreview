@@ -6,10 +6,12 @@ import java.util.List;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.model.domain.alcohol.Alcohol;
 
 public interface AlcoholService {
-	public List<Alcohol> selectAll();
+	public int getTotalAlcoholCnt();
+	public List<Alcohol> selectAll(Criteria criteria);
 	public Alcohol select(int alcohol_id);
 	public List<Alcohol> selectAllBySubCate(int subcategory_id);
 	public JSONArray selectAllBySubCate(List<Integer> subIdList);

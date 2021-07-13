@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.common.excel.AlcExcelValueConverter;
 import com.liquoreview.common.excel.ExcelReadOption;
 import com.liquoreview.common.excel.ExcelReader;
@@ -46,8 +47,13 @@ public class AlcoholServiceImpl implements AlcoholService{
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	@Override
-	public List<Alcohol> selectAll() {
-		List<Alcohol> alcoholList = alcoholDAO.selectAll();
+	public int getTotalAlcoholCnt() {
+		return alcoholDAO.getTotalAlcoholCnt();
+	}
+	
+	@Override
+	public List<Alcohol> selectAll(Criteria criteria) {
+		List<Alcohol> alcoholList = alcoholDAO.selectAll(criteria);
 		return alcoholList;
 	}
 
@@ -145,4 +151,5 @@ public class AlcoholServiceImpl implements AlcoholService{
 		}
 		return resultObj;
 	}
+
 }

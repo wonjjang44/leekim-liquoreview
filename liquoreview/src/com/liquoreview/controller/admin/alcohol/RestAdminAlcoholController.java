@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.liquoreview.common.Criteria;
+import com.liquoreview.common.Pager;
 import com.liquoreview.model.domain.alcohol.Alcohol;
 import com.liquoreview.model.domain.alcohol.Topcategory;
 import com.liquoreview.model.service.alcohol.AlcoholService;
@@ -38,14 +40,28 @@ public class RestAdminAlcoholController {
 	@Autowired
 	SubcategoryService subcategoryService;
 	
+	@Autowired
+	Pager pager;
+	
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	//전체 조회
 	@RequestMapping(value = "/admin/alcohol", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-	public List<Alcohol> getAlcoholListAll(HttpServletRequest request) {
+	public JSONObject getAlcoholListAll(HttpServletRequest request, @RequestParam(defaultValue = "1") int currentPage) {
 		logger.info("alcohol list 전체조회 요청시작");
-		List<Alcohol> alcList = alcoholService.selectAll();
-		return alcList;
+		List<Alcohol> alcList = null;
+		int pageSize = 5;
+		JSONObject alcoholResultObj = new JSONObject();
+		
+		Criteria criteria = new Criteria(request, pageSize);
+		pager.setCriteria(criteria);
+		pager.init(alcoholService.getTotalAlcoholCnt());
+		alcList = alcoholService.selectAll(criteria);
+		
+		alcoholResultObj.put("alcList", alcList);
+		alcoholResultObj.put("pager", pager);
+		
+		return alcoholResultObj;
 	}
 	
 	//pk로 1건 조회(alcohol_id)

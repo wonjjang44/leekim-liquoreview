@@ -24,9 +24,29 @@
 		  from   alcohol
 	</sql>
 	
+	<select id="totalAlcoholCnt" resultType="int">
+		select
+			count(ALCOHOL_ID)
+		  from alcohol
+		where ALCOHOL_ID>0
+	</select>
+	
 	<select  id="selectAll" resultMap="AlcoholMap">
-		<include refid="sql_select"/>
-		order by SUBCATEGORY_ID, ALCOHOL_ID
+		select q.ALCOHOL_ID
+				,SUBCATEGORY_ID
+				,NAME
+				,DEGREE
+				,DETAIL
+				,REGDATE
+				,LAST_MODI_YMD
+		  from (
+		  		select ALCOHOL_ID
+		  		  from alcohol
+		  		 LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{curPos, jdbcType=INTEGER}
+		  ) q
+		JOIN alcohol p
+		ON p.ALCOHOL_ID = q.ALCOHOL_ID
+		order by SUBCATEGORY_ID, ALCOHOL_ID asc
 	</select>
 	
 	<select id="select" parameterType="int" resultMap="AlcoholMap">

@@ -10,7 +10,7 @@ public class Alcohol {
 	private Subcategory subcategory;
 	private String name;
     private Float degree;
-    private String text;
+    private String detail;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Timestamp regdate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd'T'HH:mm:ss")
@@ -41,11 +41,11 @@ public class Alcohol {
 	public void setDegree(Float degree) {
 		this.degree = degree;
 	}
-	public String getText() {
-		return text;
+	public String getDetail() {
+		return detail;
 	}
-	public void setText(String text) {
-		this.text = text;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 	public Timestamp getRegdate() {
 		return regdate;
@@ -63,7 +63,7 @@ public class Alcohol {
 	@Override
 	public String toString() {
 		return "Alcohol [alcohol_id=" + alcohol_id + ", subcategory=" + subcategory + ", name=" + name + ", degree="
-				+ degree + ", text=" + text + ", regdate=" + regdate + ", last_modi_ymd=" + last_modi_ymd + "]";
+				+ degree + ", detail=" + detail + ", regdate=" + regdate + ", last_modi_ymd=" + last_modi_ymd + "]";
 	}
 	
 	

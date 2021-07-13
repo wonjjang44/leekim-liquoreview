@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.liquoreview.common.Criteria;
 import com.liquoreview.model.domain.alcohol.Alcohol;
 
 @Repository
@@ -20,8 +21,13 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 	Logger logger = Logger.getLogger(this.getClass().getName());
 	
 	@Override
-	public List<Alcohol> selectAll() {
-		return sessionTemplate.selectList("Alcohol.selectAll");
+	public int getTotalAlcoholCnt() {
+		return sessionTemplate.selectOne("Alcohol.totalAlcoholCnt");
+	}
+	
+	@Override
+	public List<Alcohol> selectAll(Criteria criteria) {
+		return sessionTemplate.selectList("Alcohol.selectAll", criteria);
 	}
 
 	@Override
@@ -56,5 +62,6 @@ public class MybatisAlcoholDAO implements AlcoholDAO{
 		logger.info("insert query 넘기기 직전 paramMap 확인 : "+paramMap);
 		return sessionTemplate.insert("Alcohol.insertByExcel", paramMap);
 	}
+
 
 }

@@ -91,21 +91,19 @@
 							<!-- card-body end -->
 							<div class="card-footer">
 								<!-- start pager area -->
-								<nav class="blog-pagination justify-content-center">
+								<nav class="blog-pagination justify-content-center d-flex">
+									<!-- prev page arrow -->
 									<div class="prevPage">
-										<!-- prev page arrow -->
-										<a href="javascript:prevPage()"><strong>&laquo;</strong></a>
 									</div>
 									<!-- page num links -->
 									<ul class="pagination">
 									</ul>
 									<!-- next page arrow -->
 									<div class="nextPage">
-										<a href="javascript:nextPage()"><strong>&raquo;</strong></a>
 									</div>
 									<form id="hiddenListPageForm">
-										<input type="hidden" name="currentPage" value=""/>
-										<input type="hidden" name="pageSize" value=""/>
+										<input type="hidden" name="currentPage" value="" />
+										<input type="hidden" name="pageSize" value="" />
 										<input type="hidden" name="curPos" value=""/>
 									</form>
 								</nav>
